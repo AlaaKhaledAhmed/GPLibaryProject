@@ -1,0 +1,16 @@
+{
+  "singUpStudentTx":"إنشاء حساب طالب",
+  "singUpTeacherTx":"إنشاء حساب دكتور",
+  "loginTx":"تسجيل الدخول",
+  "noHaveAccountTx": "يبدو أنه ليس لديك حساب. لنقم بإنشاء حساب جديد لك الآن",
+  "mandatoryTx":"حقل اجباري",
+  "emailTx":"البريد إلكتروني",
+  "passwordTx":"كلمة المرور",
+  "idTx":"الرقم الجامعي",
+  "phoneTx":"رقم الجوال",
+  "majorTx":"تخصص الطالب",
+  "searchInterestTx":"الاهتمامات",
+  "isTeacher":"هل انت دكتور",
+  "isStudent":"هل انت طالب",
+  "createAccount":"إنشاء حساب"
+}

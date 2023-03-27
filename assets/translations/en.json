@@ -1,0 +1,16 @@
+{
+  "singUpStudentTx":"Student Sing Up",
+  "singUpTeacherTx":"Teacher Sing Up",
+  "loginTx":"Logging Page",
+  "noHaveAccountTx": "It seems that you do not have an account. Let us create a new account for you now",
+  "mandatoryTx":"Mandatory field",
+  "emailTx":"Email",
+  "passwordTx":"Password",
+  "idTx":"Student ID",
+  "phoneTx":"Phone Number",
+  "majorTx":"Student Major",
+  "searchInterestTx":"Search Interest",
+  "isTeacher":"Are you a teacher",
+  "isStudent":"Are you a teacher",
+  "createAccount":"Create an account"
+}
