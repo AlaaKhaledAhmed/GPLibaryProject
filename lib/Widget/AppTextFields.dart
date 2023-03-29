@@ -5,7 +5,7 @@ import 'package:library_project/Widget/Colors.dart';
 import '../Model/WidgetSize.dart';
 
 class AppTextFields extends StatelessWidget {
-  final bool obscureText = false;
+  final bool? obscureText;
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
@@ -20,12 +20,13 @@ class AppTextFields extends StatelessWidget {
     required this.controller,
     required this.labelText,
     this.fontWeight,
+    this.obscureText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: obscureText,
+      obscureText: obscureText??false,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       autofocus: false,
@@ -49,7 +50,7 @@ class AppTextFields extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(WidgetSize.textFieldsBorderRadius),
             borderSide:  BorderSide(
-              color: Colors.pink,
+              color: AppColor.buttonsColor,
               width: WidgetSize.textFieldsBorderWidth,
             ),
           ),

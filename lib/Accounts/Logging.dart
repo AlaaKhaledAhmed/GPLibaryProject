@@ -1,15 +1,18 @@
 import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:library_project/Model/Constants.dart';
 import 'package:library_project/Model/Device.dart';
-import 'package:library_project/Model/Messages.dart';
 import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppTextFields.dart';
 import 'package:library_project/Widget/ImagePath.dart';
 import 'package:library_project/Model/WidgetSize.dart';
+import '../Model/Routs.dart';
 import '../Model/Validator.dart';
+import '../Model/translations/locale_keys.g.dart';
 import '../Widget/Colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -19,11 +22,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> singUpKey = GlobalKey();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController idController = TextEditingController();
 
+  GlobalKey<FormState> singUpKey = GlobalKey();
+  List<bool> isTeacher = [false];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,22 +51,30 @@ class _LoginState extends State<Login> {
                         fit: BoxFit.cover)),
                 child: Stack(
                   children: [
-//Glass container=============================================================
+//Screen name=============================================================
                     Positioned(
-                        top: Device.getHeight(context) * 0.27,
+                        top: Device.getHeight(context) * 0.26,
                         bottom: Device.getHeight(context) * 0.12,
                         left: Device.getHeight(context) * 0.04,
                         right: Device.getHeight(context) * 0.02,
-//Screen name=============================================================
                         child: AppText(
                           fontSize: WidgetSize.titleTextSize,
-                          text: Messages.singUpStudentTx,
+                          text: isTeacher[0]
+                              ? LocaleKeys.singUpTeacherTx.tr()
+                              : LocaleKeys.singUpStudentTx.tr(),
                           color: AppColor.white,
                           fontWeight: FontWeight.bold,
                         )),
-//TextField container=============================================================
+//Screen name=============================================================
+//                     Positioned(
+//                         top: Device.getHeight(context) * 0.26,
+//                         bottom: Device.getHeight(context) * 0.12,
+//                         //left: Device.getHeight(context) * 0.04,
+//                         right: Device.getHeight(context) * 0.02,
+//                         ),
+//Glass container=============================================================
                     Positioned(
-                      bottom: Device.getHeight(context) * 0.11,
+                      bottom: Device.getHeight(context) * 0.15,
                       top: Device.getHeight(context) * 0.32,
                       left: Device.getHeight(context) * 0.02,
                       right: Device.getHeight(context) * 0.02,
@@ -95,9 +109,9 @@ class _LoginState extends State<Login> {
                               child: SingleChildScrollView(
                                   child: ConstrainedBox(
                                 constraints: BoxConstraints(
-                                    minWidth: constraints.maxWidth,
-                                    minHeight: constraints.maxHeight,
-                                   ),
+                                  minWidth: constraints.maxWidth,
+                                  minHeight: constraints.maxHeight,
+                                ),
                                 child: IntrinsicHeight(
                                   child: Form(
                                     // key: singUpKey,
@@ -108,57 +122,66 @@ class _LoginState extends State<Login> {
 
                                         AppText(
                                           fontSize: WidgetSize.subTextSize,
-                                          text: Messages.noHaveAccountTx,
+                                          text: LocaleKeys.noHaveAccountTx.tr(),
                                           color: AppColor.white,
                                         ),
                                         Device.hSpace(15),
-//Glass TextField=============================================================
+//name TextField=============================================================
+
+                                        AppTextFields(
+                                          controller: nameController,
+                                          labelText: LocaleKeys.name.tr(),
+                                          validator: (v) =>
+                                              Validator.validatorName(v!),
+                                        ),
+                                        Device.hSpace(15),
+//email TextField=============================================================
 
                                         AppTextFields(
                                           controller: emailController,
-                                          labelText: 'labelText',
+                                          labelText: LocaleKeys.emailTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v!),
+                                              Validator.validatorEmail(
+                                                  v!,
+                                                  isTeacher[0]
+                                                      ? Constants.typeIsTeacher
+                                                      : Constants
+                                                          .typeIsStudent),
                                         ),
                                         Device.hSpace(15),
-//Glass TextField=============================================================
+//password TextField=============================================================
 
                                         AppTextFields(
-                                          controller: emailController,
-                                          labelText: 'labelText',
+                                          controller: passwordController,
+                                          labelText: LocaleKeys.passwordTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v!),
+                                              Validator.validatorPassword(v!),
+                                          obscureText: true,
                                         ),
                                         Device.hSpace(15),
-//Glass TextField=============================================================
+//id TextField=============================================================
                                         AppTextFields(
-                                          controller: emailController,
-                                          labelText: 'labelText',
+                                          controller: idController,
+                                          labelText: isTeacher[0]
+                                              ? LocaleKeys.searchInterestTx.tr()
+                                              : LocaleKeys.idTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v!),
+                                              Validator.validatorID(v!),
                                         ),
                                         Device.hSpace(15),
-//Glass TextField=============================================================
+//phone TextField=============================================================
                                         AppTextFields(
-                                          controller: emailController,
-                                          labelText: 'labelText',
+                                          controller: phoneController,
+                                          labelText: LocaleKeys.phoneTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v!),
-                                        ),
-                                        Device.hSpace(15),
-//Glass TextField=============================================================
-                                        AppTextFields(
-                                          controller: emailController,
-                                          labelText: 'labelText',
-                                          validator: (v) =>
-                                              Validator.validatorEmpty(v!),
+                                              Validator.validatorPhone(v!),
                                         ),
 //Glass TextField=============================================================
-                                        Device.hSpace(15),
+                                        Device.hSpace(10),
                                         AppButtons(
-                                            onPressed: () {}, text: 'SING UP')
-//Glass TextField=============================================================
-
+                                          onPressed: () {},
+                                          text: LocaleKeys.createAccount.tr(),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -167,6 +190,92 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
+//Switch SingUp =============================================================
+                    Positioned(
+                      bottom: Device.getHeight(context) * 0.09,
+                      child: Container(
+                        width: Device.getWidth(context),
+                        alignment: Alignment.center,
+                        //color: AppColor.black,
+                        child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  AppText(
+                                    fontSize: WidgetSize.subTextSize,
+                                    text: (isTeacher[0]
+                                            ? LocaleKeys.isStudent.tr()
+                                            : LocaleKeys.isTeacher.tr()) +
+                                        (context.locale.toString() == 'en'
+                                            ? '?'
+                                            : '؟'),
+                                    color: AppColor.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  SizedBox(
+                                    width: 7.w,
+                                  ),
+                                  InkWell(
+                                      child: AppText(
+                                        fontSize: WidgetSize.subTextSize,
+                                        text: LocaleKeys.createAccount.tr(),
+                                        color: AppColor.textFieldBorderColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      onTap: () {
+                                        print('object');
+                                        setState(() {
+                                          isTeacher[0] = !isTeacher[0];
+                                        });
+                                        print('isTeacher: $isTeacher');
+                                      }),
+                                ],
+                              ),
+                            ]),
+                      ),
+                    ),
+//Switch SingUp =============================================================
+                    Positioned(
+                      bottom: Device.getHeight(context) * 0.04,
+                      child: Container(
+                        width: Device.getWidth(context),
+                        alignment: Alignment.center,
+                        //color: AppColor.black,
+                        child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  AppText(
+                                    fontSize: WidgetSize.subTextSize,
+                                    text: LocaleKeys.goTo.tr(),
+                                    color: AppColor.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  SizedBox(
+                                    width: 7.w,
+                                  ),
+                                  InkWell(
+                                      child: AppText(
+                                        fontSize: WidgetSize.subTextSize,
+                                        text: LocaleKeys.loginTx.tr(),
+                                        color: AppColor.textFieldBorderColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      onTap: () {
+                                        Routes.pushReplacementTo(
+                                            context, const Login());
+                                      }),
+                                ],
+                              ),
+                            ]),
+                      ),
+                    )
                   ],
                 )));
       }),

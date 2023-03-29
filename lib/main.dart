@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:library_project/Widget/Colors.dart';
 import 'Accounts/FirestScreen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/Model/translations/codegen_loader.g.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
-
 
   runApp(EasyLocalization(
       path: 'assets/translations',
@@ -30,24 +30,40 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(360, 690),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context , child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-              //textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-            ),
-            home: child,
-          );
-        },
-        child: const FirstScreen(),
-      );
+      designSize: const Size(413, 763),
+      builder: (BuildContext context, Widget? child) {
+        return MaterialApp(
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            //visualDensity: VisualDensity.adaptivePlatformDensity,
+            fontFamily: context.locale.toString() == 'en'
+                ? GoogleFonts.quicksand().fontFamily
+                : GoogleFonts.notoKufiArabic().fontFamily, //"DroidKufi",
+            scaffoldBackgroundColor: AppColor.white,
+          ),
+          builder: (context, widget) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: widget!,
+            );
+          },
+          // initialRoute:
+          //     initScreen == 0 || initScreen == null ? 'choseLang' : 'logging',
+
+          // routes: {
+          //   'choseLang': (context) => const FirestLuncherPage(),
+          //   'logging': (context) => Logging(),
+          // },
+          home: const FirstScreen(),
+        );
+      },
+    );
+
   }
 }
