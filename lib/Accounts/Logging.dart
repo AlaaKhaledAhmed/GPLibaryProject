@@ -23,13 +23,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController idController = TextEditingController();
-
-  GlobalKey<FormState> singUpKey = GlobalKey();
+  GlobalKey<FormState> loggingKey = GlobalKey();
   List<bool> isTeacher = [false];
   String? selectedItem;
   @override
@@ -55,8 +51,8 @@ class _LoginState extends State<Login> {
                   children: [
 //Screen name=============================================================
                     Positioned(
-                        top: Device.getHeight(context) * 0.22,
-                        bottom: Device.getHeight(context) * 0.12,
+                        bottom: Device.getHeight(context) * 0.22,
+                        top: Device.getHeight(context) * 0.44,
                         left: Device.getHeight(context) * 0.04,
                         right: Device.getHeight(context) * 0.02,
                         child: AppText(
@@ -70,8 +66,8 @@ class _LoginState extends State<Login> {
 
 //Glass container=============================================================
                     Positioned(
-                      bottom: Device.getHeight(context) * 0.15,
-                      top: Device.getHeight(context) * 0.27,
+                      bottom: Device.getHeight(context) * 0.25,
+                      top: Device.getHeight(context) * 0.42,
                       left: Device.getHeight(context) * 0.02,
                       right: Device.getHeight(context) * 0.02,
                       child: ClipRRect(
@@ -122,15 +118,7 @@ class _LoginState extends State<Login> {
                                           color: AppColor.white,
                                         ),
                                         Device.hSpace(WidgetSize.hSpace),
-//name TextField=============================================================
 
-                                        AppTextFields(
-                                          controller: nameController,
-                                          labelText: LocaleKeys.name.tr(),
-                                          validator: (v) =>
-                                              Validator.validatorName(v!),
-                                        ),
-                                        Device.hSpace(WidgetSize.hSpace),
 //email TextField=============================================================
 
                                         AppTextFields(
@@ -154,51 +142,7 @@ class _LoginState extends State<Login> {
                                               Validator.validatorPassword(v!),
                                           obscureText: true,
                                         ),
-                                        Device.hSpace(WidgetSize.hSpace),
-//id or search interest TextField=============================================================
-                                        isTeacher[0]
-                                            ? DropList(
-                                                listItem: ['hhhh', 'hhhhf'],
-                                                validator: (v) =>
-                                                    Validator.validatorEmpty(
-                                                        v!),
-                                                onChanged: (selectedItem) {
-                                                  setState(() {
-                                                    this.selectedItem =
-                                                        selectedItem;
-                                                  });
-                                                },
-                                                hintText: 'enter',
-                                                dropValue: selectedItem,
-                                              )
-                                            : AppTextFields(
-                                                controller: idController,
-                                                labelText: LocaleKeys.idTx.tr(),
-                                                validator: (v) =>
-                                                    Validator.validatorID(v!),
-                                              ),
-                                        Device.hSpace(WidgetSize.hSpace),
-//major dropList=============================================================
-                                        DropList(
-                                          listItem: ['hhhh', 'hhhhf'],
-                                          validator: (v) =>
-                                              Validator.validatorEmpty(v!),
-                                          onChanged: (selectedItem) {
-                                            setState(() {
-                                              this.selectedItem = selectedItem;
-                                            });
-                                          },
-                                          hintText: 'enter',
-                                          dropValue: selectedItem,
-                                        ),
-                                        Device.hSpace(WidgetSize.hSpace),
-//phone TextField=============================================================
-                                        AppTextFields(
-                                          controller: phoneController,
-                                          labelText: LocaleKeys.phoneTx.tr(),
-                                          validator: (v) =>
-                                              Validator.validatorPhone(v!),
-                                        ),
+
 //create Account button=============================================================
                                         Device.hSpace(10),
                                         AppButtons(
@@ -260,45 +204,7 @@ class _LoginState extends State<Login> {
                             ]),
                       ),
                     ),
-//Switch SingUp =============================================================
-                    Positioned(
-                      bottom: Device.getHeight(context) * 0.04,
-                      child: Container(
-                        width: Device.getWidth(context),
-                        alignment: Alignment.center,
-                        //color: AppColor.black,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  AppText(
-                                    fontSize: WidgetSize.subTextSize,
-                                    text: LocaleKeys.goTo.tr(),
-                                    color: AppColor.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    width: 7.w,
-                                  ),
-                                  InkWell(
-                                      child: AppText(
-                                        fontSize: WidgetSize.subTextSize,
-                                        text: LocaleKeys.loginTx.tr(),
-                                        color: AppColor.textFieldBorderColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      onTap: () {
-                                        Routes.pushReplacementTo(
-                                            context, const Login());
-                                      }),
-                                ],
-                              ),
-                            ]),
-                      ),
-                    )
+
                   ],
                 )));
       }),
