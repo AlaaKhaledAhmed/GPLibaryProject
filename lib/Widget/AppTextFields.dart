@@ -26,6 +26,7 @@ class AppTextFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
       obscureText: obscureText??false,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,

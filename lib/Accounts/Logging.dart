@@ -6,6 +6,7 @@ import 'package:library_project/Model/Device.dart';
 import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppTextFields.dart';
+import 'package:library_project/Widget/DropList.dart';
 import 'package:library_project/Widget/ImagePath.dart';
 import 'package:library_project/Model/WidgetSize.dart';
 import '../Model/Routs.dart';
@@ -30,6 +31,7 @@ class _LoginState extends State<Login> {
 
   GlobalKey<FormState> singUpKey = GlobalKey();
   List<bool> isTeacher = [false];
+  String? selectedItem;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +55,7 @@ class _LoginState extends State<Login> {
                   children: [
 //Screen name=============================================================
                     Positioned(
-                        top: Device.getHeight(context) * 0.26,
+                        top: Device.getHeight(context) * 0.22,
                         bottom: Device.getHeight(context) * 0.12,
                         left: Device.getHeight(context) * 0.04,
                         right: Device.getHeight(context) * 0.02,
@@ -65,17 +67,11 @@ class _LoginState extends State<Login> {
                           color: AppColor.white,
                           fontWeight: FontWeight.bold,
                         )),
-//Screen name=============================================================
-//                     Positioned(
-//                         top: Device.getHeight(context) * 0.26,
-//                         bottom: Device.getHeight(context) * 0.12,
-//                         //left: Device.getHeight(context) * 0.04,
-//                         right: Device.getHeight(context) * 0.02,
-//                         ),
+
 //Glass container=============================================================
                     Positioned(
                       bottom: Device.getHeight(context) * 0.15,
-                      top: Device.getHeight(context) * 0.32,
+                      top: Device.getHeight(context) * 0.27,
                       left: Device.getHeight(context) * 0.02,
                       right: Device.getHeight(context) * 0.02,
                       child: ClipRRect(
@@ -125,7 +121,7 @@ class _LoginState extends State<Login> {
                                           text: LocaleKeys.noHaveAccountTx.tr(),
                                           color: AppColor.white,
                                         ),
-                                        Device.hSpace(15),
+                                        Device.hSpace(WidgetSize.hSpace),
 //name TextField=============================================================
 
                                         AppTextFields(
@@ -134,7 +130,7 @@ class _LoginState extends State<Login> {
                                           validator: (v) =>
                                               Validator.validatorName(v!),
                                         ),
-                                        Device.hSpace(15),
+                                        Device.hSpace(WidgetSize.hSpace),
 //email TextField=============================================================
 
                                         AppTextFields(
@@ -148,7 +144,7 @@ class _LoginState extends State<Login> {
                                                       : Constants
                                                           .typeIsStudent),
                                         ),
-                                        Device.hSpace(15),
+                                        Device.hSpace(WidgetSize.hSpace),
 //password TextField=============================================================
 
                                         AppTextFields(
@@ -158,17 +154,44 @@ class _LoginState extends State<Login> {
                                               Validator.validatorPassword(v!),
                                           obscureText: true,
                                         ),
-                                        Device.hSpace(15),
-//id TextField=============================================================
-                                        AppTextFields(
-                                          controller: idController,
-                                          labelText: isTeacher[0]
-                                              ? LocaleKeys.searchInterestTx.tr()
-                                              : LocaleKeys.idTx.tr(),
+                                        Device.hSpace(WidgetSize.hSpace),
+//id or search interest TextField=============================================================
+                                        isTeacher[0]
+                                            ? DropList(
+                                                listItem: ['hhhh', 'hhhhf'],
+                                                validator: (v) =>
+                                                    Validator.validatorEmpty(
+                                                        v!),
+                                                onChanged: (selectedItem) {
+                                                  setState(() {
+                                                    this.selectedItem =
+                                                        selectedItem;
+                                                  });
+                                                },
+                                                hintText: 'enter',
+                                                dropValue: selectedItem,
+                                              )
+                                            : AppTextFields(
+                                                controller: idController,
+                                                labelText: LocaleKeys.idTx.tr(),
+                                                validator: (v) =>
+                                                    Validator.validatorID(v!),
+                                              ),
+                                        Device.hSpace(WidgetSize.hSpace),
+//major dropList=============================================================
+                                        DropList(
+                                          listItem: ['hhhh', 'hhhhf'],
                                           validator: (v) =>
-                                              Validator.validatorID(v!),
+                                              Validator.validatorEmpty(v!),
+                                          onChanged: (selectedItem) {
+                                            setState(() {
+                                              this.selectedItem = selectedItem;
+                                            });
+                                          },
+                                          hintText: 'enter',
+                                          dropValue: selectedItem,
                                         ),
-                                        Device.hSpace(15),
+                                        Device.hSpace(WidgetSize.hSpace),
 //phone TextField=============================================================
                                         AppTextFields(
                                           controller: phoneController,
@@ -176,7 +199,7 @@ class _LoginState extends State<Login> {
                                           validator: (v) =>
                                               Validator.validatorPhone(v!),
                                         ),
-//Glass TextField=============================================================
+//create Account button=============================================================
                                         Device.hSpace(10),
                                         AppButtons(
                                           onPressed: () {},
