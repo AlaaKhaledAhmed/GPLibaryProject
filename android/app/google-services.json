@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "661670307870",
+    "project_id": "gplibary",
+    "storage_bucket": "gplibary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661670307870:android:a2cedc5c33ec6f196da60f",
+        "android_client_info": {
+          "package_name": "com.example.library_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "661670307870-vq8r05sqiani1mp5jnt9erg5ie4ddbki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJkxN4mCAJ2aSVdQK5kNFs10W9F0lvEFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661670307870-vq8r05sqiani1mp5jnt9erg5ie4ddbki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
