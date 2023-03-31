@@ -13,7 +13,7 @@ import '../../Model/Validator.dart';
 import '../../Model/translations/locale_keys.g.dart';
 import '../../Widget/Colors.dart';
 import 'package:easy_localization/easy_localization.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'SingUp.dart';
 
 class Login extends StatefulWidget {
@@ -146,7 +146,11 @@ class _LoginState extends State<Login> {
 //create Account button=============================================================
                                         Device.hSpace(10),
                                         AppButtons(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            FirebaseFirestore.instance.collection('tesste').add({
+                                              'name':'rahaffffffffff'
+                                            });
+                                          },
                                           text: 'Logging',
                                         )
                                       ],
