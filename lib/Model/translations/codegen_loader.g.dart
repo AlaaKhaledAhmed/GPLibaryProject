@@ -16,7 +16,7 @@ class CodegenLoader extends AssetLoader{
 
   static const Map<String,dynamic> ar = {
   "singUpStudentTx": "إنشاء حساب طالب",
-  "singUpTeacherTx": "إنشاء حساب دكتور",
+  "singUpTeacherTx": "إنشاء حساب مشرف",
   "loginTx": "تسجيل الدخول",
   "noHaveAccountTx": "يبدو أنه ليس لديك حساب. لنقم بإنشاء حساب جديد لك الآن",
   "mandatoryTx": "حقل اجباري",
@@ -53,7 +53,7 @@ class CodegenLoader extends AssetLoader{
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
-  "singUpTeacherTx": "Teacher Sing Up",
+  "singUpTeacherTx": "Superviser Sing Up",
   "loginTx": "Logging Page",
   "noHaveAccountTx": "It seems that you do not have an account. Let us create a new account for you now",
   "mandatoryTx": "Mandatory field",

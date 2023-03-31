@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:library_project/Widget/Colors.dart';
-import 'Accounts/FirestScreen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/Model/translations/codegen_loader.g.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'Screens/Accounts/Logging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,7 @@ void main() async {
         Locale('en'),
         Locale('ar'),
       ],
-      fallbackLocale: const Locale('ar'),
+      fallbackLocale: const Locale('en'),
       assetLoader: const CodegenLoader(),
       child: const MyApp()));
 }
@@ -53,14 +54,8 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          // initialRoute:
-          //     initScreen == 0 || initScreen == null ? 'choseLang' : 'logging',
-
-          // routes: {
-          //   'choseLang': (context) => const FirestLuncherPage(),
-          //   'logging': (context) => Logging(),
-          // },
-          home: const FirstScreen(),
+        
+          home: const Login(),
         );
       },
     );

@@ -1,6 +1,6 @@
 {
   "singUpStudentTx":"إنشاء حساب طالب",
-  "singUpTeacherTx":"إنشاء حساب دكتور",
+  "singUpTeacherTx":"إنشاء حساب مشرف",
   "loginTx":"تسجيل الدخول",
   "noHaveAccountTx": "يبدو أنه ليس لديك حساب. لنقم بإنشاء حساب جديد لك الآن",
   "mandatoryTx":"حقل اجباري",

@@ -1,6 +1,6 @@
 {
   "singUpStudentTx":"Student Sing Up",
-  "singUpTeacherTx":"Teacher Sing Up",
+  "singUpTeacherTx":"Superviser Sing Up",
   "loginTx":"Logging Page",
   "noHaveAccountTx": "It seems that you do not have an account. Let us create a new account for you now",
   "mandatoryTx":"Mandatory field",

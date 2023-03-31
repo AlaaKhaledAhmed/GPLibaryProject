@@ -77,7 +77,7 @@ class DropList extends StatelessWidget {
       dropdownMaxHeight: 300.h,
       dropdownDecoration: BoxDecoration(
 
-          color: AppColor.buttonsColor,
+          color: AppColor.white,
           borderRadius: BorderRadius.all(
               Radius.circular(WidgetSize.textFieldsBorderRadius))),
       iconDisabledColor: AppColor.buttonsColor,

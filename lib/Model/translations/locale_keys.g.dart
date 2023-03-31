@@ -37,5 +37,4 @@ abstract class  LocaleKeys {
   static const home = 'home';
   static const completed = 'completed';
 
-
 }
