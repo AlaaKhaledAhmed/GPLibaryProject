@@ -40,7 +40,7 @@ class Loading {
                     height: 40.h,
                     child: Center(
                       child: AppText(
-                        fontSize: WidgetSize.subTextSize,
+                        fontSize: WidgetSize.buttonsFontSize,
                         text: title,
                         color: AppColor.white,
                       ),
@@ -63,9 +63,9 @@ class Loading {
                           flex: 3,
                           child: Center(
                               child: AppText(
-                            fontSize: WidgetSize.titleTextSize,
+                            fontSize: WidgetSize.subTextSize,
                             text: content,
-                            color: AppColor.white,
+                            color: AppColor.black,
                           )),
                         ),
 

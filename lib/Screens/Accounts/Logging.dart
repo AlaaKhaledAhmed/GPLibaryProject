@@ -109,7 +109,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 child: IntrinsicHeight(
                                   child: Form(
-                                    // key: singUpKey,
+                                    key: loggingKey,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
@@ -128,12 +128,7 @@ class _LoginState extends State<Login> {
                                           controller: emailController,
                                           labelText: LocaleKeys.emailTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmail(
-                                                  v!,
-                                                  isTeacher[0]
-                                                      ? Constants.typeIsTeacher
-                                                      : Constants
-                                                          .typeIsStudent),
+                                              Validator.validatorEmpty(v!),
                                         ),
                                         Device.hSpace(WidgetSize.hSpace),
 //password TextField=============================================================
@@ -142,7 +137,7 @@ class _LoginState extends State<Login> {
                                           controller: passwordController,
                                           labelText: LocaleKeys.passwordTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorPassword(v!),
+                                              Validator.validatorEmpty(v!),
                                           obscureText: true,
                                         ),
 
