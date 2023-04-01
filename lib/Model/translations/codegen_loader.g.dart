@@ -52,9 +52,11 @@ class CodegenLoader extends AssetLoader{
   "completed": "اكتملت العملية بنجاح",
   "login": "تسجيل الدخول",
   "selectMajor": "اختر التخصص",
-  "select search interest": "اختر مجال البحث",
-  "no": "No",
-  "yes": "Yes"
+  "selectSearchInterest": "اختر مجال البحث",
+  "no": "لا",
+  "yes": "نعم",
+  "singUp": "انشاء حساب",
+  "done": "تمت العملية بنجاح"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -95,8 +97,10 @@ static const Map<String,dynamic> en = {
   "login": "Login",
   "selectMajor": "Select Major",
   "selectSearchInterest": "Select search interest",
-  "no": "لا",
-  "yes": "نعم"
+  "no": "No",
+  "yes": "Yes",
+  "singUp": "Sing Up",
+  "done": "operation accomplished successfully"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

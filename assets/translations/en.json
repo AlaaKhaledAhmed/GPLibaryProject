@@ -37,8 +37,10 @@
   "login": "Login",
   "selectMajor":"Select Major",
   "selectSearchInterest":"Select search interest",
-  "no":"لا",
-  "yes":"نعم"
+  "no":"No",
+  "yes":"Yes",
+  "singUp":"Sing Up",
+  "done":"operation accomplished successfully"
 
 
 }

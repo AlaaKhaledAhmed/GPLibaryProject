@@ -2,7 +2,9 @@ import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:library_project/Widget/Loading.dart';
 
+import '../../Database/Database.dart';
 import '../../Model/Constants.dart';
 import '../../Model/Device.dart';
 import '../../Model/Routs.dart';
@@ -113,7 +115,7 @@ class _SingUpState extends State<SingUp> {
                                 ),
                                 child: IntrinsicHeight(
                                   child: Form(
-                                    // key: singUpKey,
+                                    key: singUpKey,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
@@ -214,8 +216,123 @@ class _SingUpState extends State<SingUp> {
 //create Account button=============================================================
                                         Device.hSpace(10),
                                         AppButtons(
-                                          onPressed: () {},
                                           text: LocaleKeys.createAccount.tr(),
+                                          onPressed: () {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            if (singUpKey.currentState
+                                                    ?.validate() ==
+                                                true) {
+                                              Loading.show(context, '', 'lode');
+
+                                              isSuperviser[0] == false
+                                                  ? Firbase.studentSingUpFu(
+                                                      name: nameController.text,
+                                                      email:
+                                                          emailController.text,
+                                                      password:
+                                                          passwordController
+                                                              .text,
+                                                      stId: idController.text,
+                                                      major: selectedMajor!,
+                                                      phone:
+                                                          phoneController.text,
+                                                    ).then((String v) {
+                                                      print(
+                                                          '================$v');
+                                                      if (v == 'done') {
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys.done
+                                                                .tr());
+                                                      } else if (v ==
+                                                          'weak-password') {
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys.weekPass
+                                                                .tr());
+                                                      } else if (v ==
+                                                          'email-already-in-use') {
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys
+                                                                .emailFound
+                                                                .tr());
+                                                      } else {
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys.error
+                                                                .tr());
+                                                      }
+                                                    })
+                                                  : Firbase.supervisorSingUpFu(
+                                                      name: nameController.text,
+                                                      email:
+                                                          emailController.text,
+                                                      password:
+                                                          passwordController
+                                                              .text,
+                                                      searchInterest:
+                                                          selectedSearch!,
+                                                      major: selectedMajor!,
+                                                      phone:
+                                                          phoneController.text,
+                                                    ).then((String v) {
+                                                      print(
+                                                          '================$v');
+                                                      if (v == 'done') {
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys.done
+                                                                .tr());
+                                                      } else if (v ==
+                                                          'weak-password') {
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys.weekPass
+                                                                .tr());
+                                                      } else if (v ==
+                                                          'email-already-in-use') {
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys
+                                                                .emailFound
+                                                                .tr());
+                                                      } else {
+                                                        Navigator.pop(context);
+                                                        Loading.show(
+                                                            context,
+                                                            LocaleKeys.singUp
+                                                                .tr(),
+                                                            LocaleKeys.error
+                                                                .tr());
+                                                      }
+                                                    });
+                                            }
+                                          },
                                         )
                                       ],
                                     ),

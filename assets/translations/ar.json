@@ -37,7 +37,9 @@
   "login": "تسجيل الدخول",
   "selectMajor":"اختر التخصص",
   "selectSearchInterest":"اختر مجال البحث",
-  "no":"No",
-  "yes":"Yes"
+  "no":"لا",
+  "yes":"نعم",
+  "singUp":"انشاء حساب",
+  "done":"تمت العملية بنجاح"
 
 }
