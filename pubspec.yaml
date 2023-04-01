@@ -43,6 +43,7 @@ dev_dependencies:
   cloud_firestore: ^3.1.5
   firebase_storage: ^8.1.3
   firebase_core_platform_interface: 4.5.1
+  flutter_riverpod: 
   google_fonts: ^3.0.1
   permission_handler: ^10.0.0
   dropdown_button2:
@@ -74,4 +75,5 @@ flutter:
 
      - assets/image/
      - assets/translations/
+     - assets/Lottie/
 

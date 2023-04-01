@@ -33,7 +33,8 @@ class _SingUpState extends State<SingUp> {
 
   GlobalKey<FormState> singUpKey = GlobalKey();
   List<bool> isSuperviser = [false];
-  String? selectedItem;
+  String? selectedMajor;
+  String? selectedSearch;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +79,7 @@ class _SingUpState extends State<SingUp> {
                       right: Device.getHeight(context) * 0.02,
                       child: ClipRRect(
                         borderRadius:
-                        BorderRadius.circular(WidgetSize.containerRadius),
+                            BorderRadius.circular(WidgetSize.containerRadius),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                           child: AnimatedContainer(
@@ -106,112 +107,121 @@ class _SingUpState extends State<SingUp> {
                                       color: AppColor.white30)),
                               child: SingleChildScrollView(
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                      minWidth: constraints.maxWidth,
-                                      minHeight: constraints.maxHeight,
-                                    ),
-                                    child: IntrinsicHeight(
-                                      child: Form(
-                                        // key: singUpKey,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
+                                constraints: BoxConstraints(
+                                  minWidth: constraints.maxWidth,
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: IntrinsicHeight(
+                                  child: Form(
+                                    // key: singUpKey,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
 //no Have Account Tx=============================================================
 
-                                            AppText(
-                                              fontSize: WidgetSize.subTextSize,
-                                              text: LocaleKeys.noHaveAccountTx.tr(),
-                                              color: AppColor.white,
-                                            ),
-                                            Device.hSpace(WidgetSize.hSpace),
+                                        AppText(
+                                          fontSize: WidgetSize.subTextSize,
+                                          text: LocaleKeys.noHaveAccountTx.tr(),
+                                          color: AppColor.white,
+                                        ),
+                                        Device.hSpace(WidgetSize.hSpace),
 //name TextField=============================================================
 
-                                            AppTextFields(
-                                              controller: nameController,
-                                              labelText: LocaleKeys.name.tr(),
-                                              validator: (v) =>
-                                                  Validator.validatorName(v!),
-                                            ),
-                                            Device.hSpace(WidgetSize.hSpace),
+                                        AppTextFields(
+                                          controller: nameController,
+                                          labelText: LocaleKeys.name.tr(),
+                                          validator: (v) =>
+                                              Validator.validatorName(v!),
+                                        ),
+                                        Device.hSpace(WidgetSize.hSpace),
 //email TextField=============================================================
 
-                                            AppTextFields(
-                                              controller: emailController,
-                                              labelText: LocaleKeys.emailTx.tr(),
-                                              validator: (v) =>
-                                                  Validator.validatorEmail(
-                                                      v!,
-                                                      isSuperviser[0]
-                                                          ? Constants.typeIsTeacher
-                                                          : Constants
+                                        AppTextFields(
+                                          controller: emailController,
+                                          labelText: LocaleKeys.emailTx.tr(),
+                                          validator: (v) =>
+                                              Validator.validatorEmail(
+                                                  v!,
+                                                  isSuperviser[0]
+                                                      ? Constants.typeIsTeacher
+                                                      : Constants
                                                           .typeIsStudent),
-                                            ),
-                                            Device.hSpace(WidgetSize.hSpace),
+                                        ),
+                                        Device.hSpace(WidgetSize.hSpace),
 //password TextField=============================================================
 
-                                            AppTextFields(
-                                              controller: passwordController,
-                                              labelText: LocaleKeys.passwordTx.tr(),
-                                              validator: (v) =>
-                                                  Validator.validatorPassword(v!),
-                                              obscureText: true,
-                                            ),
-                                            Device.hSpace(WidgetSize.hSpace),
-//id or search interest TextField=============================================================
-                                            isSuperviser[0]
-                                                ? DropList(
-                                              listItem: ['item1', 'item2'],
-                                              validator: (v) =>
-                                                  Validator.validatorEmpty(
-                                                      v!),
-                                              onChanged: (selectedItem) {
-                                                setState(() {
-                                                  this.selectedItem =
-                                                      selectedItem;
-                                                });
-                                              },
-                                              hintText: 'Select search interest',
-                                              dropValue: selectedItem,
-                                            )
-                                                : AppTextFields(
-                                              controller: idController,
-                                              labelText: LocaleKeys.idTx.tr(),
-                                              validator: (v) =>
-                                                  Validator.validatorID(v!),
-                                            ),
-                                            Device.hSpace(WidgetSize.hSpace),
-//major dropList=============================================================
-                                            DropList(
-                                              listItem: ['item1', 'item2'],
-                                              validator: (v) =>
-                                                  Validator.validatorEmpty(v!),
-                                              onChanged: (selectedItem) {
-                                                setState(() {
-                                                  this.selectedItem = selectedItem;
-                                                });
-                                              },
-                                              hintText: 'Select Major',
-                                              dropValue: selectedItem,
-                                            ),
-                                            Device.hSpace(WidgetSize.hSpace),
-//phone TextField=============================================================
-                                            AppTextFields(
-                                              controller: phoneController,
-                                              labelText: LocaleKeys.phoneTx.tr(),
-                                              validator: (v) =>
-                                                  Validator.validatorPhone(v!),
-                                            ),
-//create Account button=============================================================
-                                            Device.hSpace(10),
-                                            AppButtons(
-                                              onPressed: () {},
-                                              text: LocaleKeys.createAccount.tr(),
-                                            )
-                                          ],
+                                        AppTextFields(
+                                          controller: passwordController,
+                                          labelText: LocaleKeys.passwordTx.tr(),
+                                          validator: (v) =>
+                                              Validator.validatorPassword(v!),
+                                          obscureText: true,
                                         ),
-                                      ),
+                                        Device.hSpace(WidgetSize.hSpace),
+//id or search interest TextField=============================================================
+                                        isSuperviser[0]
+                                            ? DropList(
+                                                listItem:
+                                                    context.locale.toString() ==
+                                                            'en'
+                                                        ? Constants.searchEn
+                                                        : Constants.searchAr,
+                                                validator: (v) =>
+                                                    Validator.validatorEmpty(
+                                                        v!),
+                                                onChanged: (selectedItem) {
+                                                  setState(() {
+                                                    selectedSearch =
+                                                        selectedItem;
+                                                  });
+                                                },
+                                                hintText: LocaleKeys
+                                                    .selectSearchInterest
+                                                    .tr(),
+                                                dropValue: selectedSearch,
+                                              )
+                                            : AppTextFields(
+                                                controller: idController,
+                                                labelText: LocaleKeys.idTx.tr(),
+                                                validator: (v) =>
+                                                    Validator.validatorID(v!),
+                                              ),
+                                        Device.hSpace(WidgetSize.hSpace),
+//major dropList=============================================================
+                                        DropList(
+                                          listItem:
+                                              context.locale.toString() == 'en'
+                                                  ? Constants.majorEn
+                                                  : Constants.majorEn,
+                                          validator: (v) =>
+                                              Validator.validatorEmpty(v!),
+                                          onChanged: (selectedItem) {
+                                            setState(() {
+                                              selectedMajor = selectedItem;
+                                            });
+                                          },
+                                          hintText: LocaleKeys.selectMajor.tr(),
+                                          dropValue: selectedMajor,
+                                        ),
+                                        Device.hSpace(WidgetSize.hSpace),
+//phone TextField=============================================================
+                                        AppTextFields(
+                                          controller: phoneController,
+                                          labelText: LocaleKeys.phoneTx.tr(),
+                                          validator: (v) =>
+                                              Validator.validatorPhone(v!),
+                                        ),
+//create Account button=============================================================
+                                        Device.hSpace(10),
+                                        AppButtons(
+                                          onPressed: () {},
+                                          text: LocaleKeys.createAccount.tr(),
+                                        )
+                                      ],
                                     ),
-                                  ))),
+                                  ),
+                                ),
+                              ))),
                         ),
                       ),
                     ),
@@ -232,8 +242,8 @@ class _SingUpState extends State<SingUp> {
                                   AppText(
                                     fontSize: WidgetSize.subTextSize,
                                     text: (isSuperviser[0]
-                                        ? LocaleKeys.isStudent.tr()
-                                        : LocaleKeys.isTeacher.tr()) +
+                                            ? LocaleKeys.isStudent.tr()
+                                            : LocaleKeys.isTeacher.tr()) +
                                         (context.locale.toString() == 'en'
                                             ? '?'
                                             : '؟'),

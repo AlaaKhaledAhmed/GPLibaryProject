@@ -8,12 +8,16 @@ import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppTextFields.dart';
 import 'package:library_project/Widget/ImagePath.dart';
 import 'package:library_project/Model/WidgetSize.dart';
+import '../../Database/Database.dart';
 import '../../Model/Routs.dart';
 import '../../Model/Validator.dart';
 import '../../Model/translations/locale_keys.g.dart';
 import '../../Widget/Colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../Widget/Loading.dart';
+import '../Student/NavStudent.dart';
+import '../Superviser/NavSuperviser.dart';
 import 'SingUp.dart';
 
 class Login extends StatefulWidget {
@@ -58,16 +62,15 @@ class _LoginState extends State<Login> {
                         right: Device.getHeight(context) * 0.02,
                         child: AppText(
                           fontSize: WidgetSize.titleTextSize,
-                          text:  LocaleKeys.loginTx.tr(),
+                          text: LocaleKeys.loginTx.tr(),
                           color: AppColor.white,
                           fontWeight: FontWeight.bold,
                         )),
 
 //Glass container=============================================================
                     Positioned(
-                       top: Device.getHeight(context) * 0.46,
-                      bottom: Device.getHeight(context) * 0.25,
-                     
+                      top: Device.getHeight(context) * 0.46,
+                      bottom: Device.getHeight(context) * 0.24,
                       left: Device.getHeight(context) * 0.02,
                       right: Device.getHeight(context) * 0.02,
                       child: ClipRRect(
@@ -147,11 +150,71 @@ class _LoginState extends State<Login> {
                                         Device.hSpace(10),
                                         AppButtons(
                                           onPressed: () {
-                                            FirebaseFirestore.instance.collection('tesste').add({
-                                              'name':'rahaffffffffff'
-                                            });
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            if (loggingKey.currentState
+                                                    ?.validate() ==
+                                                true) {
+                                              Loading.show(context, '', 'lode');
+                                              Firbase.loggingToApp(
+                                                      email:
+                                                          emailController.text,
+                                                      password:
+                                                          passwordController
+                                                              .text)
+                                                  .then((String v) {
+                                                if (v == 'error') {
+                                                  Navigator.pop(context);
+                                                  Loading.show(
+                                                      context,
+                                                      LocaleKeys.login.tr(),
+                                                      LocaleKeys.error.tr());
+                                                } else if (v ==
+                                                    'user-not-found') {
+                                                  Navigator.pop(context);
+                                                  Loading.show(
+                                                      context,
+                                                      LocaleKeys.login.tr(),
+                                                      LocaleKeys.userNotFound
+                                                          .tr());
+                                                } else if (v ==
+                                                    'wrong-password') {
+                                                  Navigator.pop(context);
+                                                  Loading.show(
+                                                      context,
+                                                      LocaleKeys.login.tr(),
+                                                      LocaleKeys.userNotFound
+                                                          .tr());
+                                                } else {
+                                                  print('respoms is: $v');
+                                                  FirebaseFirestore.instance
+                                                      .collection('users')
+                                                      .where('userId',
+                                                          isEqualTo: v)
+                                                      .get()
+                                                      .then((value) {
+                                                    Navigator.pop(context);
+                                                    value.docs
+                                                        .forEach((element) {
+                                                      print('respoms is: $v');
+                                                      if (element
+                                                              .data()['type'] ==
+                                                          'student') {
+                                                        Routes.pushReplacementTo(
+                                                            context,
+                                                            const NavStudent());
+                                                      } else {
+                                                        Routes.pushReplacementTo(
+                                                            context,
+                                                            const NavSuperviser());
+                                                      }
+                                                    });
+                                                  });
+                                                }
+                                              });
+                                            }
                                           },
-                                          text: 'Logging',
+                                          text: LocaleKeys.login.tr(),
                                         )
                                       ],
                                     ),
@@ -200,7 +263,6 @@ class _LoginState extends State<Login> {
                             ]),
                       ),
                     )
-                  
                   ],
                 )));
       }),

@@ -36,5 +36,10 @@ abstract class  LocaleKeys {
   static const add = 'add';
   static const home = 'home';
   static const completed = 'completed';
+  static const login = 'login';
+  static const selectMajor = 'selectMajor';
+  static const selectSearchInterest = 'select search interest';
+  static const no = 'no';
+  static const yes = 'yes';
 
 }

@@ -11,7 +11,7 @@
   "phoneTx":"رقم الجوال",
   "majorTx":"تخصص الطالب",
   "searchInterestTx":"الاهتمامات",
-  "isTeacher":"هل انت دكتور",
+  "isTeacher":"هل انت مشرف",
   "isStudent":"هل انت طالب",
   "createAccount":"إنشاء حساب",
   "goTo":"الذهاب الى",
@@ -33,5 +33,11 @@
   "noData": "لا توجد بيانات لعرضها حاليا",
   "add": "إضافة",
   "home": "الرئسية",
-  "completed": "اكتملت العملية بنجاح"
+  "completed": "اكتملت العملية بنجاح",
+  "login": "تسجيل الدخول",
+  "selectMajor":"اختر التخصص",
+  "selectSearchInterest":"اختر مجال البحث",
+  "no":"No",
+  "yes":"Yes"
+
 }

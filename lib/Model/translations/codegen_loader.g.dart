@@ -27,7 +27,7 @@ class CodegenLoader extends AssetLoader{
   "phoneTx": "رقم الجوال",
   "majorTx": "تخصص الطالب",
   "searchInterestTx": "الاهتمامات",
-  "isTeacher": "هل انت دكتور",
+  "isTeacher": "هل انت مشرف",
   "isStudent": "هل انت طالب",
   "createAccount": "إنشاء حساب",
   "goTo": "الذهاب الى",
@@ -49,11 +49,16 @@ class CodegenLoader extends AssetLoader{
   "noData": "لا توجد بيانات لعرضها حاليا",
   "add": "إضافة",
   "home": "الرئسية",
-  "completed": "اكتملت العملية بنجاح"
+  "completed": "اكتملت العملية بنجاح",
+  "login": "تسجيل الدخول",
+  "selectMajor": "اختر التخصص",
+  "select search interest": "اختر مجال البحث",
+  "no": "No",
+  "yes": "Yes"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
-  "singUpTeacherTx": "Superviser Sing Up",
+  "singUpTeacherTx": "Supervisor Sing Up",
   "loginTx": "Logging Page",
   "noHaveAccountTx": "It seems that you do not have an account. Let us create a new account for you now",
   "mandatoryTx": "Mandatory field",
@@ -64,7 +69,7 @@ static const Map<String,dynamic> en = {
   "phoneTx": "Phone Number",
   "majorTx": "Student Major",
   "searchInterestTx": "Search Interest",
-  "isTeacher": "Are you a teacher",
+  "isTeacher": "Are you a supervisor",
   "isStudent": "Are you a student",
   "createAccount": "Create an account",
   "goTo": "Go to",
@@ -86,7 +91,12 @@ static const Map<String,dynamic> en = {
   "noData": "There is no data to display at this time",
   "add": "Add",
   "home": "Home",
-  "completed": "The operation completed successfully"
+  "completed": "The operation completed successfully",
+  "login": "Login",
+  "selectMajor": "Select Major",
+  "selectSearchInterest": "Select search interest",
+  "no": "لا",
+  "yes": "نعم"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

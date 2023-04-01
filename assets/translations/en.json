@@ -1,6 +1,6 @@
 {
   "singUpStudentTx":"Student Sing Up",
-  "singUpTeacherTx":"Superviser Sing Up",
+  "singUpTeacherTx":"Supervisor Sing Up",
   "loginTx":"Logging Page",
   "noHaveAccountTx": "It seems that you do not have an account. Let us create a new account for you now",
   "mandatoryTx":"Mandatory field",
@@ -11,7 +11,7 @@
   "phoneTx":"Phone Number",
   "majorTx":"Student Major",
   "searchInterestTx":"Search Interest",
-  "isTeacher":"Are you a teacher",
+  "isTeacher":"Are you a supervisor",
   "isStudent":"Are you a student",
   "createAccount":"Create an account",
   "goTo":"Go to",
@@ -33,5 +33,12 @@
   "noData": "There is no data to display at this time",
   "add": "Add",
   "home": "Home",
-  "completed": "The operation completed successfully"
+  "completed": "The operation completed successfully",
+  "login": "Login",
+  "selectMajor":"Select Major",
+  "selectSearchInterest":"Select search interest",
+  "no":"لا",
+  "yes":"نعم"
+
+
 }
