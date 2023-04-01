@@ -128,7 +128,7 @@ class _LoginState extends State<Login> {
                                           controller: emailController,
                                           labelText: LocaleKeys.emailTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v!),
+                                              Validator.validatorEmpty(v),
                                         ),
                                         Device.hSpace(WidgetSize.hSpace),
 //password TextField=============================================================
@@ -137,7 +137,7 @@ class _LoginState extends State<Login> {
                                           controller: passwordController,
                                           labelText: LocaleKeys.passwordTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v!),
+                                              Validator.validatorEmpty(v),
                                           obscureText: true,
                                         ),
 

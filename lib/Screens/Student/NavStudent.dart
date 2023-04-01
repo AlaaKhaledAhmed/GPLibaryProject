@@ -12,6 +12,6 @@ class NavStudent extends StatefulWidget {
 class _NavStudentState extends State<NavStudent> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold();
   }
 }

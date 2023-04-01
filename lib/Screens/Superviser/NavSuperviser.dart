@@ -10,6 +10,6 @@ class NavSuperviser extends StatefulWidget {
 class _NavSuperviserState extends State<NavSuperviser> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold();
   }
 }

@@ -133,7 +133,7 @@ class _SingUpState extends State<SingUp> {
                                           controller: nameController,
                                           labelText: LocaleKeys.name.tr(),
                                           validator: (v) =>
-                                              Validator.validatorName(v!),
+                                              Validator.validatorName(v),
                                         ),
                                         Device.hSpace(WidgetSize.hSpace),
 //email TextField=============================================================
@@ -143,7 +143,7 @@ class _SingUpState extends State<SingUp> {
                                           labelText: LocaleKeys.emailTx.tr(),
                                           validator: (v) =>
                                               Validator.validatorEmail(
-                                                  v!,
+                                                  v,
                                                   isSuperviser[0]
                                                       ? Constants.typeIsTeacher
                                                       : Constants
@@ -156,7 +156,7 @@ class _SingUpState extends State<SingUp> {
                                           controller: passwordController,
                                           labelText: LocaleKeys.passwordTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorPassword(v!),
+                                              Validator.validatorPassword(v),
                                           obscureText: true,
                                         ),
                                         Device.hSpace(WidgetSize.hSpace),
@@ -168,9 +168,15 @@ class _SingUpState extends State<SingUp> {
                                                             'en'
                                                         ? Constants.searchEn
                                                         : Constants.searchAr,
-                                                validator: (v) =>
-                                                    Validator.validatorEmpty(
-                                                        v!),
+                                                validator: (v) {
+                                                  if (v == null) {
+                                                    return LocaleKeys
+                                                        .mandatoryTx
+                                                        .tr();
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                },
                                                 onChanged: (selectedItem) {
                                                   setState(() {
                                                     selectedSearch =
@@ -186,7 +192,7 @@ class _SingUpState extends State<SingUp> {
                                                 controller: idController,
                                                 labelText: LocaleKeys.idTx.tr(),
                                                 validator: (v) =>
-                                                    Validator.validatorID(v!),
+                                                    Validator.validatorID(v),
                                               ),
                                         Device.hSpace(WidgetSize.hSpace),
 //major dropList=============================================================
@@ -195,8 +201,14 @@ class _SingUpState extends State<SingUp> {
                                               context.locale.toString() == 'en'
                                                   ? Constants.majorEn
                                                   : Constants.majorEn,
-                                          validator: (v) =>
-                                              Validator.validatorEmpty(v!),
+                                          validator: (v) {
+                                            if (v == null) {
+                                              return LocaleKeys.mandatoryTx
+                                                  .tr();
+                                            } else {
+                                              return null;
+                                            }
+                                          },
                                           onChanged: (selectedItem) {
                                             setState(() {
                                               selectedMajor = selectedItem;
@@ -211,7 +223,7 @@ class _SingUpState extends State<SingUp> {
                                           controller: phoneController,
                                           labelText: LocaleKeys.phoneTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorPhone(v!),
+                                              Validator.validatorPhone(v),
                                         ),
 //create Account button=============================================================
                                         Device.hSpace(10),
@@ -295,7 +307,6 @@ class _SingUpState extends State<SingUp> {
                                                           '================$v');
                                                       if (v == 'done') {
                                                         Navigator.pop(context);
-                                                        Navigator.pop(context);
                                                         Loading.show(
                                                             context,
                                                             LocaleKeys.singUp
@@ -378,6 +389,8 @@ class _SingUpState extends State<SingUp> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                       onTap: () {
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
                                         print('object');
                                         setState(() {
                                           isSuperviser[0] = !isSuperviser[0];
