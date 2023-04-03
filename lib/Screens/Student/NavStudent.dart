@@ -34,8 +34,7 @@ class _NavStudentState extends State<NavStudent> {
         bottomBarItems: [
           BottomBarItemsModel(
             iconSelected: SvgPicture.asset(
-              //thinks 24%
-              // boy head color : #c98a1d
+
               'assets/Svg/team_c.svg',
               height: 30,
               width: 30,

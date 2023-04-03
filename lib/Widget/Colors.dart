@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
+  //thinks 24%
+  // boy head color : #c98a1d
+  // #eed48c
+  // #eee4af
+  // #835b2a
   static Color black = Colors.black;
   static Color white = Colors.white;
   static Color labelTextFieldsColor = Colors.grey.shade800;
