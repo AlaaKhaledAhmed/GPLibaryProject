@@ -60,6 +60,8 @@ dev_dependencies:
   url_launcher: ^6.0.20
   http:
   shared_preferences: ^2.0.13
+  animated_notch_bottom_bar: ^0.0.6
+  floating_bottom_bar: ^0.0.1
     #امر توليد ملفات الترجمة
     # 1- flutter pub run easy_localization:generate -S "assets/translations" -O "lib/Model/translations"
     #2- flutter pub run easy_localization:generate -S "assets/translations" -O "lib/Model/translations" -o "locale_keys.g.dart" -f keys
