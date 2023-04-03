@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AppIcons{
-  static IconData homeIcon=Icons.home;
-  static IconData settingsIcon =Icons.settings;
-  static IconData searchIcon =Icons.search;
+class AppIcons {
+  static String temIconNoColor = 'assets/Svg/team_nc.svg';
+  static String temIconColor = 'assets/Svg/team_c.svg';
 
-  static IconData temIcon =Icons.settings;
-  static IconData myProjectIcon =Icons.settings;
-  static IconData supervisorIcon =Icons.settings;
-  static IconData logoutIcon =Icons.settings;
-  static IconData languageIcon =Icons.settings;
+  static String myProjectIconNoColor = 'assets/Svg/myProject_nc.svg';
+  static String myProjectIconColor = 'assets/Svg/myProject_c.svg';
+
+  static String supervisorIconNoColor = 'assets/Svg/supervisor_nc.svg';
+  static String supervisorIconColor = 'assets/Svg/supervisor_c.svg';
+
+  static String logoutIcon = 'assets/Svg/logout.svg';
+  static String languageIcon = 'assets/Svg/language.svg';
 }
