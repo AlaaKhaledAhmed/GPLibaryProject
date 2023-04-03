@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:library_project/Model/Device.dart';
+import 'package:library_project/Widget/AppSvg.dart';
+
+import 'MyProject/MyProjectMain.dart';
+import 'MyTeam/MyTeamMain.dart';
+import 'StudentHome/StudentHome.dart';
+import 'Supervisor/StudentSupervisor.dart';
 
 class NavStudent extends StatefulWidget {
   const NavStudent({Key? key}) : super(key: key);
@@ -11,9 +18,14 @@ class NavStudent extends StatefulWidget {
 }
 
 class _NavStudentState extends State<NavStudent> {
-  int selectedIndex = 1;
+  int selectedIndex = 0;
   PageController? pageController;
-  List<Widget> page = [P1(), P2(), P3(), P4()];
+  List<Widget> page = const [
+    StudentHome(),
+    MyProjectMain(),
+    StudentSupervisor(),
+    MyTeamMain()
+  ];
   @override
   void initState() {
     super.initState();
@@ -32,74 +44,62 @@ class _NavStudentState extends State<NavStudent> {
       ),
       bottomNavigationBar: AnimatedBottomNavigationBar(
         bottomBarItems: [
-          BottomBarItemsModel(
-            iconSelected: SvgPicture.asset(
+//home================================================================
+          Device.bottomBarItems(
+              coloerSvg: AppSvg.homeColor,
+              noColoerSvg: AppSvg.homeNoColor,
+              title: 'home',
+              onTap: () => onTabTapped(0)),
+//project================================================================
+          Device.bottomBarItems(
+              coloerSvg: AppSvg.myProjectColor,
+              noColoerSvg: AppSvg.myProjectNoColor,
+              title: 'My Project',
+              onTap: () => onTabTapped(1)),
+//Supervisor================================================================
+          Device.bottomBarItems(
+              coloerSvg: AppSvg.supervisorColor,
+              noColoerSvg: AppSvg.supervisorNoColor,
+              title: 'Supervisor',
+              onTap: () => onTabTapped(2)),
 
-              'assets/Svg/team_c.svg',
-              height: 30,
-              width: 30,
-            ),
-            icon: SvgPicture.asset(
-              'assets/Svg/team_nc.svg',
-              height: 30,
-              width: 30,
-            ),
-            title: 'home',
-            dotColor: AppColors.cherryRed,
-            onTap: () => onTabTapped(0),
-          ),
-          BottomBarItemsModel(
-            icon: const Icon(Icons.search, size: 25),
-            iconSelected:
-                const Icon(Icons.search, color: AppColors.cherryRed, size: 25),
-            title: 'search',
-            dotColor: AppColors.cherryRed,
-            onTap: () => onTabTapped(1),
-          ),
-          BottomBarItemsModel(
-            icon: const Icon(Icons.person, size: 25),
-            iconSelected:
-                const Icon(Icons.person, color: AppColors.cherryRed, size: 25),
-            title: 'person',
-            dotColor: AppColors.cherryRed,
-            onTap: () => onTabTapped(2),
-          ),
-          BottomBarItemsModel(
-            iconSelected: SvgPicture.asset(
-              //thinks 24%
-              // boy head color : #c98a1d
-              'assets/Svg/supervisor_c.svg',
-              height: 30,
-              width: 30,
-            ),
-            icon: SvgPicture.asset(
-              'assets/Svg/supervisor_nc.svg',
-              height: 30,
-              width: 30,
-            ),
-            title: 'Supervisor',
-            dotColor: AppColors.cherryRed,
-            onTap: () => onTabTapped(0),
-          ),
+//team================================================================
+          Device.bottomBarItems(
+              coloerSvg: AppSvg.temColor,
+              noColoerSvg: AppSvg.temNoColor,
+              title: 'Team',
+              onTap: () => onTabTapped(3)),
         ],
-        bottomBarCenterModel: const BottomBarCenterModel(
+//================================================================
+
+        bottomBarCenterModel: BottomBarCenterModel(
           centerBackgroundColor: AppColors.cherryRed,
-          centerIcon: FloatingCenterButton(
+          centerIcon: const FloatingCenterButton(
             child: Icon(
-              Icons.add,
+              Icons.settings,
               color: AppColors.white,
             ),
           ),
           centerIconChild: [
-            FloatingCenterButtonChild(
+//language================================================================
+            const FloatingCenterButtonChild(
               child: Icon(
-                Icons.home,
+                Icons.language,
                 color: AppColors.white,
               ),
             ),
+//logout================================================================
             FloatingCenterButtonChild(
+              child: const Icon(
+                Icons.logout_rounded,
+                color: AppColors.white,
+              ),
+              onTap: () => onTabTapped(1),
+            ),
+//close================================================================
+            const FloatingCenterButtonChild(
               child: Icon(
-                Icons.home,
+                Icons.close,
                 color: AppColors.white,
               ),
             ),
@@ -109,61 +109,11 @@ class _NavStudentState extends State<NavStudent> {
     );
   }
 
-  // void onTabTapped(int index) {
-  //   setState(() {
-  //     selectedIndex = index;
-  //   });
-  //   pageController?.animateToPage(selectedIndex,
-  //       duration: const Duration(milliseconds: 400),
-  //       curve: Curves.fastLinearToSlowEaseIn);
-  // }
   void onTabTapped(int index) {
     pageController?.animateToPage(index,
         duration: const Duration(milliseconds: 400),
         curve: Curves.fastLinearToSlowEaseIn);
+    setState(() {});
   }
 }
 
-class P1 extends StatelessWidget {
-  const P1({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-    );
-  }
-}
-
-class P2 extends StatelessWidget {
-  const P2({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.green,
-    );
-  }
-}
-
-class P3 extends StatelessWidget {
-  const P3({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.brown,
-    );
-  }
-}
-
-class P4 extends StatelessWidget {
-  const P4({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-    );
-  }
-}

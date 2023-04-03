@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
             fontFamily: context.locale.toString() == 'en'
                 ? GoogleFonts.quicksand().fontFamily
                 : GoogleFonts.notoKufiArabic().fontFamily, //"DroidKufi",
-            scaffoldBackgroundColor: AppColor.white,
+            scaffoldBackgroundColor: AppColor.white70,
           ),
           builder: (context, widget) {
             return MediaQuery(

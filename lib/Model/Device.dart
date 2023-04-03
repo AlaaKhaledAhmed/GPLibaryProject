@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 class Device {
   final BuildContext context;
 
@@ -8,19 +10,44 @@ class Device {
   static double getHeight(context) {
     return MediaQuery.of(context).size.height;
   }
+
   //==========================================================
   static double getWidth(context) {
     return MediaQuery.of(context).size.width;
   }
+
   //==========================================================
   static Widget hSpace(double space) {
     return SizedBox(height: space);
   }
+
   //==========================================================
   static Widget wSpace(space) {
-    return SizedBox(width: space.w,);
+    return SizedBox(
+      width: space.w,
+    );
   }
+
   //==========================================================
-
-
+  static BottomBarItemsModel bottomBarItems(
+      {required String coloerSvg,
+      required String noColoerSvg,
+      required String title,
+      required onTap}) {
+    return BottomBarItemsModel(
+      iconSelected: SvgPicture.asset(
+        coloerSvg,
+        height: 30,
+        width: 30,
+      ),
+      icon: SvgPicture.asset(
+        noColoerSvg,
+        height: 30,
+        width: 30,
+      ),
+      title: title,
+      dotColor: AppColors.cherryRed,
+      onTap: onTap,
+    );
+  }
 }
