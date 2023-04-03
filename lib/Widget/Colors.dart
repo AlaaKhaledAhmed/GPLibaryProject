@@ -16,5 +16,6 @@ class AppColor {
   static Color errorColor = Colors.red;
   static Color textFieldBorderColor = Colors.brown.shade200;
   static Color buttonsColor = Colors.brown.shade600;
+  static Color iconColor = Colors.grey.shade600;
   static Color buttonsTextColor =white;
 }
