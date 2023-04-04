@@ -36,7 +36,7 @@ class AppTextFields extends StatelessWidget {
       controller: controller,
       style: TextStyle(color: AppColor.mainTextFieldsColor, fontSize: WidgetSize.textFieldsFontSize),
       decoration: InputDecoration(
-          isDense: true,
+          isDense: false,
           filled: true,
           hintStyle: TextStyle(color: AppColor.labelTextFieldsColor, fontSize: WidgetSize.textFieldsHintSize),
           fillColor: AppColor.white,

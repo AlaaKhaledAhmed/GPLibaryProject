@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
+import 'Screens/Accounts/Login.dart';
+
 //token: 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
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +51,8 @@ class _MyAppState extends State<MyApp> {
             //visualDensity: VisualDensity.adaptivePlatformDensity,
             fontFamily: context.locale.toString() == 'en'
                 ? GoogleFonts.quicksand().fontFamily
-                : GoogleFonts.notoKufiArabic().fontFamily, //"DroidKufi",
+                : GoogleFonts.almarai().fontFamily,
+            //"DroidKufi",
             scaffoldBackgroundColor: AppColor.white70,
           ),
           builder: (context, widget) {
@@ -58,7 +61,7 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          home: const NavStudent(),
+          home: const Login(),
         );
       },
     );

@@ -7,7 +7,7 @@ import 'package:library_project/Widget/Loading.dart';
 import '../../Database/Database.dart';
 import '../../Model/Constants.dart';
 import '../../Model/Device.dart';
-import '../../Model/Routs.dart';
+import '../../Model/Routes.dart';
 import '../../Model/Validator.dart';
 import '../../Model/WidgetSize.dart';
 import '../../Model/translations/locale_keys.g.dart';
@@ -17,7 +17,7 @@ import '../../Widget/AppTextFields.dart';
 import '../../Widget/Colors.dart';
 import '../../Widget/DropList.dart';
 import '../../Widget/ImagePath.dart';
-import 'Logging.dart';
+import 'Login.dart';
 
 class SingUp extends StatefulWidget {
   const SingUp({Key? key}) : super(key: key);

@@ -9,7 +9,7 @@ import 'package:library_project/Widget/AppTextFields.dart';
 import 'package:library_project/Widget/ImagePath.dart';
 import 'package:library_project/Model/WidgetSize.dart';
 import '../../Database/Database.dart';
-import '../../Model/Routs.dart';
+import '../../Model/Routes.dart';
 import '../../Model/Validator.dart';
 import '../../Model/translations/locale_keys.g.dart';
 import '../../Widget/Colors.dart';
