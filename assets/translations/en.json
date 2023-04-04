@@ -40,7 +40,10 @@
   "no":"No",
   "yes":"Yes",
   "singUp":"Sing Up",
-  "done":"operation accomplished successfully"
+  "done":"operation accomplished successfully",
+  "myProject":"My project",
+  "myTeam":"Team",
+  "mySuperVisor":"Supervisor"
 
 
 }

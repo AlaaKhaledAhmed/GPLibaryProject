@@ -43,5 +43,8 @@ abstract class  LocaleKeys {
   static const yes = 'yes';
   static const singUp = 'singUp';
   static const done = 'done';
+  static const myProject = 'myProject';
+  static const myTeam = 'myTeam';
+  static const mySuperVisor = 'mySuperVisor';
 
 }

@@ -62,6 +62,8 @@ dev_dependencies:
   shared_preferences: ^2.0.13
   animated_notch_bottom_bar: ^0.0.6
   floating_bottom_bar: ^0.0.1
+  provider: ^6.0.5
+  flutter_phoenix:
 
     #امر توليد ملفات الترجمة
     # 1- flutter pub run easy_localization:generate -S "assets/translations" -O "lib/Model/translations"

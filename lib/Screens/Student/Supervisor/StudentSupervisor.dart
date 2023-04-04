@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:library_project/Model/translations/locale_keys.g.dart';
 
 import '../../../Model/WidgetSize.dart';
 import '../../../Widget/AppText.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 class StudentSupervisor extends StatefulWidget {
   const StudentSupervisor();
 
@@ -15,7 +16,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: AppText(text: 'Supervisors', fontSize: WidgetSize.titleTextSize),
+        child: AppText(text: LocaleKeys.mySuperVisor.tr(), fontSize: WidgetSize.titleTextSize),
       ),
     );
   }

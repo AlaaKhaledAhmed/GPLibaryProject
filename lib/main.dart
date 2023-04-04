@@ -6,8 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/Model/translations/codegen_loader.g.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Screens/Accounts/Logging.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
+//token: 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
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,7 +22,9 @@ void main() async {
       ],
       fallbackLocale: const Locale('en'),
       assetLoader: const CodegenLoader(),
-      child: const MyApp()));
+      child:
+      //rebuild app
+      Phoenix(child: const MyApp())));
 }
 
 class MyApp extends StatefulWidget {
@@ -55,11 +58,9 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-
           home: const NavStudent(),
         );
       },
     );
-
   }
 }

@@ -56,7 +56,10 @@ class CodegenLoader extends AssetLoader{
   "no": "لا",
   "yes": "نعم",
   "singUp": "انشاء حساب",
-  "done": "تمت العملية بنجاح"
+  "done": "تمت العملية بنجاح",
+  "myProject": "مشروعي",
+  "myTeam": "فريقي",
+  "mySuperVisor": "المشرفين"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -100,7 +103,10 @@ static const Map<String,dynamic> en = {
   "no": "No",
   "yes": "Yes",
   "singUp": "Sing Up",
-  "done": "operation accomplished successfully"
+  "done": "operation accomplished successfully",
+  "myProject": "My project",
+  "myTeam": "Team",
+  "mySuperVisor": "Supervisor"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

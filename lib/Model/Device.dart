@@ -28,7 +28,7 @@ class Device {
     );
   }
 
-  //==========================================================
+//navigation icons==========================================================
   static BottomBarItemsModel bottomBarItems(
       {required String coloerSvg,
       required String noColoerSvg,
@@ -47,6 +47,19 @@ class Device {
       ),
       title: title,
       dotColor: AppColors.cherryRed,
+      onTap: onTap,
+    );
+  }
+
+//center navigation icons==========================================================
+  static FloatingCenterButtonChild centerIcon(
+      {required IconData icon,
+      required onTap}) {
+    return FloatingCenterButtonChild(
+      child: Icon(
+        icon,
+        color: AppColors.white,
+      ),
       onTap: onTap,
     );
   }
