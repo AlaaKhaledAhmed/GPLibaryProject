@@ -72,7 +72,7 @@ class SingUp extends StatelessWidget {
 
 //Glass container=============================================================
                       Positioned(
-                        bottom: AppWidget.getHeight(context) * 0.17,
+                        bottom: AppWidget.getHeight(context) * 0.14,
                         top: AppWidget.getHeight(context) * 0.18,
                         left: AppWidget.getHeight(context) * 0.02,
                         right: AppWidget.getHeight(context) * 0.02,
@@ -370,7 +370,7 @@ class SingUp extends StatelessWidget {
                       ),
 //Switch SingUp =============================================================
                       Positioned(
-                        bottom: AppWidget.getHeight(context) * 0.12,
+                        bottom: AppWidget.getHeight(context) * 0.09,
                         child: Container(
                           width: AppWidget.getWidth(context),
                           alignment: Alignment.center,
@@ -419,7 +419,7 @@ class SingUp extends StatelessWidget {
                       ),
 //Switch SingUp =============================================================
                       Positioned(
-                        bottom: AppWidget.getHeight(context) * 0.08,
+                        bottom: AppWidget.getHeight(context) * 0.06,
                         child: Container(
                           width: AppWidget.getWidth(context),
                           alignment: Alignment.center,
