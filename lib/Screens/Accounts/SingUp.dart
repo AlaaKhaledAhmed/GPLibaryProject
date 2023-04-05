@@ -2,21 +2,20 @@ import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:library_project/Widget/Loading.dart';
-
-import '../../Database/Database.dart';
-import '../../Model/Constants.dart';
-import '../../Model/Device.dart';
-import '../../Model/Routes.dart';
-import '../../Model/Validator.dart';
-import '../../Model/WidgetSize.dart';
+import 'package:library_project/Model/Database/Database.dart';
+import 'package:library_project/Widget/AppLoading.dart';
+import '../../Widget/AppConstants.dart';
+import '../../Widget/AppWidget.dart';
+import '../../Widget/AppRoutes.dart';
+import '../../Widget/AppValidator.dart';
+import '../../Widget/AppSize.dart';
 import '../../Model/translations/locale_keys.g.dart';
 import '../../Widget/AppButtons.dart';
 import '../../Widget/AppText.dart';
 import '../../Widget/AppTextFields.dart';
-import '../../Widget/Colors.dart';
-import '../../Widget/DropList.dart';
-import '../../Widget/ImagePath.dart';
+import '../../Widget/AppColors.dart';
+import '../../Widget/AppDropList.dart';
+import '../../Widget/AppImagePath.dart';
 import 'Login.dart';
 
 class SingUp extends StatefulWidget {
@@ -50,22 +49,22 @@ class _SingUpState extends State<SingUp> {
               return true;
             },
             child: Container(
-                height: Device.getHeight(context),
-                width: Device.getWidth(context),
+                height: AppWidget.getHeight(context),
+                width: AppWidget.getWidth(context),
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(ImagePath.backgroundImage2),
+                        image: AssetImage(AppImagePath.backgroundImage2),
                         fit: BoxFit.cover)),
                 child: Stack(
                   children: [
 //Screen name=============================================================
                     Positioned(
-                        top: Device.getHeight(context) * 0.22,
-                        bottom: Device.getHeight(context) * 0.12,
-                        left: Device.getHeight(context) * 0.04,
-                        right: Device.getHeight(context) * 0.02,
+                        top: AppWidget.getHeight(context) * 0.22,
+                        bottom: AppWidget.getHeight(context) * 0.12,
+                        left: AppWidget.getHeight(context) * 0.04,
+                        right: AppWidget.getHeight(context) * 0.02,
                         child: AppText(
-                          fontSize: WidgetSize.titleTextSize,
+                          fontSize: AppSize.titleTextSize,
                           text: isSuperviser[0]
                               ? LocaleKeys.singUpTeacherTx.tr()
                               : LocaleKeys.singUpStudentTx.tr(),
@@ -75,20 +74,20 @@ class _SingUpState extends State<SingUp> {
 
 //Glass container=============================================================
                     Positioned(
-                      bottom: Device.getHeight(context) * 0.15,
-                      top: Device.getHeight(context) * 0.27,
-                      left: Device.getHeight(context) * 0.02,
-                      right: Device.getHeight(context) * 0.02,
+                      bottom: AppWidget.getHeight(context) * 0.15,
+                      top: AppWidget.getHeight(context) * 0.27,
+                      left: AppWidget.getHeight(context) * 0.02,
+                      right: AppWidget.getHeight(context) * 0.02,
                       child: ClipRRect(
                         borderRadius:
-                            BorderRadius.circular(WidgetSize.containerRadius),
+                            BorderRadius.circular(AppSize.containerRadius),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                           child: AnimatedContainer(
                               padding: EdgeInsets.all(15.r),
                               duration: const Duration(microseconds: 200),
-                              height: Device.getHeight(context) * 0.4,
-                              width: Device.getWidth(context),
+                              height: AppWidget.getHeight(context) * 0.4,
+                              width: AppWidget.getWidth(context),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   boxShadow: [
@@ -103,9 +102,9 @@ class _SingUpState extends State<SingUp> {
                                       end: Alignment.bottomCenter),
                                   color: AppColor.white.withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(
-                                      WidgetSize.containerRadius),
+                                      AppSize.containerRadius),
                                   border: Border.all(
-                                      width: WidgetSize.textFieldsBorderWidth,
+                                      width: AppSize.textFieldsBorderWidth,
                                       color: AppColor.white30)),
                               child: SingleChildScrollView(
                                   child: ConstrainedBox(
@@ -120,54 +119,51 @@ class _SingUpState extends State<SingUp> {
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
 //no Have Account Tx=============================================================
-
+                                        AppWidget.hSpace(AppSize.hSpace),
                                         AppText(
-                                          fontSize: WidgetSize.subTextSize,
+                                          fontSize: AppSize.subTextSize,
                                           text: LocaleKeys.noHaveAccountTx.tr(),
                                           color: AppColor.white,
                                         ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                        AppWidget.hSpace(AppSize.hSpace+5),
 //name TextField=============================================================
 
                                         AppTextFields(
                                           controller: nameController,
                                           labelText: LocaleKeys.name.tr(),
                                           validator: (v) =>
-                                              Validator.validatorName(v),
+                                              AppValidator.validatorName(v),
                                         ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                        AppWidget.hSpace(AppSize.hSpace),
 //email TextField=============================================================
 
                                         AppTextFields(
                                           controller: emailController,
                                           labelText: LocaleKeys.emailTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmail(
+                                              AppValidator.validatorEmail(
                                                   v,
                                                   isSuperviser[0]
-                                                      ? Constants.typeIsTeacher
-                                                      : Constants
+                                                      ? AppConstants.typeIsTeacher
+                                                      : AppConstants
                                                           .typeIsStudent),
                                         ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                        AppWidget.hSpace(AppSize.hSpace),
 //password TextField=============================================================
 
                                         AppTextFields(
                                           controller: passwordController,
                                           labelText: LocaleKeys.passwordTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorPassword(v),
+                                              AppValidator.validatorPassword(v),
                                           obscureText: true,
                                         ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                        AppWidget.hSpace(AppSize.hSpace),
 //id or search interest TextField=============================================================
                                         isSuperviser[0]
-                                            ? DropList(
+                                            ? AppDropList(
                                                 listItem:
-                                                    context.locale.toString() ==
-                                                            'en'
-                                                        ? Constants.searchEn
-                                                        : Constants.searchAr,
+                                                     AppConstants.searchList,
                                                 validator: (v) {
                                                   if (v == null) {
                                                     return LocaleKeys
@@ -192,15 +188,13 @@ class _SingUpState extends State<SingUp> {
                                                 controller: idController,
                                                 labelText: LocaleKeys.idTx.tr(),
                                                 validator: (v) =>
-                                                    Validator.validatorID(v),
+                                                    AppValidator.validatorID(v),
                                               ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                        AppWidget.hSpace(AppSize.hSpace),
 //major dropList=============================================================
-                                        DropList(
+                                        AppDropList(
                                           listItem:
-                                              context.locale.toString() == 'en'
-                                                  ? Constants.majorEn
-                                                  : Constants.majorEn,
+                                              AppConstants.majorList,
                                           validator: (v) {
                                             if (v == null) {
                                               return LocaleKeys.mandatoryTx
@@ -217,16 +211,16 @@ class _SingUpState extends State<SingUp> {
                                           hintText: LocaleKeys.selectMajor.tr(),
                                           dropValue: selectedMajor,
                                         ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                        AppWidget.hSpace(AppSize.hSpace),
 //phone TextField=============================================================
                                         AppTextFields(
                                           controller: phoneController,
                                           labelText: LocaleKeys.phoneTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorPhone(v),
+                                              AppValidator.validatorPhone(v),
                                         ),
 //create Account button=============================================================
-                                        Device.hSpace(10),
+                                        AppWidget.hSpace(10),
                                         AppButtons(
                                           text: LocaleKeys.createAccount.tr(),
                                           onPressed: () {
@@ -235,7 +229,7 @@ class _SingUpState extends State<SingUp> {
                                             if (singUpKey.currentState
                                                     ?.validate() ==
                                                 true) {
-                                              Loading.show(context, '', 'lode');
+                                              AppLoading.show(context, '', 'lode');
 
                                               isSuperviser[0] == false
                                                   ? Firbase.studentSingUpFu(
@@ -255,7 +249,7 @@ class _SingUpState extends State<SingUp> {
                                                       if (v == 'done') {
                                                         Navigator.pop(context);
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -264,7 +258,7 @@ class _SingUpState extends State<SingUp> {
                                                       } else if (v ==
                                                           'weak-password') {
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -273,7 +267,7 @@ class _SingUpState extends State<SingUp> {
                                                       } else if (v ==
                                                           'email-already-in-use') {
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -282,7 +276,7 @@ class _SingUpState extends State<SingUp> {
                                                                 .tr());
                                                       } else {
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -307,7 +301,7 @@ class _SingUpState extends State<SingUp> {
                                                           '================$v');
                                                       if (v == 'done') {
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -316,7 +310,7 @@ class _SingUpState extends State<SingUp> {
                                                       } else if (v ==
                                                           'weak-password') {
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -325,7 +319,7 @@ class _SingUpState extends State<SingUp> {
                                                       } else if (v ==
                                                           'email-already-in-use') {
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -334,7 +328,7 @@ class _SingUpState extends State<SingUp> {
                                                                 .tr());
                                                       } else {
                                                         Navigator.pop(context);
-                                                        Loading.show(
+                                                        AppLoading.show(
                                                             context,
                                                             LocaleKeys.singUp
                                                                 .tr(),
@@ -355,9 +349,9 @@ class _SingUpState extends State<SingUp> {
                     ),
 //Switch SingUp =============================================================
                     Positioned(
-                      bottom: Device.getHeight(context) * 0.09,
+                      bottom: AppWidget.getHeight(context) * 0.09,
                       child: Container(
-                        width: Device.getWidth(context),
+                        width: AppWidget.getWidth(context),
                         alignment: Alignment.center,
                         //color: AppColor.black,
                         child: Row(
@@ -368,7 +362,7 @@ class _SingUpState extends State<SingUp> {
                                 alignment: WrapAlignment.center,
                                 children: [
                                   AppText(
-                                    fontSize: WidgetSize.subTextSize,
+                                    fontSize: AppSize.subTextSize,
                                     text: (isSuperviser[0]
                                             ? LocaleKeys.isStudent.tr()
                                             : LocaleKeys.isTeacher.tr()) +
@@ -383,7 +377,7 @@ class _SingUpState extends State<SingUp> {
                                   ),
                                   InkWell(
                                       child: AppText(
-                                        fontSize: WidgetSize.subTextSize,
+                                        fontSize: AppSize.subTextSize,
                                         text: LocaleKeys.createAccount.tr(),
                                         color: AppColor.textFieldBorderColor,
                                         fontWeight: FontWeight.bold,
@@ -404,9 +398,9 @@ class _SingUpState extends State<SingUp> {
                     ),
 //Switch SingUp =============================================================
                     Positioned(
-                      bottom: Device.getHeight(context) * 0.04,
+                      bottom: AppWidget.getHeight(context) * 0.04,
                       child: Container(
-                        width: Device.getWidth(context),
+                        width: AppWidget.getWidth(context),
                         alignment: Alignment.center,
                         //color: AppColor.black,
                         child: Row(
@@ -417,7 +411,7 @@ class _SingUpState extends State<SingUp> {
                                 alignment: WrapAlignment.center,
                                 children: [
                                   AppText(
-                                    fontSize: WidgetSize.subTextSize,
+                                    fontSize: AppSize.subTextSize,
                                     text: LocaleKeys.goTo.tr(),
                                     color: AppColor.white,
                                     fontWeight: FontWeight.bold,
@@ -427,13 +421,13 @@ class _SingUpState extends State<SingUp> {
                                   ),
                                   InkWell(
                                       child: AppText(
-                                        fontSize: WidgetSize.subTextSize,
+                                        fontSize: AppSize.subTextSize,
                                         text: LocaleKeys.loginTx.tr(),
                                         color: AppColor.textFieldBorderColor,
                                         fontWeight: FontWeight.bold,
                                       ),
                                       onTap: () {
-                                        Routes.pushReplacementTo(
+                                        AppRoutes.pushReplacementTo(
                                             context, const Login());
                                       }),
                                 ],

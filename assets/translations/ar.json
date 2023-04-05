@@ -43,6 +43,17 @@
   "done":"تمت العملية بنجاح",
   "myProject":"مشروعي",
   "myTeam":"فريقي",
-  "mySuperVisor":"المشرفين"
+  "mySuperVisor":"المشرفين",
+
+  "softwareEngineering":  "هندسة برمجيات",
+  "dataScience": "علم البيانات",
+  "informationSecurity":  "أمن المعلومات",
+  "informationTechnology": "تكنولوجيا المعلومات",
+  "networkEngineering":  "هندسة الشبكات",
+
+  "artificialIntelligence":  "الذكاء الاصطناعي",
+  "softwareDevelopment": "تطوير البرمجيات",
+  "dataManagement": "إدارة البيانات",
+  "webDevelopment": "تطوير مواقع الانترنت"
 
 }

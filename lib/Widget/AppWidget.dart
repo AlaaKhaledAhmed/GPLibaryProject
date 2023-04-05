@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Device {
+class AppWidget {
   final BuildContext context;
 
-  const Device({required this.context});
+  const AppWidget({required this.context});
   //==========================================================
   static double getHeight(context) {
     return MediaQuery.of(context).size.height;
@@ -53,8 +53,7 @@ class Device {
 
 //center navigation icons==========================================================
   static FloatingCenterButtonChild centerIcon(
-      {required IconData icon,
-      required onTap}) {
+      {required IconData icon, required onTap}) {
     return FloatingCenterButtonChild(
       child: Icon(
         icon,
@@ -62,5 +61,24 @@ class Device {
       ),
       onTap: onTap,
     );
+  }
+
+//scroll body===========================================================
+  static body({required Widget? child}) {
+    return LayoutBuilder(builder: ((context, constraints) {
+      return NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (OverscrollIndicatorNotification? overscroll) {
+            overscroll!.disallowGlow();
+            return true;
+          },
+          child: SingleChildScrollView(
+              child: ConstrainedBox(
+            constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(child: child),
+          )));
+      // AppText(text: LocaleKeys.myTeam.tr(), fontSize: WidgetSize.titleTextSize);
+    }));
   }
 }

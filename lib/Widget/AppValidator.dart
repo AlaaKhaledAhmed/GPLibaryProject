@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:library_project/Model/translations/locale_keys.g.dart';
 import 'package:email_validator/email_validator.dart';
 
-import 'Constants.dart';
+import 'AppConstants.dart';
 
-class Validator {
+class AppValidator {
 //valid empty data============================================================
   static String? validatorEmpty(v) {
     if (v.isEmpty || v==null) {
@@ -36,7 +36,7 @@ class Validator {
       return LocaleKeys.mandatoryTx.tr();
     }
 
-    if (type == Constants.typeIsStudent) {
+    if (type == AppConstants.typeIsStudent) {
       if ((email.endsWith('@taibahu.edu.sa') == false) ||
           ((email.startsWith('tu') == false)) ||
           match == false) {
@@ -44,7 +44,7 @@ class Validator {
       }
       return null;
     }
-    if (type == Constants.typeIsTeacher) {
+    if (type == AppConstants.typeIsTeacher) {
       if ((email.endsWith('@taibahu.edu.sa') == false) ||
           (email.startsWith('tu') == false)) {
         return LocaleKeys.invalidEmail.tr();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Routes {
+class AppRoutes {
 
 //pushTo========================================================================
   static void pushTo(BuildContext context, pageName) {

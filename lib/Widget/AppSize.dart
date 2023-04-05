@@ -1,5 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-class WidgetSize{
+class AppSize{
 
  static double textFieldsFontSize=15.sp;
  static double textFieldsBorderWidth=1.2.sp;
@@ -14,6 +14,8 @@ class WidgetSize{
  static double errorSize=22.sp;
  static double hSpace=11;
  static double wSpace=10;
+ static double bottomPageSize=110.sp;
+
 
 
 }

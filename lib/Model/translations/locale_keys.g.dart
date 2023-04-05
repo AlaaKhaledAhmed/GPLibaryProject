@@ -46,5 +46,14 @@ abstract class  LocaleKeys {
   static const myProject = 'myProject';
   static const myTeam = 'myTeam';
   static const mySuperVisor = 'mySuperVisor';
+  static const softwareEngineering = 'softwareEngineering';
+  static const dataScience = 'dataScience';
+  static const informationSecurity = 'informationSecurity';
+  static const informationTechnology = 'informationTechnology';
+  static const networkEngineering = 'networkEngineering';
+  static const artificialIntelligence = 'artificialIntelligence';
+  static const softwareDevelopment = 'softwareDevelopment';
+  static const dataManagement = 'dataManagement';
+  static const webDevelopment = 'webDevelopment';
 
 }

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:library_project/Model/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppText.dart';
-import 'package:library_project/Widget/Colors.dart';
-import 'package:library_project/Model/WidgetSize.dart';
+import 'package:library_project/Widget/AppColors.dart';
+import 'package:library_project/Widget/AppSize.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
-class Loading {
+class AppLoading {
   static show(context, String title, String content,
       {bool showButtom = false,
       void Function()? yesFunction,
@@ -40,7 +40,7 @@ class Loading {
                     height: 40.h,
                     child: Center(
                       child: AppText(
-                        fontSize: WidgetSize.buttonsFontSize,
+                        fontSize: AppSize.buttonsFontSize,
                         text: title,
                         color: AppColor.white,
                       ),
@@ -63,7 +63,7 @@ class Loading {
                           flex: 3,
                           child: Center(
                               child: AppText(
-                            fontSize: WidgetSize.subTextSize,
+                            fontSize: AppSize.subTextSize,
                             text: content,
                             color: AppColor.black,
                           )),

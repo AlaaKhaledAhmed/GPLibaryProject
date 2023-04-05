@@ -343,6 +343,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  foldable_sidebar:
+    dependency: "direct dev"
+    description:
+      name: foldable_sidebar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   google_fonts:
     dependency: "direct dev"
     description:

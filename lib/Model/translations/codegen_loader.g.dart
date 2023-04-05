@@ -59,7 +59,16 @@ class CodegenLoader extends AssetLoader{
   "done": "تمت العملية بنجاح",
   "myProject": "مشروعي",
   "myTeam": "فريقي",
-  "mySuperVisor": "المشرفين"
+  "mySuperVisor": "المشرفين",
+  "softwareEngineering": "هندسة برمجيات",
+  "dataScience": "علم البيانات",
+  "informationSecurity": "أمن المعلومات",
+  "informationTechnology": "تكنولوجيا المعلومات",
+  "networkEngineering": "هندسة الشبكات",
+  "artificialIntelligence": "الذكاء الاصطناعي",
+  "softwareDevelopment": "تطوير البرمجيات",
+  "dataManagement": "إدارة البيانات",
+  "webDevelopment": "تطوير مواقع الانترنت"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -106,7 +115,16 @@ static const Map<String,dynamic> en = {
   "done": "operation accomplished successfully",
   "myProject": "My project",
   "myTeam": "Team",
-  "mySuperVisor": "Supervisor"
+  "mySuperVisor": "Supervisor",
+  "softwareEngineering": "Software Engineering",
+  "dataScience": "Data Science",
+  "informationSecurity": "Information Security",
+  "informationTechnology": "Information Technology",
+  "networkEngineering": "Network Engineering",
+  "artificialIntelligence": "Artificial Intelligence",
+  "softwareDevelopment": "Software Development",
+  "dataManagement": "Data Management",
+  "webDevelopment": "Web Development"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

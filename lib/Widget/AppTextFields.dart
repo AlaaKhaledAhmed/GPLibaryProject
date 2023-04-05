@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:library_project/Widget/Colors.dart';
-
-import '../Model/WidgetSize.dart';
+import 'package:library_project/Widget/AppColors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'AppSize.dart';
 
 class AppTextFields extends StatelessWidget {
   final bool? obscureText;
@@ -26,45 +26,53 @@ class AppTextFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
-      obscureText: obscureText??false,
+      obscureText: obscureText ?? false,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       autofocus: false,
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       controller: controller,
-      style: TextStyle(color: AppColor.mainTextFieldsColor, fontSize: WidgetSize.textFieldsFontSize),
+      style: TextStyle(
+          color: AppColor.mainTextFieldsColor,
+          fontSize: AppSize.textFieldsFontSize),
       decoration: InputDecoration(
-          isDense: false,
+          isDense: true,
           filled: true,
-          hintStyle: TextStyle(color: AppColor.labelTextFieldsColor, fontSize: WidgetSize.textFieldsHintSize),
+          hintStyle: TextStyle(
+              color: AppColor.labelTextFieldsColor,
+              fontSize: AppSize.textFieldsHintSize),
           fillColor: AppColor.white,
-          labelStyle: TextStyle(color:  AppColor.labelTextFieldsColor, fontSize: WidgetSize.textFieldsFontSize),
+          labelStyle: TextStyle(
+              color: AppColor.labelTextFieldsColor,
+              fontSize: AppSize.textFieldsFontSize),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(WidgetSize.textFieldsBorderRadius),
-            borderSide:  BorderSide(
+            borderRadius:
+                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderSide: BorderSide(
               color: Colors.blue,
-              width:  WidgetSize.textFieldsBorderWidth,
+              width: AppSize.textFieldsBorderWidth,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(WidgetSize.textFieldsBorderRadius),
-            borderSide:  BorderSide(
+            borderRadius:
+                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderSide: BorderSide(
               color: AppColor.buttonsColor,
-              width: WidgetSize.textFieldsBorderWidth,
+              width: AppSize.textFieldsBorderWidth,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(WidgetSize.textFieldsBorderRadius),
-            borderSide:  BorderSide(
+            borderRadius:
+                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderSide: BorderSide(
               color: AppColor.textFieldBorderColor,
-              width:  WidgetSize.textFieldsBorderWidth,
+              width: AppSize.textFieldsBorderWidth,
             ),
           ),
           labelText: labelText,
           //errorStyle: TextStyle(color: AppColor.errorColor, fontSize: WidgetSize.errorSize),
-          contentPadding: EdgeInsets.all(WidgetSize.contentPadding)),
+          contentPadding: EdgeInsets.all(AppSize.contentPadding)),
     );
   }
 }

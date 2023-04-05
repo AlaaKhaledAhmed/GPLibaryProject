@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:library_project/Model/WidgetSize.dart';
+import 'package:library_project/Widget/AppSize.dart';
 import 'package:library_project/Widget/AppText.dart';
-import 'package:library_project/Widget/Colors.dart';
+import 'package:library_project/Widget/AppColors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 class AppButtons extends StatelessWidget {
@@ -27,7 +27,7 @@ class AppButtons extends StatelessWidget {
       width: width ?? double.infinity,
       child: ElevatedButton(
         child: AppText(
-          fontSize: WidgetSize.buttonsFontSize,
+          fontSize: AppSize.buttonsFontSize,
           text: text,
         ),
         style: ElevatedButton.styleFrom(
@@ -37,7 +37,7 @@ class AppButtons extends StatelessWidget {
                   ? GoogleFonts.quicksand().fontFamily
                   : GoogleFonts.almarai().fontFamily,
               color: textStyleColor ?? AppColor.buttonsTextColor,
-              fontSize: WidgetSize.buttonsFontSize,
+              fontSize: AppSize.buttonsFontSize,
               fontStyle: FontStyle.normal),
         ),
         onPressed: onPressed,

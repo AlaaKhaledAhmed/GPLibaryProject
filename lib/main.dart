@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_project/Screens/Student/NavStudent.dart';
-import 'package:library_project/Widget/Colors.dart';
+import 'package:library_project/Widget/AppColors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/Model/translations/codegen_loader.g.dart';
@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                 ? GoogleFonts.quicksand().fontFamily
                 : GoogleFonts.almarai().fontFamily,
             //"DroidKufi",
-            scaffoldBackgroundColor: AppColor.white70,
+            scaffoldBackgroundColor: AppColor.mainColor,
           ),
           builder: (context, widget) {
             return MediaQuery(
@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          home: const Login(),
+          home: const NavStudent(),
         );
       },
     );

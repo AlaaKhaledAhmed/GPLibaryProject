@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../Model/Routes.dart';
+import '../../Widget/AppRoutes.dart';
 import 'Login.dart';
 
 
@@ -22,7 +22,7 @@ class _FirstScreenState extends State<FirstScreen> {
     return Scaffold(
       body: InkWell(
          onTap: (){
-           Routes.pushTo(context, const Login());
+           AppRoutes.pushTo(context, const Login());
          },
         child: Container(
           decoration: const BoxDecoration(),

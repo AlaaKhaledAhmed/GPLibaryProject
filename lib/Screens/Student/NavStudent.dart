@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
-import 'package:library_project/Model/Device.dart';
+import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/Model/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppIcons.dart';
 import 'package:library_project/Widget/AppSvg.dart';
-import '../../Model/Routes.dart';
+import '../../Widget/AppRoutes.dart';
 import '../Accounts/Login.dart';
 import 'MyProject/MyProjectMain.dart';
 import 'MyTeam/MyTeamMain.dart';
@@ -48,26 +48,26 @@ class _NavStudentState extends State<NavStudent> {
       bottomNavigationBar: AnimatedBottomNavigationBar(
         bottomBarItems: [
 //home================================================================
-          Device.bottomBarItems(
+          AppWidget.bottomBarItems(
               coloerSvg: AppSvg.homeColor,
               noColoerSvg: AppSvg.homeNoColor,
               title: LocaleKeys.home.tr(),
               onTap: () => onTabTapped(0)),
 //project================================================================
-          Device.bottomBarItems(
+          AppWidget.bottomBarItems(
               coloerSvg: AppSvg.myProjectColor,
               noColoerSvg: AppSvg.myProjectNoColor,
               title: LocaleKeys.myProject.tr(),
               onTap: () => onTabTapped(1)),
 //Supervisor================================================================
-          Device.bottomBarItems(
+          AppWidget.bottomBarItems(
               coloerSvg: AppSvg.supervisorColor,
               noColoerSvg: AppSvg.supervisorNoColor,
               title: LocaleKeys.mySuperVisor.tr(),
               onTap: () => onTabTapped(2)),
 
 //team================================================================
-          Device.bottomBarItems(
+          AppWidget.bottomBarItems(
               coloerSvg: AppSvg.temColor,
               noColoerSvg: AppSvg.temNoColor,
               title: LocaleKeys.myTeam.tr(),
@@ -85,7 +85,7 @@ class _NavStudentState extends State<NavStudent> {
           ),
           centerIconChild: [
 //language================================================================
-            Device.centerIcon(
+            AppWidget.centerIcon(
                 icon: AppIcons.language,
                 onTap: () {
                   if (context.locale.toString() == 'en') {
@@ -98,12 +98,12 @@ class _NavStudentState extends State<NavStudent> {
                   }
                 }),
 //logout================================================================
-            Device.centerIcon(icon: AppIcons.logout, onTap: () {
+            AppWidget.centerIcon(icon: AppIcons.logout, onTap: () {
               FirebaseAuth.instance.signOut();
-              Routes.pushReplacementTo(context, const Login());
+              AppRoutes.pushReplacementTo(context, const Login());
             }),
 //close================================================================
-            Device.centerIcon(icon: AppIcons.close, onTap: () {}),
+            AppWidget.centerIcon(icon: AppIcons.close, onTap: () {}),
           ],
         ),
       ),

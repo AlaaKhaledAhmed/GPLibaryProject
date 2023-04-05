@@ -1,21 +1,21 @@
 import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
-import 'package:library_project/Model/Constants.dart';
-import 'package:library_project/Model/Device.dart';
+import 'package:library_project/Widget/AppConstants.dart';
+import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppTextFields.dart';
-import 'package:library_project/Widget/ImagePath.dart';
-import 'package:library_project/Model/WidgetSize.dart';
-import '../../Database/Database.dart';
-import '../../Model/Routes.dart';
-import '../../Model/Validator.dart';
+import 'package:library_project/Widget/AppImagePath.dart';
+import 'package:library_project/Widget/AppSize.dart';
+import '../../Model/Database/Database.dart';
+import '../../Widget/AppRoutes.dart';
+import '../../Widget/AppValidator.dart';
 import '../../Model/translations/locale_keys.g.dart';
-import '../../Widget/Colors.dart';
+import '../../Widget/AppColors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../Widget/Loading.dart';
+import '../../Widget/AppLoading.dart';
 import '../Student/NavStudent.dart';
 import '../Superviser/NavSuperviser.dart';
 import 'SingUp.dart';
@@ -46,22 +46,22 @@ class _LoginState extends State<Login> {
               return true;
             },
             child: Container(
-                height: Device.getHeight(context),
-                width: Device.getWidth(context),
+                height: AppWidget.getHeight(context),
+                width: AppWidget.getWidth(context),
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(ImagePath.backgroundImage2),
+                        image: AssetImage(AppImagePath.backgroundImage2),
                         fit: BoxFit.cover)),
                 child: Stack(
                   children: [
 //Screen name=============================================================
                     Positioned(
-                        bottom: Device.getHeight(context) * 0.22,
-                        top: Device.getHeight(context) * 0.40,
-                        left: Device.getHeight(context) * 0.04,
-                        right: Device.getHeight(context) * 0.02,
+                        bottom: AppWidget.getHeight(context) * 0.22,
+                        top: AppWidget.getHeight(context) * 0.40,
+                        left: AppWidget.getHeight(context) * 0.04,
+                        right: AppWidget.getHeight(context) * 0.02,
                         child: AppText(
-                          fontSize: WidgetSize.titleTextSize,
+                          fontSize: AppSize.titleTextSize,
                           text: LocaleKeys.loginTx.tr(),
                           color: AppColor.white,
                           fontWeight: FontWeight.bold,
@@ -69,20 +69,20 @@ class _LoginState extends State<Login> {
 
 //Glass container=============================================================
                     Positioned(
-                      top: Device.getHeight(context) * 0.46,
-                      bottom: Device.getHeight(context) * 0.24,
-                      left: Device.getHeight(context) * 0.02,
-                      right: Device.getHeight(context) * 0.02,
+                      top: AppWidget.getHeight(context) * 0.46,
+                      bottom: AppWidget.getHeight(context) * 0.24,
+                      left: AppWidget.getHeight(context) * 0.02,
+                      right: AppWidget.getHeight(context) * 0.02,
                       child: ClipRRect(
                         borderRadius:
-                            BorderRadius.circular(WidgetSize.containerRadius),
+                            BorderRadius.circular(AppSize.containerRadius),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                           child: AnimatedContainer(
                               padding: EdgeInsets.all(15.r),
                               duration: const Duration(microseconds: 200),
-                              height: Device.getHeight(context) * 0.4,
-                              width: Device.getWidth(context),
+                              height: AppWidget.getHeight(context) * 0.4,
+                              width: AppWidget.getWidth(context),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   boxShadow: [
@@ -97,9 +97,9 @@ class _LoginState extends State<Login> {
                                       end: Alignment.bottomCenter),
                                   color: AppColor.white.withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(
-                                      WidgetSize.containerRadius),
+                                      AppSize.containerRadius),
                                   border: Border.all(
-                                      width: WidgetSize.textFieldsBorderWidth,
+                                      width: AppSize.textFieldsBorderWidth,
                                       color: AppColor.white30)),
                               child: SingleChildScrollView(
                                   child: ConstrainedBox(
@@ -112,15 +112,9 @@ class _LoginState extends State<Login> {
                                     key: loggingKey,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
-                                      children: [
-//no Have Account Tx=============================================================
 
-                                        AppText(
-                                          fontSize: WidgetSize.subTextSize,
-                                          text: LocaleKeys.noHaveAccountTx.tr(),
-                                          color: AppColor.white,
-                                        ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                      children: [
+                                        AppWidget.hSpace(AppSize.hSpace + 15),
 
 //email TextField=============================================================
 
@@ -128,21 +122,21 @@ class _LoginState extends State<Login> {
                                           controller: emailController,
                                           labelText: LocaleKeys.emailTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v),
+                                              AppValidator.validatorEmpty(v),
                                         ),
-                                        Device.hSpace(WidgetSize.hSpace),
+                                        AppWidget.hSpace(AppSize.hSpace),
 //password TextField=============================================================
 
                                         AppTextFields(
                                           controller: passwordController,
                                           labelText: LocaleKeys.passwordTx.tr(),
                                           validator: (v) =>
-                                              Validator.validatorEmpty(v),
+                                              AppValidator.validatorEmpty(v),
                                           obscureText: true,
                                         ),
 
 //create Account button=============================================================
-                                        Device.hSpace(10),
+                                        AppWidget.hSpace(10),
                                         AppButtons(
                                           onPressed: () {
                                             FocusManager.instance.primaryFocus
@@ -150,7 +144,7 @@ class _LoginState extends State<Login> {
                                             if (loggingKey.currentState
                                                     ?.validate() ==
                                                 true) {
-                                              Loading.show(context, '', 'lode');
+                                              AppLoading.show(context, '', 'lode');
                                               Firbase.loggingToApp(
                                                       email:
                                                           emailController.text,
@@ -160,14 +154,14 @@ class _LoginState extends State<Login> {
                                                   .then((String v) {
                                                 if (v == 'error') {
                                                   Navigator.pop(context);
-                                                  Loading.show(
+                                                  AppLoading.show(
                                                       context,
                                                       LocaleKeys.login.tr(),
                                                       LocaleKeys.error.tr());
                                                 } else if (v ==
                                                     'user-not-found') {
                                                   Navigator.pop(context);
-                                                  Loading.show(
+                                                  AppLoading.show(
                                                       context,
                                                       LocaleKeys.login.tr(),
                                                       LocaleKeys.userNotFound
@@ -175,7 +169,7 @@ class _LoginState extends State<Login> {
                                                 } else if (v ==
                                                     'wrong-password') {
                                                   Navigator.pop(context);
-                                                  Loading.show(
+                                                  AppLoading.show(
                                                       context,
                                                       LocaleKeys.login.tr(),
                                                       LocaleKeys.userNotFound
@@ -195,11 +189,11 @@ class _LoginState extends State<Login> {
                                                       if (element
                                                               .data()['type'] ==
                                                           'student') {
-                                                        Routes.pushReplacementTo(
+                                                        AppRoutes.pushReplacementTo(
                                                             context,
                                                             const NavStudent());
                                                       } else {
-                                                        Routes.pushReplacementTo(
+                                                        AppRoutes.pushReplacementTo(
                                                             context,
                                                             const NavSuperviser());
                                                       }
@@ -221,9 +215,9 @@ class _LoginState extends State<Login> {
                     ),
 //Switch SingUp =============================================================
                     Positioned(
-                      bottom: Device.getHeight(context) * 0.04,
+                      bottom: AppWidget.getHeight(context) * 0.04,
                       child: Container(
-                        width: Device.getWidth(context),
+                        width: AppWidget.getWidth(context),
                         alignment: Alignment.center,
                         //color: AppColor.black,
                         child: Row(
@@ -234,7 +228,7 @@ class _LoginState extends State<Login> {
                                 alignment: WrapAlignment.center,
                                 children: [
                                   AppText(
-                                    fontSize: WidgetSize.subTextSize,
+                                    fontSize: AppSize.subTextSize,
                                     text: LocaleKeys.goTo.tr(),
                                     color: AppColor.white,
                                     fontWeight: FontWeight.bold,
@@ -244,13 +238,13 @@ class _LoginState extends State<Login> {
                                   ),
                                   InkWell(
                                       child: AppText(
-                                        fontSize: WidgetSize.subTextSize,
+                                        fontSize: AppSize.subTextSize,
                                         text: LocaleKeys.singUpStudentTx.tr(),
                                         color: AppColor.textFieldBorderColor,
                                         fontWeight: FontWeight.bold,
                                       ),
                                       onTap: () {
-                                        Routes.pushReplacementTo(
+                                        AppRoutes.pushReplacementTo(
                                             context, const SingUp());
                                       }),
                                 ],

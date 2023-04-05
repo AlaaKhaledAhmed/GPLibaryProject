@@ -12,10 +12,11 @@ class AppColor {
   static Color labelTextFieldsColor = Colors.grey.shade800;
   static Color mainTextFieldsColor = Colors.black;
   static Color white30 = Colors.white30;
-  static Color white70 = Colors.white70;
+  static Color mainColor = Colors.white70;
   static Color errorColor = Colors.red;
   static Color textFieldBorderColor = Colors.brown.shade200;
   static Color buttonsColor = Colors.brown.shade600;
   static Color iconColor = Colors.grey.shade600;
   static Color buttonsTextColor =white;
+  static const Color subColor = Color(0xFFFA2424);
 }

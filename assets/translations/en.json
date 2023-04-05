@@ -43,7 +43,16 @@
   "done":"operation accomplished successfully",
   "myProject":"My project",
   "myTeam":"Team",
-  "mySuperVisor":"Supervisor"
+  "mySuperVisor":"Supervisor",
 
+  "softwareEngineering": "Software Engineering",
+  "dataScience": "Data Science",
+  "informationSecurity": "Information Security",
+  "informationTechnology": "Information Technology",
+  "networkEngineering": "Network Engineering",
 
+  "artificialIntelligence": "Artificial Intelligence",
+  "softwareDevelopment": "Software Development",
+  "dataManagement": "Data Management",
+  "webDevelopment": "Web Development"
 }
