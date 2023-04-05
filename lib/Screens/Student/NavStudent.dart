@@ -13,6 +13,7 @@ import 'Supervisor/StudentSupervisor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class NavStudent extends StatefulWidget {
   const NavStudent({Key? key}) : super(key: key);
 
@@ -76,10 +77,9 @@ class _NavStudentState extends State<NavStudent> {
 //================================================================
         bottomBarCenterModel: BottomBarCenterModel(
           centerBackgroundColor: AppColors.cherryRed,
-          centerIcon:
-           FloatingCenterButton(
+          centerIcon: FloatingCenterButton(
             child: Icon(
-             AppIcons.settings,
+              AppIcons.settings,
               color: AppColors.white,
             ),
           ),
@@ -98,10 +98,12 @@ class _NavStudentState extends State<NavStudent> {
                   }
                 }),
 //logout================================================================
-            AppWidget.centerIcon(icon: AppIcons.logout, onTap: () {
-              FirebaseAuth.instance.signOut();
-              AppRoutes.pushReplacementTo(context, const Login());
-            }),
+            AppWidget.centerIcon(
+                icon: AppIcons.logout,
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                  AppRoutes.pushReplacementTo(context,  Login());
+                }),
 //close================================================================
             AppWidget.centerIcon(icon: AppIcons.close, onTap: () {}),
           ],
@@ -109,11 +111,13 @@ class _NavStudentState extends State<NavStudent> {
       ),
     );
   }
+
 //onTab icons==============================================================
   void onTabTapped(int index) {
-    pageController?.animateToPage(index,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.fastLinearToSlowEaseIn);
+    pageController?.jumpToPage(index);
+    // pageController?.animateToPage(index,
+    //     duration: const Duration(milliseconds: 400),
+    //     curve: Curves.decelerate);
     setState(() {});
   }
 }

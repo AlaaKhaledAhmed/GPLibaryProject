@@ -22,7 +22,7 @@ class _FirstScreenState extends State<FirstScreen> {
     return Scaffold(
       body: InkWell(
          onTap: (){
-           AppRoutes.pushTo(context, const Login());
+           AppRoutes.pushTo(context,  Login());
          },
         child: Container(
           decoration: const BoxDecoration(),

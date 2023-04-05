@@ -20,19 +20,14 @@ import '../Student/NavStudent.dart';
 import '../Superviser/NavSuperviser.dart';
 import 'SingUp.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
 
-  @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
+class Login extends StatelessWidget{
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> loggingKey = GlobalKey();
-  List<bool> isTeacher = [false];
-  String? selectedItem;
+
+  Login({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +65,7 @@ class _LoginState extends State<Login> {
 //Glass container=============================================================
                     Positioned(
                       top: AppWidget.getHeight(context) * 0.46,
-                      bottom: AppWidget.getHeight(context) * 0.24,
+                      bottom: AppWidget.getHeight(context) * 0.20,
                       left: AppWidget.getHeight(context) * 0.02,
                       right: AppWidget.getHeight(context) * 0.02,
                       child: ClipRRect(
@@ -114,7 +109,15 @@ class _LoginState extends State<Login> {
                                       mainAxisSize: MainAxisSize.max,
 
                                       children: [
-                                        AppWidget.hSpace(AppSize.hSpace + 15),
+//welcome Tx=============================================================
+                                        AppWidget.hSpace(AppSize.hSpace),
+                                        AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text:
+                                          LocaleKeys.welcomeLoginTx.tr(),
+                                          color: AppColor.white,
+                                        ),
+                                        AppWidget.hSpace(AppSize.hSpace + 5),
 
 //email TextField=============================================================
 
@@ -145,7 +148,7 @@ class _LoginState extends State<Login> {
                                                     ?.validate() ==
                                                 true) {
                                               AppLoading.show(context, '', 'lode');
-                                              Firbase.loggingToApp(
+                                              Database.loggingToApp(
                                                       email:
                                                           emailController.text,
                                                       password:
@@ -245,7 +248,7 @@ class _LoginState extends State<Login> {
                                       ),
                                       onTap: () {
                                         AppRoutes.pushReplacementTo(
-                                            context, const SingUp());
+                                            context,  SingUp());
                                       }),
                                 ],
                               ),

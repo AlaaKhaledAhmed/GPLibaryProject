@@ -55,5 +55,6 @@ abstract class  LocaleKeys {
   static const softwareDevelopment = 'softwareDevelopment';
   static const dataManagement = 'dataManagement';
   static const webDevelopment = 'webDevelopment';
+  static const welcomeLoginTx = 'welcomeLoginTx';
 
 }

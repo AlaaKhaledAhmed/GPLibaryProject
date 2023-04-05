@@ -54,5 +54,7 @@
   "artificialIntelligence": "Artificial Intelligence",
   "softwareDevelopment": "Software Development",
   "dataManagement": "Data Management",
-  "webDevelopment": "Web Development"
+  "webDevelopment": "Web Development",
+  "welcomeLoginTx": "Welcome again, please enter the following data to enter the application"
+
 }

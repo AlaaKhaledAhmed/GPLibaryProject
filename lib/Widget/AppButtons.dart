@@ -4,6 +4,8 @@ import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class AppButtons extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
@@ -25,6 +27,7 @@ class AppButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? double.infinity,
+      height: 50.h,
       child: ElevatedButton(
         child: AppText(
           fontSize: AppSize.buttonsFontSize,

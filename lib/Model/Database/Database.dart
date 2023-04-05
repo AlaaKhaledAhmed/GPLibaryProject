@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Firbase {
+class Database {
   //=======================Student Sing up method======================================
   static Future<String> studentSingUpFu({
     required String name,

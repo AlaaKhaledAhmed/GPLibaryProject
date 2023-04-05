@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:library_project/Model/translations/locale_keys.g.dart';
+import 'package:library_project/Widget/AppBarMain.dart';
+import 'package:library_project/Widget/AppWidget.dart';
 
 import '../../../Widget/AppSize.dart';
 import '../../../Widget/AppText.dart';
@@ -15,9 +17,15 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: AppText(text: LocaleKeys.home.tr(), fontSize: AppSize.titleTextSize),
-      ),
-    );
+        appBar: AppBarMain(
+          title: LocaleKeys.home.tr(),
+        ),
+        body: AppWidget.body(
+            child: Container(
+              margin: EdgeInsets.only(bottom: AppSize.bottomPageSize),
+              child: Column(
+                children: [],
+              ),
+            )));
   }
 }

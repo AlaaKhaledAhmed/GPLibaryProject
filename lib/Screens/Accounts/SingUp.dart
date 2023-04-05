@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:library_project/Model/Database/Database.dart';
+import 'package:library_project/Model/Provider/Model.dart';
 import 'package:library_project/Widget/AppLoading.dart';
 import '../../Widget/AppConstants.dart';
 import '../../Widget/AppWidget.dart';
@@ -17,15 +18,16 @@ import '../../Widget/AppColors.dart';
 import '../../Widget/AppDropList.dart';
 import '../../Widget/AppImagePath.dart';
 import 'Login.dart';
+import 'package:provider/provider.dart';
 
-class SingUp extends StatefulWidget {
-  const SingUp({Key? key}) : super(key: key);
+// class SingUp extends StatefulWidget {
+//   const SingUp({Key? key}) : super(key: key);
+//
+//   @override
+//   State<SingUp> createState() => _SingUpState();
+// }
 
-  @override
-  State<SingUp> createState() => _SingUpState();
-}
-
-class _SingUpState extends State<SingUp> {
+class SingUp extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -33,7 +35,6 @@ class _SingUpState extends State<SingUp> {
   TextEditingController idController = TextEditingController();
 
   GlobalKey<FormState> singUpKey = GlobalKey();
-  List<bool> isSuperviser = [false];
   String? selectedMajor;
   String? selectedSearch;
   @override
@@ -55,388 +56,413 @@ class _SingUpState extends State<SingUp> {
                     image: DecorationImage(
                         image: AssetImage(AppImagePath.backgroundImage2),
                         fit: BoxFit.cover)),
-                child: Stack(
-                  children: [
+                child: Consumer<Model>(builder: (context, model, child) {
+                  return Stack(
+                    children: [
 //Screen name=============================================================
-                    Positioned(
-                        top: AppWidget.getHeight(context) * 0.22,
-                        bottom: AppWidget.getHeight(context) * 0.12,
-                        left: AppWidget.getHeight(context) * 0.04,
-                        right: AppWidget.getHeight(context) * 0.02,
-                        child: AppText(
-                          fontSize: AppSize.titleTextSize,
-                          text: isSuperviser[0]
-                              ? LocaleKeys.singUpTeacherTx.tr()
-                              : LocaleKeys.singUpStudentTx.tr(),
-                          color: AppColor.white,
-                          fontWeight: FontWeight.bold,
-                        )),
+                      Positioned(
+                          top: AppWidget.getHeight(context) * 0.22,
+                          bottom: AppWidget.getHeight(context) * 0.12,
+                          left: AppWidget.getHeight(context) * 0.04,
+                          right: AppWidget.getHeight(context) * 0.02,
+                          child: AppText(
+                            fontSize: AppSize.titleTextSize,
+                            text: model.isSuperviser[0]
+                                ? LocaleKeys.singUpTeacherTx.tr()
+                                : LocaleKeys.singUpStudentTx.tr(),
+                            color: AppColor.white,
+                            fontWeight: FontWeight.bold,
+                          )),
 
 //Glass container=============================================================
-                    Positioned(
-                      bottom: AppWidget.getHeight(context) * 0.15,
-                      top: AppWidget.getHeight(context) * 0.27,
-                      left: AppWidget.getHeight(context) * 0.02,
-                      right: AppWidget.getHeight(context) * 0.02,
-                      child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(AppSize.containerRadius),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                          child: AnimatedContainer(
-                              padding: EdgeInsets.all(15.r),
-                              duration: const Duration(microseconds: 200),
-                              height: AppWidget.getHeight(context) * 0.4,
-                              width: AppWidget.getWidth(context),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        spreadRadius: -5,
-                                        blurRadius: 25,
-                                        color: AppColor.black.withOpacity(0.3))
-                                  ],
-                                  gradient: const LinearGradient(
-                                      colors: [Colors.white60, Colors.white10],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomCenter),
-                                  color: AppColor.white.withOpacity(0.4),
-                                  borderRadius: BorderRadius.circular(
-                                      AppSize.containerRadius),
-                                  border: Border.all(
-                                      width: AppSize.textFieldsBorderWidth,
-                                      color: AppColor.white30)),
-                              child: SingleChildScrollView(
-                                  child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  minWidth: constraints.maxWidth,
-                                  minHeight: constraints.maxHeight,
-                                ),
-                                child: IntrinsicHeight(
-                                  child: Form(
-                                    key: singUpKey,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
+                      Positioned(
+                        bottom: AppWidget.getHeight(context) * 0.15,
+                        top: AppWidget.getHeight(context) * 0.27,
+                        left: AppWidget.getHeight(context) * 0.02,
+                        right: AppWidget.getHeight(context) * 0.02,
+                        child: ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(AppSize.containerRadius),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                            child: AnimatedContainer(
+                                padding: EdgeInsets.all(15.r),
+                                duration: const Duration(microseconds: 200),
+                                height: AppWidget.getHeight(context) * 0.4,
+                                width: AppWidget.getWidth(context),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -5,
+                                          blurRadius: 25,
+                                          color:
+                                              AppColor.black.withOpacity(0.3))
+                                    ],
+                                    gradient: const LinearGradient(
+                                        colors: [
+                                          Colors.white60,
+                                          Colors.white10
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomCenter),
+                                    color: AppColor.white.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(
+                                        AppSize.containerRadius),
+                                    border: Border.all(
+                                        width: AppSize.textFieldsBorderWidth,
+                                        color: AppColor.white30)),
+                                child: SingleChildScrollView(
+                                    child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minWidth: constraints.maxWidth,
+                                    minHeight: constraints.maxHeight,
+                                  ),
+                                  child: IntrinsicHeight(
+                                    child: Form(
+                                      key: singUpKey,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
 //no Have Account Tx=============================================================
-                                        AppWidget.hSpace(AppSize.hSpace),
-                                        AppText(
-                                          fontSize: AppSize.subTextSize,
-                                          text: LocaleKeys.noHaveAccountTx.tr(),
-                                          color: AppColor.white,
-                                        ),
-                                        AppWidget.hSpace(AppSize.hSpace+5),
+                                          AppWidget.hSpace(AppSize.hSpace),
+                                          AppText(
+                                            fontSize: AppSize.subTextSize,
+                                            text:
+                                                LocaleKeys.noHaveAccountTx.tr(),
+                                            color: AppColor.white,
+                                          ),
+                                          AppWidget.hSpace(AppSize.hSpace + 5),
 //name TextField=============================================================
 
-                                        AppTextFields(
-                                          controller: nameController,
-                                          labelText: LocaleKeys.name.tr(),
-                                          validator: (v) =>
-                                              AppValidator.validatorName(v),
-                                        ),
-                                        AppWidget.hSpace(AppSize.hSpace),
+                                          AppTextFields(
+                                            controller: nameController,
+                                            labelText: LocaleKeys.name.tr(),
+                                            validator: (v) =>
+                                                AppValidator.validatorName(v),
+                                          ),
+                                          AppWidget.hSpace(AppSize.hSpace),
 //email TextField=============================================================
 
-                                        AppTextFields(
-                                          controller: emailController,
-                                          labelText: LocaleKeys.emailTx.tr(),
-                                          validator: (v) =>
-                                              AppValidator.validatorEmail(
-                                                  v,
-                                                  isSuperviser[0]
-                                                      ? AppConstants.typeIsTeacher
-                                                      : AppConstants
-                                                          .typeIsStudent),
-                                        ),
-                                        AppWidget.hSpace(AppSize.hSpace),
+                                          AppTextFields(
+                                            controller: emailController,
+                                            labelText: LocaleKeys.emailTx.tr(),
+                                            validator: (v) =>
+                                                AppValidator.validatorEmail(
+                                                    v,
+                                                    model.isSuperviser[0]
+                                                        ? AppConstants
+                                                            .typeIsTeacher
+                                                        : AppConstants
+                                                            .typeIsStudent),
+                                          ),
+                                          AppWidget.hSpace(AppSize.hSpace),
 //password TextField=============================================================
 
-                                        AppTextFields(
-                                          controller: passwordController,
-                                          labelText: LocaleKeys.passwordTx.tr(),
-                                          validator: (v) =>
-                                              AppValidator.validatorPassword(v),
-                                          obscureText: true,
-                                        ),
-                                        AppWidget.hSpace(AppSize.hSpace),
+                                          AppTextFields(
+                                            controller: passwordController,
+                                            labelText:
+                                                LocaleKeys.passwordTx.tr(),
+                                            validator: (v) =>
+                                                AppValidator.validatorPassword(
+                                                    v),
+                                            obscureText: true,
+                                          ),
+                                          AppWidget.hSpace(AppSize.hSpace),
 //id or search interest TextField=============================================================
-                                        isSuperviser[0]
-                                            ? AppDropList(
-                                                listItem:
-                                                     AppConstants.searchList,
-                                                validator: (v) {
-                                                  if (v == null) {
-                                                    return LocaleKeys
-                                                        .mandatoryTx
-                                                        .tr();
-                                                  } else {
-                                                    return null;
-                                                  }
-                                                },
-                                                onChanged: (selectedItem) {
-                                                  setState(() {
+                                          model.isSuperviser[0]
+                                              ? AppDropList(
+                                                  listItem:
+                                                      AppConstants.searchList,
+                                                  validator: (v) {
+                                                    if (v == null) {
+                                                      return LocaleKeys
+                                                          .mandatoryTx
+                                                          .tr();
+                                                    } else {
+                                                      return null;
+                                                    }
+                                                  },
+                                                  onChanged: (selectedItem) {
                                                     selectedSearch =
-                                                        selectedItem;
-                                                  });
-                                                },
-                                                hintText: LocaleKeys
-                                                    .selectSearchInterest
-                                                    .tr(),
-                                                dropValue: selectedSearch,
-                                              )
-                                            : AppTextFields(
-                                                controller: idController,
-                                                labelText: LocaleKeys.idTx.tr(),
-                                                validator: (v) =>
-                                                    AppValidator.validatorID(v),
-                                              ),
-                                        AppWidget.hSpace(AppSize.hSpace),
+                                                        model.setSearch(
+                                                            selectedItem!);
+                                                    print(
+                                                        'selectedSearch: ${selectedSearch}');
+                                                  },
+                                                  hintText: LocaleKeys
+                                                      .selectSearchInterest
+                                                      .tr(),
+                                                  dropValue: selectedSearch,
+                                                )
+                                              : AppTextFields(
+                                                  controller: idController,
+                                                  labelText:
+                                                      LocaleKeys.idTx.tr(),
+                                                  validator: (v) =>
+                                                      AppValidator.validatorID(
+                                                          v),
+                                                ),
+                                          AppWidget.hSpace(AppSize.hSpace),
 //major dropList=============================================================
-                                        AppDropList(
-                                          listItem:
-                                              AppConstants.majorList,
-                                          validator: (v) {
-                                            if (v == null) {
-                                              return LocaleKeys.mandatoryTx
-                                                  .tr();
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                          onChanged: (selectedItem) {
-                                            setState(() {
-                                              selectedMajor = selectedItem;
-                                            });
-                                          },
-                                          hintText: LocaleKeys.selectMajor.tr(),
-                                          dropValue: selectedMajor,
-                                        ),
-                                        AppWidget.hSpace(AppSize.hSpace),
+                                          AppDropList(
+                                            listItem: AppConstants.majorList,
+                                            validator: (v) {
+                                              if (v == null) {
+                                                return LocaleKeys.mandatoryTx
+                                                    .tr();
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                            onChanged: (selectedItem) {
+                                              selectedMajor =
+                                                  model.setMajor(selectedItem!);
+                                              print(
+                                                  'selectedMajor: ${selectedMajor}');
+                                            },
+                                            hintText:
+                                                LocaleKeys.selectMajor.tr(),
+                                            dropValue: selectedMajor,
+                                          ),
+                                          AppWidget.hSpace(AppSize.hSpace),
 //phone TextField=============================================================
-                                        AppTextFields(
-                                          controller: phoneController,
-                                          labelText: LocaleKeys.phoneTx.tr(),
-                                          validator: (v) =>
-                                              AppValidator.validatorPhone(v),
-                                        ),
+                                          AppTextFields(
+                                            controller: phoneController,
+                                            labelText: LocaleKeys.phoneTx.tr(),
+                                            validator: (v) =>
+                                                AppValidator.validatorPhone(v),
+                                          ),
 //create Account button=============================================================
-                                        AppWidget.hSpace(10),
-                                        AppButtons(
-                                          text: LocaleKeys.createAccount.tr(),
-                                          onPressed: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            if (singUpKey.currentState
-                                                    ?.validate() ==
-                                                true) {
-                                              AppLoading.show(context, '', 'lode');
+                                          AppWidget.hSpace(10),
+                                          AppButtons(
+                                            text: LocaleKeys.createAccount.tr(),
+                                            onPressed: () {
+                                              FocusManager.instance.primaryFocus
+                                                  ?.unfocus();
+                                              if (singUpKey.currentState
+                                                      ?.validate() ==
+                                                  true) {
+                                                AppLoading.show(
+                                                    context, '', 'lode');
 
-                                              isSuperviser[0] == false
-                                                  ? Firbase.studentSingUpFu(
-                                                      name: nameController.text,
-                                                      email:
-                                                          emailController.text,
-                                                      password:
-                                                          passwordController
-                                                              .text,
-                                                      stId: idController.text,
-                                                      major: selectedMajor!,
-                                                      phone:
-                                                          phoneController.text,
-                                                    ).then((String v) {
-                                                      print(
-                                                          '================$v');
-                                                      if (v == 'done') {
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys.done
-                                                                .tr());
-                                                      } else if (v ==
-                                                          'weak-password') {
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys.weekPass
-                                                                .tr());
-                                                      } else if (v ==
-                                                          'email-already-in-use') {
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys
-                                                                .emailFound
-                                                                .tr());
-                                                      } else {
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys.error
-                                                                .tr());
-                                                      }
-                                                    })
-                                                  : Firbase.supervisorSingUpFu(
-                                                      name: nameController.text,
-                                                      email:
-                                                          emailController.text,
-                                                      password:
-                                                          passwordController
-                                                              .text,
-                                                      searchInterest:
-                                                          selectedSearch!,
-                                                      major: selectedMajor!,
-                                                      phone:
-                                                          phoneController.text,
-                                                    ).then((String v) {
-                                                      print(
-                                                          '================$v');
-                                                      if (v == 'done') {
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys.done
-                                                                .tr());
-                                                      } else if (v ==
-                                                          'weak-password') {
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys.weekPass
-                                                                .tr());
-                                                      } else if (v ==
-                                                          'email-already-in-use') {
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys
-                                                                .emailFound
-                                                                .tr());
-                                                      } else {
-                                                        Navigator.pop(context);
-                                                        AppLoading.show(
-                                                            context,
-                                                            LocaleKeys.singUp
-                                                                .tr(),
-                                                            LocaleKeys.error
-                                                                .tr());
-                                                      }
-                                                    });
-                                            }
-                                          },
-                                        )
-                                      ],
+                                                model.isSuperviser[0]==false
+                                                    ? Database.studentSingUpFu(
+                                                        name:
+                                                            nameController.text,
+                                                        email: emailController
+                                                            .text,
+                                                        password:
+                                                            passwordController
+                                                                .text,
+                                                        stId: idController.text,
+                                                        major: selectedMajor!,
+                                                        phone: phoneController
+                                                            .text,
+                                                      ).then((String v) {
+                                                        print(
+                                                            '================$v');
+                                                        if (v == 'done') {
+                                                          Navigator.pop(
+                                                              context);
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys.done
+                                                                  .tr());
+                                                        } else if (v ==
+                                                            'weak-password') {
+                                                          Navigator.pop(
+                                                              context);
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys
+                                                                  .weekPass
+                                                                  .tr());
+                                                        } else if (v ==
+                                                            'email-already-in-use') {
+                                                          Navigator.pop(
+                                                              context);
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys
+                                                                  .emailFound
+                                                                  .tr());
+                                                        } else {
+                                                          Navigator.pop(
+                                                              context);
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys.error
+                                                                  .tr());
+                                                        }
+                                                      })
+                                                    : Database
+                                                        .supervisorSingUpFu(
+                                                        name:
+                                                            nameController.text,
+                                                        email: emailController
+                                                            .text,
+                                                        password:
+                                                            passwordController
+                                                                .text,
+                                                        searchInterest:
+                                                            selectedSearch!,
+                                                        major: selectedMajor!,
+                                                        phone: phoneController
+                                                            .text,
+                                                      ).then((String v) {
+                                                        print(
+                                                            '================$v');
+                                                        if (v == 'done') {
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys.done
+                                                                  .tr());
+                                                        } else if (v ==
+                                                            'weak-password') {
+                                                          Navigator.pop(
+                                                              context);
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys
+                                                                  .weekPass
+                                                                  .tr());
+                                                        } else if (v ==
+                                                            'email-already-in-use') {
+                                                          Navigator.pop(
+                                                              context);
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys
+                                                                  .emailFound
+                                                                  .tr());
+                                                        } else {
+                                                          Navigator.pop(
+                                                              context);
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.singUp
+                                                                  .tr(),
+                                                              LocaleKeys.error
+                                                                  .tr());
+                                                        }
+                                                      });
+                                              }
+                                            },
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ))),
+                                ))),
+                          ),
                         ),
                       ),
-                    ),
 //Switch SingUp =============================================================
-                    Positioned(
-                      bottom: AppWidget.getHeight(context) * 0.09,
-                      child: Container(
-                        width: AppWidget.getWidth(context),
-                        alignment: Alignment.center,
-                        //color: AppColor.black,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: (isSuperviser[0]
-                                            ? LocaleKeys.isStudent.tr()
-                                            : LocaleKeys.isTeacher.tr()) +
-                                        (context.locale.toString() == 'en'
-                                            ? '?'
-                                            : '؟'),
-                                    color: AppColor.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    width: 7.w,
-                                  ),
-                                  InkWell(
-                                      child: AppText(
-                                        fontSize: AppSize.subTextSize,
-                                        text: LocaleKeys.createAccount.tr(),
-                                        color: AppColor.textFieldBorderColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      onTap: () {
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        print('object');
-                                        setState(() {
-                                          isSuperviser[0] = !isSuperviser[0];
-                                        });
-                                        print('isTeacher: $isSuperviser');
-                                      }),
-                                ],
-                              ),
-                            ]),
+                      Positioned(
+                        bottom: AppWidget.getHeight(context) * 0.09,
+                        child: Container(
+                          width: AppWidget.getWidth(context),
+                          alignment: Alignment.center,
+                          //color: AppColor.black,
+                          child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                    AppText(
+                                      fontSize: AppSize.subTextSize,
+                                      text: (model.isSuperviser[0]
+                                              ? LocaleKeys.isStudent.tr()
+                                              : LocaleKeys.isTeacher.tr()) +
+                                          (context.locale.toString() == 'en'
+                                              ? '?'
+                                              : '؟'),
+                                      color: AppColor.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    SizedBox(
+                                      width: 7.w,
+                                    ),
+                                    InkWell(
+                                        child: AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text: LocaleKeys.createAccount.tr(),
+                                          color: AppColor.textFieldBorderColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        onTap: () {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                          print('object');
+
+                                          model.setType();
+                                          print(
+                                              'isTeacher: ${model.isSuperviser[0]}');
+                                        }),
+                                  ],
+                                ),
+                              ]),
+                        ),
                       ),
-                    ),
 //Switch SingUp =============================================================
-                    Positioned(
-                      bottom: AppWidget.getHeight(context) * 0.04,
-                      child: Container(
-                        width: AppWidget.getWidth(context),
-                        alignment: Alignment.center,
-                        //color: AppColor.black,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.goTo.tr(),
-                                    color: AppColor.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    width: 7.w,
-                                  ),
-                                  InkWell(
-                                      child: AppText(
-                                        fontSize: AppSize.subTextSize,
-                                        text: LocaleKeys.loginTx.tr(),
-                                        color: AppColor.textFieldBorderColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      onTap: () {
-                                        AppRoutes.pushReplacementTo(
-                                            context, const Login());
-                                      }),
-                                ],
-                              ),
-                            ]),
-                      ),
-                    )
-                  ],
-                )));
+                      Positioned(
+                        bottom: AppWidget.getHeight(context) * 0.04,
+                        child: Container(
+                          width: AppWidget.getWidth(context),
+                          alignment: Alignment.center,
+                          //color: AppColor.black,
+                          child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                    AppText(
+                                      fontSize: AppSize.subTextSize,
+                                      text: LocaleKeys.goTo.tr(),
+                                      color: AppColor.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    SizedBox(
+                                      width: 7.w,
+                                    ),
+                                    InkWell(
+                                        child: AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text: LocaleKeys.loginTx.tr(),
+                                          color: AppColor.textFieldBorderColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        onTap: () {
+                                          AppRoutes.pushReplacementTo(
+                                              context,  Login());
+                                        }),
+                                  ],
+                                ),
+                              ]),
+                        ),
+                      )
+                    ],
+                  );
+                })));
       }),
     );
   }

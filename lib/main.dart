@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:library_project/Model/Provider/Model.dart';
+import 'package:library_project/Screens/Accounts/SingUp.dart';
 import 'package:library_project/Screens/Student/NavStudent.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -7,7 +9,7 @@ import 'package:library_project/Model/translations/codegen_loader.g.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-
+import 'package:provider/provider.dart';
 import 'Screens/Accounts/Login.dart';
 
 //token: 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
@@ -16,17 +18,22 @@ void main() async {
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
 
-  runApp(EasyLocalization(
-      path: 'assets/translations',
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ar'),
-      ],
-      fallbackLocale: const Locale('en'),
-      assetLoader: const CodegenLoader(),
-      child:
-      //rebuild app
-      Phoenix(child: const MyApp())));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => Model()),
+    ],
+    child: EasyLocalization(
+        path: 'assets/translations',
+        supportedLocales: const [
+          Locale('en'),
+          Locale('ar'),
+        ],
+        fallbackLocale: const Locale('en'),
+        assetLoader: const CodegenLoader(),
+        child:
+            //rebuild app
+            Phoenix(child: const MyApp())),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -61,7 +68,7 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          home: const NavStudent(),
+          home:  SingUp(),
         );
       },
     );
