@@ -8,7 +8,7 @@ import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppTextFields.dart';
 import 'package:library_project/Widget/AppImagePath.dart';
 import 'package:library_project/Widget/AppSize.dart';
-import '../../Model/Database/Database.dart';
+import '../../Model/Database/DatabaseMethods.dart';
 import '../../Widget/AppRoutes.dart';
 import '../../Widget/AppValidator.dart';
 import '../../Model/translations/locale_keys.g.dart';
@@ -51,8 +51,8 @@ class Login extends StatelessWidget{
                   children: [
 //Screen name=============================================================
                     Positioned(
-                        bottom: AppWidget.getHeight(context) * 0.22,
-                        top: AppWidget.getHeight(context) * 0.40,
+                        //bottom: AppWidget.getHeight(context) * 0.27,
+                        top: AppWidget.getHeight(context) * 0.30,
                         left: AppWidget.getHeight(context) * 0.04,
                         right: AppWidget.getHeight(context) * 0.02,
                         child: AppText(
@@ -64,8 +64,8 @@ class Login extends StatelessWidget{
 
 //Glass container=============================================================
                     Positioned(
-                      top: AppWidget.getHeight(context) * 0.46,
-                      bottom: AppWidget.getHeight(context) * 0.20,
+                      top: AppWidget.getHeight(context) * 0.38,
+                      bottom: AppWidget.getHeight(context) * 0.26,
                       left: AppWidget.getHeight(context) * 0.02,
                       right: AppWidget.getHeight(context) * 0.02,
                       child: ClipRRect(
@@ -218,7 +218,7 @@ class Login extends StatelessWidget{
                     ),
 //Switch SingUp =============================================================
                     Positioned(
-                      bottom: AppWidget.getHeight(context) * 0.04,
+                      bottom: AppWidget.getHeight(context) * 0.1,
                       child: Container(
                         width: AppWidget.getWidth(context),
                         alignment: Alignment.center,

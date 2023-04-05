@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:library_project/Model/Provider/Model.dart';
+import 'package:flutter/services.dart';
+import 'package:library_project/Model/Provider/ChangConstModel.dart';
+import 'package:library_project/Screens/Accounts/FirestScreen.dart';
 import 'package:library_project/Screens/Accounts/SingUp.dart';
 import 'package:library_project/Screens/Student/NavStudent.dart';
 import 'package:library_project/Widget/AppColors.dart';
@@ -11,7 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'Screens/Accounts/Login.dart';
-
+//import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 //token: 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
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +22,7 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => Model()),
+      ChangeNotifierProvider(create: (context) => ChangConstModel()),
     ],
     child: EasyLocalization(
         path: 'assets/translations',
@@ -46,6 +48,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    //FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     return ScreenUtilInit(
       designSize: const Size(413, 763),
       builder: (BuildContext context, Widget? child) {
@@ -68,7 +71,7 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          home:  SingUp(),
+          home:   NavStudent(),
         );
       },
     );

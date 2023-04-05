@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:library_project/Model/Database/Database.dart';
-import 'package:library_project/Model/Provider/Model.dart';
+import 'package:library_project/Model/Database/DatabaseMethods.dart';
+import 'package:library_project/Model/Provider/ChangConstModel.dart';
 import 'package:library_project/Widget/AppLoading.dart';
 import '../../Widget/AppConstants.dart';
 import '../../Widget/AppWidget.dart';
@@ -20,12 +20,6 @@ import '../../Widget/AppImagePath.dart';
 import 'Login.dart';
 import 'package:provider/provider.dart';
 
-// class SingUp extends StatefulWidget {
-//   const SingUp({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SingUp> createState() => _SingUpState();
-// }
 
 class SingUp extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
@@ -37,6 +31,8 @@ class SingUp extends StatelessWidget {
   GlobalKey<FormState> singUpKey = GlobalKey();
   String? selectedMajor;
   String? selectedSearch;
+
+   SingUp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,13 +52,13 @@ class SingUp extends StatelessWidget {
                     image: DecorationImage(
                         image: AssetImage(AppImagePath.backgroundImage2),
                         fit: BoxFit.cover)),
-                child: Consumer<Model>(builder: (context, model, child) {
+                child: Consumer<ChangConstModel>(builder: (context, model, child) {
                   return Stack(
                     children: [
 //Screen name=============================================================
                       Positioned(
-                          top: AppWidget.getHeight(context) * 0.22,
-                          bottom: AppWidget.getHeight(context) * 0.12,
+                          top: AppWidget.getHeight(context) * 0.11,
+                         // bottom: AppWidget.getHeight(context) * 0.12,
                           left: AppWidget.getHeight(context) * 0.04,
                           right: AppWidget.getHeight(context) * 0.02,
                           child: AppText(
@@ -76,8 +72,8 @@ class SingUp extends StatelessWidget {
 
 //Glass container=============================================================
                       Positioned(
-                        bottom: AppWidget.getHeight(context) * 0.15,
-                        top: AppWidget.getHeight(context) * 0.27,
+                        bottom: AppWidget.getHeight(context) * 0.17,
+                        top: AppWidget.getHeight(context) * 0.18,
                         left: AppWidget.getHeight(context) * 0.02,
                         right: AppWidget.getHeight(context) * 0.02,
                         child: ClipRRect(
@@ -374,7 +370,7 @@ class SingUp extends StatelessWidget {
                       ),
 //Switch SingUp =============================================================
                       Positioned(
-                        bottom: AppWidget.getHeight(context) * 0.09,
+                        bottom: AppWidget.getHeight(context) * 0.12,
                         child: Container(
                           width: AppWidget.getWidth(context),
                           alignment: Alignment.center,
@@ -423,7 +419,7 @@ class SingUp extends StatelessWidget {
                       ),
 //Switch SingUp =============================================================
                       Positioned(
-                        bottom: AppWidget.getHeight(context) * 0.04,
+                        bottom: AppWidget.getHeight(context) * 0.08,
                         child: Container(
                           width: AppWidget.getWidth(context),
                           alignment: Alignment.center,
