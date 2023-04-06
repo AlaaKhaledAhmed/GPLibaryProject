@@ -2,15 +2,15 @@ import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:library_project/Model/Database/DatabaseMethods.dart';
-import 'package:library_project/Model/Provider/ChangConstModel.dart';
+import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
+import 'package:library_project/BackEnd/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppLoading.dart';
+import '../../BackEnd/Provider/ChangConstModel.dart';
 import '../../Widget/AppConstants.dart';
 import '../../Widget/AppWidget.dart';
 import '../../Widget/AppRoutes.dart';
 import '../../Widget/AppValidator.dart';
 import '../../Widget/AppSize.dart';
-import '../../Model/translations/locale_keys.g.dart';
 import '../../Widget/AppButtons.dart';
 import '../../Widget/AppText.dart';
 import '../../Widget/AppTextFields.dart';
@@ -31,8 +31,8 @@ class SingUp extends StatelessWidget {
   GlobalKey<FormState> singUpKey = GlobalKey();
   String? selectedMajor;
   String? selectedSearch;
+  SingUp({Key? key}) : super(key: key);
 
-   SingUp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -14,7 +14,7 @@ class Database {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: email.trim(), password: password);
+          email: email.trim(), password: password);
       if (userCredential.user != null) {
         await FirebaseFirestore.instance.collection('users').add({
           'name': name,
@@ -23,7 +23,8 @@ class Database {
           'email': email,
           'major': major,
           'stId': stId,
-          'type': 'student'
+          'type': 'student',
+          'auth':''
         });
         return 'done';
       }
@@ -39,6 +40,7 @@ class Database {
     }
     return 'error';
   }
+
   //=======================supervisor Sing up method======================================
   static Future<String> supervisorSingUpFu({
     required String name,
@@ -51,7 +53,7 @@ class Database {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: email.trim(), password: password);
+          email: email.trim(), password: password);
       if (userCredential.user != null) {
         await FirebaseFirestore.instance.collection('users').add({
           'name': name,
@@ -76,6 +78,7 @@ class Database {
     }
     return 'error';
   }
+
 //=======================Log in method======================================
 
   static Future<String> loggingToApp(
@@ -97,6 +100,23 @@ class Database {
     } catch (e) {
       return 'error';
     }
+    return 'error';
+  }
+
+//=======================Add team======================================
+  static Future<String> addTeam({
+    required String name,
+    required String stId,
+    required String auth,
+    required String userId
+
+  }) async {
+    try {
+
+    } catch (e) {
+      return e.toString();
+    }
+
     return 'error';
   }
 }

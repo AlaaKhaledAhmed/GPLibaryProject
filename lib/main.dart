@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:library_project/Model/Provider/ChangConstModel.dart';
+import 'package:library_project/BackEnd/Provider/ChangConstModel.dart';
+import 'package:library_project/BackEnd/translations/codegen_loader.g.dart';
+import 'package:library_project/BackEnd/translations/locale_keys.g.dart';
 import 'package:library_project/Screens/Accounts/FirestScreen.dart';
 import 'package:library_project/Screens/Accounts/SingUp.dart';
 import 'package:library_project/Screens/Student/NavStudent.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:library_project/Model/translations/codegen_loader.g.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
-import 'Screens/Accounts/Login.dart';
-//import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+
 //token: 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
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

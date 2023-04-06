@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:library_project/Widget/AppWidget.dart';
-import 'package:library_project/Model/translations/locale_keys.g.dart';
+import 'package:library_project/BackEnd/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppIcons.dart';
 import 'package:library_project/Widget/AppSvg.dart';
 import '../../Widget/AppRoutes.dart';

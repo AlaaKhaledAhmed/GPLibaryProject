@@ -70,8 +70,8 @@ dev_dependencies:
 
 
     #امر توليد ملفات الترجمة
-    # 1- flutter pub run easy_localization:generate -S "assets/translations" -O "lib/Model/translations"
-    #2- flutter pub run easy_localization:generate -S "assets/translations" -O "lib/Model/translations" -o "locale_keys.g.dart" -f keys
+    # 1- flutter pub run easy_localization:generate -S "assets/translations" -O "lib/BackEnd/translations"
+    #2- flutter pub run easy_localization:generate -S "assets/translations" -O "lib/BackEnd/translations" -o "locale_keys.g.dart" -f keys
   easy_localization: ^3.0.0
   flutter_lints: ^1.0.0
 
