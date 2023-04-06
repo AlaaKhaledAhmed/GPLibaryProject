@@ -9,6 +9,7 @@ class AppSize{
  static double contentPadding=13.sp;
  static double dropListContentPadding=13.sp;
  static double titleTextSize=23.sp;
+ static double title2TextSize=20.sp;
  static double subTextSize=14.5.sp;
  static double buttonsFontSize=16.sp;
  static double errorSize=22.sp;

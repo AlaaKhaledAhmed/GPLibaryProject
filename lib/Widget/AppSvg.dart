@@ -13,6 +13,7 @@ class AppSvg {
   static String supervisorColor = 'assets/Svg/supervisor_c.svg';
   static String filterSvg = 'assets/Svg/filterSvg.svg';
   static String searchSvg = 'assets/Svg/searchSvg.svg';
+  static String sendSvg = 'assets/Svg/send_c.svg';
 
 
 }

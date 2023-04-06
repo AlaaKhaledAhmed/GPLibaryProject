@@ -56,6 +56,6 @@ abstract class  LocaleKeys {
   static const dataManagement = 'dataManagement';
   static const webDevelopment = 'webDevelopment';
   static const welcomeLoginTx = 'welcomeLoginTx';
-  static const search = 'welcomeLoginTx';
+  static const search = 'search';
 
 }
