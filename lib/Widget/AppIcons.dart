@@ -5,5 +5,7 @@ class AppIcons {
   static IconData logout =Icons.logout_rounded;
   static IconData close =Icons.close;
   static IconData settings =Icons.settings;
+  static IconData search =Icons.search;
+
 
 }

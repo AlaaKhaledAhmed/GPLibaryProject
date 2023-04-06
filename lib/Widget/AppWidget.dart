@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:library_project/Widget/AppColors.dart';
 
 class AppWidget {
   final BuildContext context;
@@ -46,7 +47,7 @@ class AppWidget {
         width: 30,
       ),
       title: title,
-      dotColor: AppColors.cherryRed,
+      dotColor: AppColor.iconsColor,
       onTap: onTap,
     );
   }

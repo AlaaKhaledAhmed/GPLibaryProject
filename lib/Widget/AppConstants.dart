@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:library_project/BackEnd/translations/locale_keys.g.dart';
+import 'package:library_project/translations/locale_keys.g.dart';
 
 class AppConstants {
   static String typeIsStudent = 'st';

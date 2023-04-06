@@ -11,5 +11,8 @@ class AppSvg {
 
   static String supervisorNoColor = 'assets/Svg/supervisor_nc.svg';
   static String supervisorColor = 'assets/Svg/supervisor_c.svg';
+  static String filterSvg = 'assets/Svg/filterSvg.svg';
+  static String searchSvg = 'assets/Svg/searchSvg.svg';
+
 
 }

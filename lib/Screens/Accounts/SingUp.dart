@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
-import 'package:library_project/BackEnd/translations/locale_keys.g.dart';
+import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppLoading.dart';
 import '../../BackEnd/Provider/ChangConstModel.dart';
 import '../../Widget/AppConstants.dart';

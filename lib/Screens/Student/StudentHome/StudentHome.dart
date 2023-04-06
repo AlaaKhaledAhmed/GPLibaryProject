@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_project/BackEnd/translations/locale_keys.g.dart';
+import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppBarMain.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 

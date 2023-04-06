@@ -55,6 +55,7 @@
   "softwareDevelopment": "Software Development",
   "dataManagement": "Data Management",
   "webDevelopment": "Web Development",
-  "welcomeLoginTx": "Welcome again, please enter the following data to enter the application"
+  "welcomeLoginTx": "Welcome again, please enter the following data to enter the application",
+  "search": "Search"
 
 }

@@ -20,7 +20,7 @@ class AppColor {
   static Color iconColor = Colors.grey.shade600;
   static Color buttonsTextColor =white;
   static Color noColor =Colors.transparent;
-  static const Color subColor = Color(0xFFFA2424);
+  static const Color iconsColor = Color(0xFFfd6868);
   static const Color cherryLightPink = Color(0xFFFA7F80);
   static const Color lightPink = Color(0xFFFAC0BE);
 }

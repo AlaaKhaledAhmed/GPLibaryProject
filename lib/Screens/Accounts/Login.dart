@@ -9,7 +9,7 @@ import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppTextFields.dart';
 import 'package:library_project/Widget/AppImagePath.dart';
 import 'package:library_project/Widget/AppSize.dart';
-import 'package:library_project/BackEnd/translations/locale_keys.g.dart';
+import 'package:library_project/translations/locale_keys.g.dart';
 import '../../Widget/AppRoutes.dart';
 import '../../Widget/AppValidator.dart';
 import '../../Widget/AppColors.dart';
