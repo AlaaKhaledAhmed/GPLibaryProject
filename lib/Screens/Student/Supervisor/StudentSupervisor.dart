@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_project/Widget/AppSvg.dart';
+import 'dart:math' as math;
 
 class StudentSupervisor extends StatefulWidget {
   const StudentSupervisor();
@@ -119,7 +120,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 //dr name=================================================================
                   child: ListTile(
                     title: Padding(
-                      padding:  EdgeInsets.only(top: 30.h),
+                      padding: EdgeInsets.only(top: 30.h),
                       child: AppText(
                         text: 'Dr.Nada Ali',
                         fontSize: AppSize.title2TextSize,
@@ -127,7 +128,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                     ),
 //search interest=================================================================
                     subtitle: Padding(
-                      padding:EdgeInsets.only(top: 10.h),
+                      padding: EdgeInsets.only(top: 10.h),
                       child: AppText(
                         text: LocaleKeys.softwareDevelopment.tr(),
                         fontSize: AppSize.title2TextSize,
@@ -136,15 +137,19 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 //send icon=================================================================
                     trailing: Padding(
                       padding: EdgeInsets.only(top: 20.h),
-                      child: SvgPicture.asset(
-                        AppSvg.sendSvg,
-                        height: 40.r,
-                        width: 40.r,
+                      child: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationY(
+                            context.locale.toString() == 'en' ? 0:math.pi),
+                        child: SvgPicture.asset(
+                          AppSvg.sendSvg,
+                          height: 40.r,
+                          width: 40.r,
+                        ),
                       ),
                     ),
                   ),
 //==========================================================================
-
                 ),
               ),
             );
