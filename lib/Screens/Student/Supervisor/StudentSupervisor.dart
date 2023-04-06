@@ -140,7 +140,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                       child: Transform(
                         alignment: Alignment.center,
                         transform: Matrix4.rotationY(
-                            context.locale.toString() == 'en' ? 0:math.pi),
+                            context.locale.toString() == 'en' ? 0 : math.pi),
                         child: SvgPicture.asset(
                           AppSvg.sendSvg,
                           height: 40.r,
