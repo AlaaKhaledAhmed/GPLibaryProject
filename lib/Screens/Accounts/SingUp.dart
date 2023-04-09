@@ -63,7 +63,7 @@ class SingUp extends StatelessWidget {
                           right: AppWidget.getHeight(context) * 0.02,
                           child: AppText(
                             fontSize: AppSize.titleTextSize,
-                            text: model.isSuperviser[0]
+                            text: model.isSupervisor[0]
                                 ? LocaleKeys.singUpTeacherTx.tr()
                                 : LocaleKeys.singUpStudentTx.tr(),
                             color: AppColor.white,
@@ -146,7 +146,7 @@ class SingUp extends StatelessWidget {
                                             validator: (v) =>
                                                 AppValidator.validatorEmail(
                                                     v,
-                                                    model.isSuperviser[0]
+                                                    model.isSupervisor[0]
                                                         ? AppConstants
                                                             .typeIsTeacher
                                                         : AppConstants
@@ -166,7 +166,7 @@ class SingUp extends StatelessWidget {
                                           ),
                                           AppWidget.hSpace(AppSize.hSpace),
 //id or search interest TextField=============================================================
-                                          model.isSuperviser[0]
+                                          model.isSupervisor[0]
                                               ? AppDropList(
                                                   listItem:
                                                       AppConstants.searchList,
@@ -242,7 +242,7 @@ class SingUp extends StatelessWidget {
                                                 AppLoading.show(
                                                     context, '', 'lode');
 
-                                                model.isSuperviser[0]==false
+                                                model.isSupervisor[0]==false
                                                     ? Database.studentSingUpFu(
                                                         name:
                                                             nameController.text,
@@ -384,7 +384,7 @@ class SingUp extends StatelessWidget {
                                   children: [
                                     AppText(
                                       fontSize: AppSize.subTextSize,
-                                      text: (model.isSuperviser[0]
+                                      text: (model.isSupervisor[0]
                                               ? LocaleKeys.isStudent.tr()
                                               : LocaleKeys.isTeacher.tr()) +
                                           (context.locale.toString() == 'en'
@@ -410,7 +410,7 @@ class SingUp extends StatelessWidget {
 
                                           model.setType();
                                           print(
-                                              'isTeacher: ${model.isSuperviser[0]}');
+                                              'isTeacher: ${model.isSupervisor[0]}');
                                         }),
                                   ],
                                 ),

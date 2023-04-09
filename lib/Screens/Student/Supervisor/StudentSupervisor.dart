@@ -5,12 +5,14 @@ import 'package:library_project/Widget/AppIcons.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
+import '../../../BackEnd/Provider/ChangConstModel.dart';
 import '../../../Widget/AppSize.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_project/Widget/AppSvg.dart';
 import 'dart:math' as math;
+import 'package:provider/provider.dart';
 
 class StudentSupervisor extends StatefulWidget {
   const StudentSupervisor();
@@ -20,6 +22,19 @@ class StudentSupervisor extends StatefulWidget {
 }
 
 class _StudentSupervisorState extends State<StudentSupervisor> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      final supervisorList =
+          Provider.of<ChangConstModel>(context, listen: false);
+      supervisorList.getSupervisor();
+      print('supervisorList.supervisorList: ${supervisorList.supervisorList}');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,60 +115,62 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 //body========================================================================
   Widget body() {
     return Container(
-      height: AppWidget.getHeight(context) * 0.55,
-      decoration: decoration(radius: 10.r, color: AppColor.noColor),
-      width: AppWidget.getWidth(context),
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.h),
-              child: SizedBox(
-                height: 120,
-                width: AppWidget.getWidth(context),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    //set border radius more than 50% of height and width to make circle
-                  ),
-//dr name=================================================================
-                  child: ListTile(
-                    title: Padding(
-                      padding: EdgeInsets.only(top: 30.h),
-                      child: AppText(
-                        text: 'Dr.Nada Ali',
-                        fontSize: AppSize.title2TextSize,
-                      ),
-                    ),
-//search interest=================================================================
-                    subtitle: Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: AppText(
-                        text: LocaleKeys.softwareDevelopment.tr(),
-                        fontSize: AppSize.title2TextSize,
-                      ),
-                    ),
-//send icon=================================================================
-                    trailing: Padding(
-                      padding: EdgeInsets.only(top: 20.h),
-                      child: Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.rotationY(
-                            context.locale.toString() == 'en' ? 0 : math.pi),
-                        child: SvgPicture.asset(
-                          AppSvg.sendSvg,
-                          height: 40.r,
-                          width: 40.r,
+            height: AppWidget.getHeight(context) * 0.55,
+            decoration: decoration(radius: 10.r, color: AppColor.noColor),
+            width: AppWidget.getWidth(context),
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    child: SizedBox(
+                      height: 120,
+                      width: AppWidget.getWidth(context),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          //set border radius more than 50% of height and width to make circle
                         ),
+//dr name=================================================================
+                        child: ListTile(
+                          title: Padding(
+                            padding: EdgeInsets.only(top: 30.h),
+                            child: AppText(
+                              text: 'Dr.Nada Ali',
+                              fontSize: AppSize.title2TextSize,
+                            ),
+                          ),
+//search interest=================================================================
+                          subtitle: Padding(
+                            padding: EdgeInsets.only(top: 10.h),
+                            child: AppText(
+                              text: LocaleKeys.softwareDevelopment.tr(),
+                              fontSize: AppSize.title2TextSize,
+                            ),
+                          ),
+//send icon=================================================================
+                          trailing: Padding(
+                            padding: EdgeInsets.only(top: 20.h),
+                            child: Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(
+                                  context.locale.toString() == 'en'
+                                      ? 0
+                                      : math.pi),
+                              child: SvgPicture.asset(
+                                AppSvg.sendSvg,
+                                height: 40.r,
+                                width: 40.r,
+                              ),
+                            ),
+                          ),
+                        ),
+//==========================================================================
                       ),
                     ),
-                  ),
-//==========================================================================
-                ),
-              ),
-            );
-          }),
-    );
+                  );
+                }),
+          );
   }
 }
