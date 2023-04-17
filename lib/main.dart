@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_project/BackEnd/Models/StudentModel.dart';
 import 'package:library_project/BackEnd/Provider/ChangConstModel.dart';
 import 'package:library_project/Screens/Accounts/Login.dart';
 import 'package:library_project/Screens/Student/NavStudent.dart';
@@ -68,7 +69,7 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          home:   Login(),
+          home:   NavStudent(),
         );
       },
     );

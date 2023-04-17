@@ -119,4 +119,17 @@ class Database {
 
     return 'error';
   }
+  //get supervisor=============================================================
+  static Future getSupervisor() async {
+
+    // supervisorList = supervisorCollection.docs
+    //     .map((QueryDocumentSnapshot d) =>
+    //         Supervisor.fromMap((d.data() as Map), (d.id)))
+    //     .toList();
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .where('type', isEqualTo: 'supervisor')
+        .get();
+    //supervisorList;
+  }
 }
