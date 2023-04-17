@@ -15,7 +15,6 @@ import 'package:library_project/Widget/AppSvg.dart';
 import 'dart:math' as math;
 import '../../Widget/AppWidget.dart';
 
-
 class SearchSupervisors extends SearchDelegate {
   List<String> _oldFilters = [];
   final List<dynamic> supervisorsNamesList;
@@ -58,8 +57,8 @@ class SearchSupervisors extends SearchDelegate {
           Navigator.pop(context);
         });
   }
-  var userCollection = FirebaseFirestore.instance
-      .collection("users");
+
+  var userCollection = FirebaseFirestore.instance.collection("users");
   @override
   Widget buildResults(BuildContext context) {
     saveToRecentSearchesSupervisor(query);
@@ -70,6 +69,10 @@ class SearchSupervisors extends SearchDelegate {
             return const Center(child: Text("Error check internet!"));
           }
           if (snapshot.hasData) {
+
+            return body(snapshot);
+          } if (snapshot.hasData) {
+
             return body(snapshot);
           }
 
@@ -78,9 +81,7 @@ class SearchSupervisors extends SearchDelegate {
             color: AppColor.appBarColor,
           ));
         });
-
   }
-
 
   @override
   Widget buildSuggestions(BuildContext context) {
@@ -98,8 +99,8 @@ class SearchSupervisors extends SearchDelegate {
     return query.isEmpty && _oldFilters.isEmpty
         ? const SizedBox()
         : query.isEmpty && _oldFilters.isNotEmpty
-            ? buildHistorySuggestion(context, _oldFilters)
-            : buildSuggestion(listSearch);
+            ? showHistory(context, _oldFilters)
+            : getSuggestionList(listSearch);
   }
 
 //save To Recent Searches Celebrity=====================================================================
@@ -125,8 +126,8 @@ class SearchSupervisors extends SearchDelegate {
     return allSearches;
   }
 
-//save To Recent Searches Celebrity=====================================================================
-  Widget buildSuggestion(List suggestions) {
+//build Suggestion=====================================================================
+  Widget getSuggestionList(List suggestions) {
     return Column(
       children: [
         Expanded(
@@ -142,7 +143,11 @@ class SearchSupervisors extends SearchDelegate {
                     query = suggestion;
                     showResults(context);
                   },
-                  leading: const Icon(Icons.search),
+                  leading: SvgPicture.asset(
+                    AppSvg.supervisorColor,
+                    height: 25,
+                    width: 25,
+                  ),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -169,9 +174,9 @@ class SearchSupervisors extends SearchDelegate {
       ],
     );
   }
-//save To Recent Searches Celebrity=====================================================================
 
-  Widget buildHistorySuggestion(context, List suggestions) {
+  //save To Recent Searches Celebrity=====================================================================
+  Widget showHistory(context, List suggestions) {
     // print('history suggestions $suggestions');
     return suggestions.isEmpty && query == ''
         ? const SizedBox()
@@ -203,6 +208,7 @@ class SearchSupervisors extends SearchDelegate {
                           onTap: () {
                             // removeHistory();
                             query = '';
+
                             removeHistory();
                           },
                           child: Text(
@@ -264,7 +270,7 @@ class SearchSupervisors extends SearchDelegate {
   }
 
   @override
-  String get searchFieldLabel => LocaleKeys.mySuperVisor.tr();
+  String get searchFieldLabel => LocaleKeys.search.tr();
 //================================================================================================
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -283,13 +289,13 @@ class SearchSupervisors extends SearchDelegate {
         iconTheme: const IconThemeData(color: Colors.white),
         actionsIconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
-        elevation: 15,
+        elevation: 2,
       ),
       textTheme: TextTheme(
         titleLarge: TextStyle(
           decoration: TextDecoration.none,
           color: Colors.white,
-          fontSize: 13.sp,
+          fontSize: AppSize.titleTextSize,
           fontFamily: local.toString() == 'en'
               ? GoogleFonts.quicksand().fontFamily
               : GoogleFonts.almarai().fontFamily,
@@ -297,14 +303,14 @@ class SearchSupervisors extends SearchDelegate {
         titleMedium: TextStyle(
           decoration: TextDecoration.none,
           color: Colors.black87,
-          fontSize: 17.sp,
+          fontSize: AppSize.titleTextSize.sp,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
         hintStyle: TextStyle(
           color: Colors.grey[300],
-          fontSize: 15.sp,
+          fontSize: AppSize.titleTextSize,
         ),
         fillColor: Colors.white12,
         errorStyle: TextStyle(color: Colors.red, fontSize: 13.0.sp),
@@ -385,6 +391,7 @@ class SearchSupervisors extends SearchDelegate {
                   padding:
                       EdgeInsets.only(top: AppWidget.getHeight(context) / 2),
                   child: AppText(
+                      color: Colors.black,
                       text: LocaleKeys.noData.tr(),
                       fontSize: AppSize.titleTextSize,
                       fontWeight: FontWeight.bold)),
