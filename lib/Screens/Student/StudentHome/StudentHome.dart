@@ -19,6 +19,7 @@ class _StudentHomeState extends State<StudentHome> {
     return Scaffold(
         appBar: AppBarMain(
           title: LocaleKeys.home.tr(),
+          
         ),
         body: AppWidget.body(
             child: Container(

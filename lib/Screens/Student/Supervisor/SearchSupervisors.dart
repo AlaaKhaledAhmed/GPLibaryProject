@@ -9,11 +9,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
-import '../../../Widget/AppSize.dart';
+import '../../../../Widget/AppSize.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_project/Widget/AppSvg.dart';
 import 'dart:math' as math;
-import '../../Widget/AppWidget.dart';
+import '../../../Widget/AppWidget.dart';
 
 class SearchSupervisors extends SearchDelegate {
   List<String> _oldFilters = [];

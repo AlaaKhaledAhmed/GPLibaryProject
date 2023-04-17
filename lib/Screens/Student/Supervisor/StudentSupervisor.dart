@@ -17,7 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_project/Widget/AppSvg.dart';
 import 'dart:math' as math;
 
-import '../../Superviser/SearchSupervisors.dart';
+import 'SearchSupervisors.dart';
 
 class StudentSupervisor extends StatefulWidget {
   const StudentSupervisor();
