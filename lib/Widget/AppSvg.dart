@@ -15,5 +15,9 @@ class AppSvg {
   static String searchSvg = 'assets/Svg/searchSvg.svg';
   static String sendSvg = 'assets/Svg/send_c.svg';
 
+  static String acceptFileSvg = 'assets/Svg/acceptFile.svg';
+  static String attachFileSvg = 'assets/Svg/attachFile.svg';
+  static String rejectFileSvg = 'assets/Svg/rejectFile.svg';
+  static String waitSvg = 'assets/Svg/wait.svg';
 
 }

@@ -4,6 +4,9 @@ import 'package:library_project/translations/locale_keys.g.dart';
 class AppConstants {
   static String typeIsStudent = 'st';
   static String typeIsTeacher = 'te';
+  static int statusIsWaiting = 1;
+  static int statusIsAcceptation = 2;
+  static int statusIsRejection = 3;
   static List<String> majorList = [
     LocaleKeys.softwareEngineering.tr(),
     LocaleKeys.dataScience.tr(),

@@ -219,9 +219,11 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                 'send request to ' + data['name'],
                                 higth: 100.h,
                                 showButtom: true,
-                                noFunction: ()=>Navigator.pop(context),
-                                yesFunction: () =>Database.studentSendRequest(context: context),
-
+                                noFunction: () => Navigator.pop(context),
+                                yesFunction: () => Database.studentSendRequest(
+                                    context: context,
+                                    stId: userId!,
+                                    supervisorId: data['userId']),
                               );
                             },
                           ),

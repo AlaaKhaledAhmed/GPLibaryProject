@@ -118,9 +118,15 @@ class Database {
   }
 
   //get supervisor=============================================================
-  static Future studentSendRequest({required BuildContext context}) async {
+  static Future studentSendRequest({
+    required BuildContext context,
+    required String stId,
+    required String supervisorId,
+  }) async {
     Navigator.pop(context);
-    print('objectgggggggggggg');
-    return 'cc';
+
+
+
+    return 'error';
   }
 }
