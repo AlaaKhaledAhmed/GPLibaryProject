@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
 import 'package:library_project/Widget/AppBarMain.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppIcons.dart';
@@ -110,7 +111,8 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 //body=====================================================
                   Container(
                     height: AppWidget.getHeight(context) * 0.55,
-                    decoration: AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
+                    decoration: AppWidget.decoration(
+                        radius: 10.r, color: AppColor.noColor),
                     width: AppWidget.getWidth(context),
                     child: StreamBuilder(
                         stream: userCollection.snapshots(),
@@ -136,8 +138,6 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
         ));
   }
 
-
-
 //search box===============================================================
   Widget rowData() {
     return Row(
@@ -160,7 +160,8 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
       child: snapshot.data.docs.length >= 0
           ? Container(
               height: AppWidget.getHeight(context) * 0.55,
-              decoration: AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
+              decoration:
+                  AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
               width: AppWidget.getWidth(context),
               child: ListView.builder(
                   shrinkWrap: true,
@@ -211,9 +212,21 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                 ),
                               ),
                             ),
+                            onTap: () {
+                              AppLoading.show(
+                                context,
+                                'Send',
+                                'send request to ' + data['name'],
+                                higth: 100.h,
+                                showButtom: true,
+                                noFunction: ()=>Navigator.pop(context),
+                                yesFunction: () =>Database.studentSendRequest(context: context),
+
+                              );
+                            },
                           ),
-//==========================================================================
                         ),
+//==========================================================================
                       ),
                     );
                   }),

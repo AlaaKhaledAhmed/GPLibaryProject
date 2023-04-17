@@ -69,10 +69,9 @@ class SearchSupervisors extends SearchDelegate {
             return const Center(child: Text("Error check internet!"));
           }
           if (snapshot.hasData) {
-
             return body(snapshot);
-          } if (snapshot.hasData) {
-
+          }
+          if (snapshot.hasData) {
             return body(snapshot);
           }
 
@@ -352,6 +351,9 @@ class SearchSupervisors extends SearchDelegate {
                               child: AppText(
                                 text: data['name'],
                                 fontSize: AppSize.title2TextSize,
+                                fontFamily: local.toString() == 'en'
+                                    ? GoogleFonts.quicksand().fontFamily
+                                    : GoogleFonts.almarai().fontFamily,
                               ),
                             ),
 //search interest=================================================================
@@ -361,6 +363,9 @@ class SearchSupervisors extends SearchDelegate {
                                 text: AppWidget.getTranslate(
                                     data['searchInterest']),
                                 fontSize: AppSize.title2TextSize,
+                                fontFamily: local.toString() == 'en'
+                                    ? GoogleFonts.quicksand().fontFamily
+                                    : GoogleFonts.almarai().fontFamily,
                               ),
                             ),
 //send icon=================================================================
@@ -369,9 +374,7 @@ class SearchSupervisors extends SearchDelegate {
                               child: Transform(
                                 alignment: Alignment.center,
                                 transform: Matrix4.rotationY(
-                                    context.locale.toString() == 'en'
-                                        ? 0
-                                        : math.pi),
+                                    local.toString() == 'en' ? 0 : math.pi),
                                 child: SvgPicture.asset(
                                   AppSvg.sendSvg,
                                   height: 40.r,

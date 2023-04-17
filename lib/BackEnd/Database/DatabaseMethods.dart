@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class Database {
   //=======================Student Sing up method======================================
@@ -14,7 +15,7 @@ class Database {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-          email: email.trim(), password: password);
+              email: email.trim(), password: password);
       if (userCredential.user != null) {
         await FirebaseFirestore.instance.collection('users').add({
           'name': name,
@@ -24,7 +25,7 @@ class Database {
           'major': major,
           'stId': stId,
           'type': 'student',
-          'auth':''
+          'auth': ''
         });
         return 'done';
       }
@@ -53,7 +54,7 @@ class Database {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-          email: email.trim(), password: password);
+              email: email.trim(), password: password);
       if (userCredential.user != null) {
         await FirebaseFirestore.instance.collection('users').add({
           'name': name,
@@ -104,32 +105,22 @@ class Database {
   }
 
 //=======================Add team======================================
-  static Future<String> addTeam({
-    required String name,
-    required String stId,
-    required String auth,
-    required String userId
-
-  }) async {
-    try {
-
-    } catch (e) {
+  static Future<String> addTeam(
+      {required String name,
+      required String stId,
+      required String auth,
+      required String userId}) async {
+    try {} catch (e) {
       return e.toString();
     }
 
     return 'error';
   }
-  //get supervisor=============================================================
-  static Future getSupervisor() async {
 
-    // supervisorList = supervisorCollection.docs
-    //     .map((QueryDocumentSnapshot d) =>
-    //         Supervisor.fromMap((d.data() as Map), (d.id)))
-    //     .toList();
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .where('type', isEqualTo: 'supervisor')
-        .get();
-    //supervisorList;
+  //get supervisor=============================================================
+  static Future studentSendRequest({required BuildContext context}) async {
+    Navigator.pop(context);
+    print('objectgggggggggggg');
+    return 'cc';
   }
 }

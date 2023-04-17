@@ -100,7 +100,7 @@ class AppLoading {
 //no buttom-------------------------------------------------------------------
                                       Expanded(
                                         child: AppButtons(
-                                        onPressed: yesFunction,
+                                        onPressed:noFunction,
                                         text: LocaleKeys.no.tr(),
                                       ),
                                       )
