@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:library_project/Widget/AppConstants.dart';
 
 class Database {
   //=======================Student Sing up method======================================
+  static  CollectionReference getUserCollection =
+      FirebaseFirestore.instance.collection('users');
   static Future<String> studentSingUpFu({
     required String name,
     required String email,
@@ -17,14 +20,14 @@ class Database {
           .createUserWithEmailAndPassword(
               email: email.trim(), password: password);
       if (userCredential.user != null) {
-        await FirebaseFirestore.instance.collection('users').add({
+        await getUserCollection.add({
           'name': name,
           'userId': userCredential.user?.uid,
           'password': password,
           'email': email,
           'major': major,
           'stId': stId,
-          'type': 'student',
+          'type': AppConstants.student,
           'auth': ''
         });
         return 'done';
@@ -56,14 +59,14 @@ class Database {
           .createUserWithEmailAndPassword(
               email: email.trim(), password: password);
       if (userCredential.user != null) {
-        await FirebaseFirestore.instance.collection('users').add({
+        await getUserCollection.add({
           'name': name,
           'userId': userCredential.user?.uid,
           'password': password,
           'email': email,
           'major': major,
           'searchInterest': searchInterest,
-          'type': 'supervisor'
+          'type': AppConstants.supervisor
         });
         return 'done';
       }
@@ -117,15 +120,28 @@ class Database {
     return 'error';
   }
 
+//get Student vi userId=============================================================================
+  static getDataViUserId({required String uId, required String userType}) {
+    Map<String, dynamic> userData = {};
+
+    getUserCollection
+        .where('userId', isEqualTo: uId)
+        .where('type', isEqualTo: userType).get();
+
+   getUserCollection.doc().get().then((value) {
+      print(value);
+    });
+    print(getUserCollection.runtimeType);
+    print(getUserCollection.runtimeType);
+  }
+
   //get supervisor=============================================================
-  static Future studentSendRequest({
+  static Future studentSupervisionRequests({
     required BuildContext context,
     required String stId,
     required String supervisorId,
   }) async {
     Navigator.pop(context);
-
-
 
     return 'error';
   }

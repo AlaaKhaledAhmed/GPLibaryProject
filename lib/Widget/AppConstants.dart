@@ -7,6 +7,8 @@ class AppConstants {
   static int statusIsWaiting = 1;
   static int statusIsAcceptation = 2;
   static int statusIsRejection = 3;
+  static String student = 'student';
+  static String supervisor = 'supervisor';
   static List<String> majorList = [
     LocaleKeys.softwareEngineering.tr(),
     LocaleKeys.dataScience.tr(),

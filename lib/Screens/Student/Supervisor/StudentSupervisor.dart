@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
 import 'package:library_project/Widget/AppBarMain.dart';
 import 'package:library_project/Widget/AppColors.dart';
+import 'package:library_project/Widget/AppConstants.dart';
 import 'package:library_project/Widget/AppIcons.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppWidget.dart';
@@ -220,10 +221,13 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                 higth: 100.h,
                                 showButtom: true,
                                 noFunction: () => Navigator.pop(context),
-                                yesFunction: () => Database.studentSendRequest(
-                                    context: context,
-                                    stId: userId!,
-                                    supervisorId: data['userId']),
+                                yesFunction: () => Database.getDataViUserId(
+                                  uId:userId!,
+                                    userType: AppConstants.student,
+                                    // context: context,
+                                    // stId: userId!,
+                                    // supervisorId: data['userId']
+                                ),
                               );
                             },
                           ),
