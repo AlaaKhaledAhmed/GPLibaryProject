@@ -1,12 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:library_project/Widget/AppConstants.dart';
+import 'package:library_project/Widget/AppWidget.dart';
 
 class Database {
   //=======================Student Sing up method======================================
-  static  CollectionReference getUserCollection =
-      FirebaseFirestore.instance.collection('users');
+
   static Future<String> studentSingUpFu({
     required String name,
     required String email,
@@ -20,7 +21,7 @@ class Database {
           .createUserWithEmailAndPassword(
               email: email.trim(), password: password);
       if (userCredential.user != null) {
-        await getUserCollection.add({
+        await AppConstants.userCollection.add({
           'name': name,
           'userId': userCredential.user?.uid,
           'password': password,
@@ -59,7 +60,7 @@ class Database {
           .createUserWithEmailAndPassword(
               email: email.trim(), password: password);
       if (userCredential.user != null) {
-        await getUserCollection.add({
+        await AppConstants.userCollection.add({
           'name': name,
           'userId': userCredential.user?.uid,
           'password': password,
@@ -121,28 +122,60 @@ class Database {
   }
 
 //get Student vi userId=============================================================================
-  static getDataViUserId({required String uId, required String userType}) {
-    Map<String, dynamic> userData = {};
+  static Future<String> getDataViUserId(
+      {required String currentUserUid}) async {
+    String name = '';
 
-    getUserCollection
-        .where('userId', isEqualTo: uId)
-        .where('type', isEqualTo: userType).get();
-
-   getUserCollection.doc().get().then((value) {
-      print(value);
+    await AppConstants.userCollection
+        .where('userId', isEqualTo: currentUserUid)
+        .get()
+        .then((getData) {
+      getData.docs.forEach((element) {
+        name = element['name'];
+      });
     });
-    print(getUserCollection.runtimeType);
-    print(getUserCollection.runtimeType);
+    return name;
   }
 
-  //get supervisor=============================================================
+//get request status=============================================================================
+  static Future<int> getStatus({required String id}) async {
+    var status=0;
+
+    await AppConstants.requestCollection
+        .where('studentUid', isEqualTo: id)
+        .get()
+        .then((getData) {
+      getData.docs.forEach((element) {
+        print('status: ${element.id}');
+
+      });
+      print('status: $status');
+    });
+    return status;
+  }
+
+  //student Supervision Requests=============================================================
   static Future studentSupervisionRequests({
     required BuildContext context,
-    required String stId,
-    required String supervisorId,
+    required String studentUid,
+    required String supervisorUid,
+    required String supervisorName,
+    required String supervisorInterest,
+    required String studentName,
   }) async {
-    Navigator.pop(context);
-
-    return 'error';
+    try {
+      AppConstants.requestCollection.add({
+        'studentUid': studentUid,
+        'supervisorUid': supervisorUid,
+        'status': AppConstants.statusIsWaiting,
+        'requestId': AppWidget.uniqueOrder(),
+        'supervisorName': supervisorName,
+        'supervisorInterest': supervisorInterest,
+        'studentName': studentName,
+      });
+      return 'done';
+    } catch (e) {
+      return 'error';
+    }
   }
 }

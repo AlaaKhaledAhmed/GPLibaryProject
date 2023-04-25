@@ -109,4 +109,8 @@ class AppWidget {
         color: color ?? AppColor.white,
         borderRadius: BorderRadius.all(Radius.circular(radius ?? 20.r)));
   }
+  //unique number========================================================================
+  static int uniqueOrder() {
+    return DateTime.now().millisecondsSinceEpoch.remainder(100000);
+  }
 }

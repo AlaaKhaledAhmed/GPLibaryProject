@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class AppConstants {
   static String typeIsStudent = 'st';
   static String typeIsTeacher = 'te';
@@ -23,4 +23,9 @@ class AppConstants {
     LocaleKeys.dataManagement.tr(),
     LocaleKeys.webDevelopment.tr()
   ];
+
+  static CollectionReference userCollection =
+  FirebaseFirestore.instance.collection('users');
+  static CollectionReference requestCollection =
+  FirebaseFirestore.instance.collection('requests');
 }

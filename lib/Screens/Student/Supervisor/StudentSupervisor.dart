@@ -198,22 +198,55 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                               ),
                             ),
 //send icon=================================================================
-                            trailing: Padding(
-                              padding: EdgeInsets.only(top: 20.h),
-                              child: Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.rotationY(
-                                    context.locale.toString() == 'en'
-                                        ? 0
-                                        : math.pi),
-                                child: SvgPicture.asset(
-                                  AppSvg.sendSvg,
-                                  height: 40.r,
-                                  width: 40.r,
+                            trailing: FittedBox(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 20.h),
+                                child: Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.rotationY(
+                                      context.locale.toString() == 'en'
+                                          ? 0
+                                          : math.pi),
+                                  child: StreamBuilder(
+                                      stream: AppConstants.requestCollection
+                                          .where('studentUid',
+                                              isEqualTo: userId!)
+                                          .where('supervisorUid',
+                                              isEqualTo: data['userId'])
+                                          .snapshots(),
+                                      builder: (context, AsyncSnapshot sn) {
+                                        if (snapshot.hasError) {
+                                          return const Center(child: Text("!"));
+                                        }
+                                        if (snapshot.hasData) {
+                                          return SvgPicture.asset(
+                                            sn.data.docs[0]['status'] ==
+                                                    AppConstants.statusIsWaiting
+                                                ? AppSvg.waitSvg
+                                                : sn.data.docs[0]['status'] ==
+                                                        AppConstants
+                                                            .statusIsRejection
+                                                    ? AppSvg.rejectFileSvg
+                                                    : sn.data.docs[0]
+                                                                ['status'] ==
+                                                            AppConstants
+                                                                .statusIsAcceptation
+                                                        ? AppSvg.sendSvg
+                                                        : AppSvg.sendSvg,
+                                            height: 40.r,
+                                            width: 40.r,
+                                          );
+                                        }
+
+                                        return const Center(
+                                            child: CircularProgressIndicator(
+                                          color: AppColor.appBarColor,
+                                        ));
+                                      }),
                                 ),
                               ),
                             ),
-                            onTap: () {
+                            onTap: () async {
                               AppLoading.show(
                                 context,
                                 'Send',
@@ -221,13 +254,34 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                 higth: 100.h,
                                 showButtom: true,
                                 noFunction: () => Navigator.pop(context),
-                                yesFunction: () => Database.getDataViUserId(
-                                  uId:userId!,
-                                    userType: AppConstants.student,
-                                    // context: context,
-                                    // stId: userId!,
-                                    // supervisorId: data['userId']
-                                ),
+                                yesFunction: () async =>
+                                    Database.studentSupervisionRequests(
+                                            context: context,
+                                            studentUid: userId!,
+                                            supervisorUid: data['userId'],
+                                            supervisorName: data['name'],
+                                            supervisorInterest:
+                                                data['searchInterest'],
+                                            studentName:
+                                                await Database.getDataViUserId(
+                                              currentUserUid: userId!,
+                                            ))
+                                        .then((v) {
+                                  print('================$v');
+                                  if (v == 'done') {
+                                    Navigator.pop(context);
+                                    AppLoading.show(
+                                        context,
+                                        LocaleKeys.mySuperVisor.tr(),
+                                        LocaleKeys.done.tr());
+                                  } else {
+                                    Navigator.pop(context);
+                                    AppLoading.show(
+                                        context,
+                                        LocaleKeys.mySuperVisor.tr(),
+                                        LocaleKeys.error.tr());
+                                  }
+                                }),
                               );
                             },
                           ),
@@ -249,6 +303,5 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
     );
   }
 
-//============================================================================================
-
+  getD(data) {}
 }
