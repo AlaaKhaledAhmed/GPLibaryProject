@@ -57,5 +57,9 @@ abstract class  LocaleKeys {
   static const webDevelopment = 'webDevelopment';
   static const welcomeLoginTx = 'welcomeLoginTx';
   static const search = 'search';
+  static const dr = 'dr';
+  static const sendRequest = 'sendRequest';
+  static const sendRequestTo = 'sendRequestTo';
+  static const canNotSend = 'canNotSend';
 
 }

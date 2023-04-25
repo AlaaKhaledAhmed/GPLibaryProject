@@ -207,31 +207,27 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                       context.locale.toString() == 'en'
                                           ? 0
                                           : math.pi),
-                                  child: StreamBuilder(
-                                      stream: AppConstants.requestCollection
-                                          .where('studentUid',
-                                              isEqualTo: userId!)
-                                          .where('supervisorUid',
-                                              isEqualTo: data['userId'])
-                                          .snapshots(),
+                                  child: FutureBuilder(
+                                      future: getImage(
+                                          stId: userId!, supId: data['userId']),
                                       builder: (context, AsyncSnapshot sn) {
                                         if (snapshot.hasError) {
                                           return const Center(child: Text("!"));
                                         }
                                         if (snapshot.hasData) {
+                                          // print(sn.data);
                                           return SvgPicture.asset(
-                                            sn.data.docs[0]['status'] ==
+                                            sn.data ==
                                                     AppConstants.statusIsWaiting
                                                 ? AppSvg.waitSvg
-                                                : sn.data.docs[0]['status'] ==
+                                                : sn.data ==
                                                         AppConstants
                                                             .statusIsRejection
                                                     ? AppSvg.rejectFileSvg
-                                                    : sn.data.docs[0]
-                                                                ['status'] ==
+                                                    : sn.data ==
                                                             AppConstants
                                                                 .statusIsAcceptation
-                                                        ? AppSvg.sendSvg
+                                                        ? AppSvg.acceptFileSvg
                                                         : AppSvg.sendSvg,
                                             height: 40.r,
                                             width: 40.r,
@@ -247,42 +243,53 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                               ),
                             ),
                             onTap: () async {
-                              AppLoading.show(
-                                context,
-                                'Send',
-                                'send request to ' + data['name'],
-                                higth: 100.h,
-                                showButtom: true,
-                                noFunction: () => Navigator.pop(context),
-                                yesFunction: () async =>
-                                    Database.studentSupervisionRequests(
-                                            context: context,
-                                            studentUid: userId!,
-                                            supervisorUid: data['userId'],
-                                            supervisorName: data['name'],
-                                            supervisorInterest:
-                                                data['searchInterest'],
-                                            studentName:
-                                                await Database.getDataViUserId(
-                                              currentUserUid: userId!,
-                                            ))
-                                        .then((v) {
-                                  print('================$v');
-                                  if (v == 'done') {
-                                    Navigator.pop(context);
-                                    AppLoading.show(
-                                        context,
-                                        LocaleKeys.mySuperVisor.tr(),
-                                        LocaleKeys.done.tr());
-                                  } else {
-                                    Navigator.pop(context);
-                                    AppLoading.show(
-                                        context,
-                                        LocaleKeys.mySuperVisor.tr(),
-                                        LocaleKeys.error.tr());
-                                  }
-                                }),
-                              );
+                              await getImage(
+                                          stId: userId!,
+                                          supId: data['userId']) ==
+                                      AppConstants.statusIsNotSendYet
+                                  ? AppLoading.show(
+                                      context,
+                                      LocaleKeys.sendRequest.tr(),
+                                      '${LocaleKeys.sendRequestTo.tr()} ' +
+                                          data['name'],
+                                      higth: 100.h,
+                                      showButtom: true,
+                                      noFunction: () => Navigator.pop(context),
+                                      yesFunction: () async =>
+                                          Database.studentSupervisionRequests(
+                                                  context: context,
+                                                  studentUid: userId!,
+                                                  supervisorUid: data['userId'],
+                                                  supervisorName: data['name'],
+                                                  supervisorInterest:
+                                                      data['searchInterest'],
+                                                  studentName: await Database
+                                                      .getDataViUserId(
+                                                    currentUserUid: userId!,
+                                                  ))
+                                              .then((v) {
+                                        print('================$v');
+                                        if (v == 'done') {
+                                          setState(() {});
+                                          Navigator.pop(context);
+                                          AppLoading.show(
+                                              context,
+                                              LocaleKeys.mySuperVisor.tr(),
+                                              LocaleKeys.done.tr());
+                                        } else {
+                                          Navigator.pop(context);
+                                          AppLoading.show(
+                                              context,
+                                              LocaleKeys.mySuperVisor.tr(),
+                                              LocaleKeys.error.tr());
+                                        }
+                                      }),
+                                    )
+                                  : AppLoading.show(
+                                      context,
+                                      LocaleKeys.sendRequest.tr(),
+                                      LocaleKeys.canNotSend.tr());
+                              setState(() {});
                             },
                           ),
                         ),
@@ -303,5 +310,24 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
     );
   }
 
-  getD(data) {}
+  getImage({required String stId, required String supId}) async {
+    // print('stId:$stId');
+    // print('supId:$supId');
+    late int st = 0;
+    await AppConstants.requestCollection
+        .where('studentUid', isEqualTo: stId)
+        .where('supervisorUid', isEqualTo: supId)
+        .get()
+        .then((getData) {
+      for (QueryDocumentSnapshot element in getData.docs) {
+        if (element.exists) {
+          st = element['status'];
+          // print('st: $st');
+          // setState(() {});
+        }
+      }
+    });
+
+    return st;
+  }
 }

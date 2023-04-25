@@ -57,6 +57,9 @@
   "webDevelopment": "Web Development",
   "welcomeLoginTx": "Welcome again, please enter the following data to enter the application",
   "search": "Search",
-  "dr": "Dr"
+
+  "sendRequest": "Send request",
+  "sendRequestTo": "Send request to",
+  "canNotSend": "You have already sent a request to this supervisor"
 
 }

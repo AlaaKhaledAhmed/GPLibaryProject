@@ -32,7 +32,7 @@ class AppLoading {
             title: content != "lode"
                 ? Container(
                     decoration: BoxDecoration(
-                        color: AppColor.buttonsColor,
+                        color: AppColor.appBarColor,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10.r),
                             topRight: Radius.circular(10.r))),
@@ -51,30 +51,30 @@ class AppLoading {
 
             content: content != "lode"
                 ? SizedBox(
-                    height: higth ?? 100.h,
-                    width: double.infinity,
+                    height: higth ?? 70.h,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(height: 10.h),
 //continent tittle-------------------------------------------------------------------
                         Expanded(
                           flex: 3,
-                          child: Center(
-                              child: AppText(
-                            fontSize: AppSize.subTextSize,
+                          child: AppText(
+                            fontSize: AppSize.subTextSize + 2,
                             text: content,
                             color: AppColor.black,
-                          )),
+                            align: TextAlign.center,
+                          ),
                         ),
 
 //divider-------------------------------------------------------------------
 
                         showButtom
-                            ? Divider(
-                                thickness: 2,
-                                color: AppColor.buttonsColor,
+                            ? const Divider(
+                                thickness: 1,
+                                color: AppColor.appBarColor,
                               )
                             : const SizedBox(),
                         SizedBox(height: 10.h),
@@ -94,15 +94,17 @@ class AppLoading {
                                           child: AppButtons(
                                         onPressed: yesFunction,
                                         text: LocaleKeys.yes.tr(),
+                                        bagColor: AppColor.appBarColor,
                                       )),
 
                                       SizedBox(width: 20.w),
 //no buttom-------------------------------------------------------------------
                                       Expanded(
                                         child: AppButtons(
-                                        onPressed:noFunction,
-                                        text: LocaleKeys.no.tr(),
-                                      ),
+                                          onPressed: noFunction,
+                                          text: LocaleKeys.no.tr(),
+                                          bagColor: AppColor.appBarColor,
+                                        ),
                                       )
                                     ]),
                               )

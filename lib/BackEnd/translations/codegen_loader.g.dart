@@ -71,7 +71,10 @@ class CodegenLoader extends AssetLoader{
   "webDevelopment": "تطوير مواقع الانترنت",
   "welcomeLoginTx": "مرحبا بك مرة اخري الرجاء ادخال البيانات التالية للدخول الى التطبيق",
   "search": "البحث",
-  "dr": "د"
+  "dr": "د",
+  "sendRequest": "ارسال طلب",
+  "sendRequestTo": "ارسال طلب الى",
+  "canNotSend": "لقد قمت بارسال طلب مسبقا لهذا المشرف"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -130,7 +133,9 @@ static const Map<String,dynamic> en = {
   "webDevelopment": "Web Development",
   "welcomeLoginTx": "Welcome again, please enter the following data to enter the application",
   "search": "Search",
-  "dr": "Dr"
+  "sendRequest": "Send request",
+  "sendRequestTo": "Send request to",
+  "canNotSend": "You have already sent a request to this supervisor"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }
