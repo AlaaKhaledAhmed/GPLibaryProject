@@ -60,6 +60,7 @@
 
   "sendRequest": "Send request",
   "sendRequestTo": "Send request to",
-  "canNotSend": "You have already sent a request to this supervisor"
+  "canNotSend": "You have already sent a request to this supervisor",
+  "all": "Show all"
 
 }

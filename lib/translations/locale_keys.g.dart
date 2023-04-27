@@ -61,5 +61,6 @@ abstract class  LocaleKeys {
   static const sendRequest = 'sendRequest';
   static const sendRequestTo = 'sendRequestTo';
   static const canNotSend = 'canNotSend';
+  static const all = 'all';
 
 }

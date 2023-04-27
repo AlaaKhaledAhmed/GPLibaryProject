@@ -332,15 +332,25 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
         child: Center(
           child: AppPopUpMen(
             menuList: [
+              ///show all
               PopupMenuItem(
-                child: ListTile(
-                  title: AppText(
-                    text: LocaleKeys.searchInterestTx.tr(),
-                    fontSize: AppSize.subTextSize,
-                  ),
+                onTap: ()=>print('all'),
+                child: AppText(
+                  text: LocaleKeys.all.tr(),
+                  fontSize: AppSize.subTextSize,
                 ),
               ),
+              ///filter by searchInterest
               PopupMenuItem(
+                onTap: ()=>print('searchInterest'),
+                child: AppText(
+                  text: LocaleKeys.searchInterestTx.tr(),
+                  fontSize: AppSize.subTextSize,
+                ),
+              ),
+              ///filter by major
+              PopupMenuItem(
+                onTap: ()=>print('majorTx'),
                 child: AppText(
                   text: LocaleKeys.majorTx.tr(),
                   fontSize: AppSize.subTextSize,
