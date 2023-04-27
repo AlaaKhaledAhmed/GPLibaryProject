@@ -5,6 +5,7 @@ import 'package:library_project/Widget/AppBarMain.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppConstants.dart';
 import 'package:library_project/Widget/AppIcons.dart';
+import 'package:library_project/Widget/AppPopUpMen.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_project/Widget/AppSvg.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'dart:math' as math;
 
 import 'SearchSupervisors.dart';
@@ -93,18 +96,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                             child: rowData(),
                           ),
                         ),
-                        Container(
-                          width: AppWidget.getWidth(context) * 0.14,
-                          height: double.infinity,
-                          decoration: AppWidget.decoration(radius: 10.r),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              AppSvg.filterSvg,
-                              height: 30,
-                              width: 30,
-                            ),
-                          ),
-                        )
+                        showFilter()
                       ],
                     ),
                   ),
@@ -310,6 +302,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
     );
   }
 
+//=======================================================================
   getImage({required String stId, required String supId}) async {
     // print('stId:$stId');
     // print('supId:$supId');
@@ -330,4 +323,36 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 
     return st;
   }
+
+//Filter data=========================================================================
+  showFilter() => Container(
+        width: AppWidget.getWidth(context) * 0.14,
+        height: double.infinity,
+        decoration: AppWidget.decoration(radius: 10.r),
+        child: Center(
+          child: AppPopUpMen(
+            menuList: [
+              PopupMenuItem(
+                child: ListTile(
+                  title: AppText(
+                    text: LocaleKeys.searchInterestTx.tr(),
+                    fontSize: AppSize.subTextSize,
+                  ),
+                ),
+              ),
+              PopupMenuItem(
+                child: AppText(
+                  text: LocaleKeys.majorTx.tr(),
+                  fontSize: AppSize.subTextSize,
+                ),
+              )
+            ],
+            icon: SvgPicture.asset(
+              AppSvg.filterSvg,
+              height: 30,
+              width: 30,
+            ),
+          ),
+        ),
+      );
 }

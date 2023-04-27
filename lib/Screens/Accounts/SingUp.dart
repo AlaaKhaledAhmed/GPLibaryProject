@@ -215,7 +215,7 @@ class SingUp extends StatelessWidget {
                                               selectedMajor =
                                                   model.setMajor(selectedItem!);
                                               print(
-                                                  'selectedMajor: ${selectedMajor}');
+                                                  'selectedMajor: $selectedMajor');
                                             },
                                             hintText:
                                                 LocaleKeys.selectMajor.tr(),
