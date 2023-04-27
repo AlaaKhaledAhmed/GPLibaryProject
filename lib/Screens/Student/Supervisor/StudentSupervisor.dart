@@ -255,10 +255,9 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                                   supervisorName: data['name'],
                                                   supervisorInterest:
                                                       data['searchInterest'],
-                                                  studentName: await Database
-                                                      .getDataViUserId(
-                                                    currentUserUid: userId!,
-                                                  ))
+                                                  studentName: await  Database.getDataViUserId(currentUserUid: userId!)
+
+                                          )
                                               .then((v) {
                                         print('================$v');
                                         if (v == 'done') {
@@ -341,13 +340,13 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                 ),
               ),
               ///filter by searchInterest
-              PopupMenuItem(
-                onTap: ()=>print('searchInterest'),
-                child: AppText(
-                  text: LocaleKeys.searchInterestTx.tr(),
-                  fontSize: AppSize.subTextSize,
-                ),
-              ),
+              // PopupMenuItem(
+              //   onTap: ()=>print('searchInterest'),
+              //   child: AppText(
+              //     text: LocaleKeys.searchInterestTx.tr(),
+              //     fontSize: AppSize.subTextSize,
+              //   ),
+              // ),
               ///filter by major
               PopupMenuItem(
                 onTap: ()=>print('majorTx'),
