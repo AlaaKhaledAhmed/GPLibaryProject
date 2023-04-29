@@ -172,7 +172,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 
 //show data from database========================================================================
   Widget body(snapshot, model) {
-    resultCount=snapshot.data.docs.length;
+
     return snapshot.data.docs.isNotEmpty
         ? Container(
             height: AppWidget.getHeight(context) * 0.55,
@@ -186,8 +186,9 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
               width: AppWidget.getWidth(context),
               child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: resultCount,
+                  itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, i) {
+                    resultCount=snapshot.data.docs.length;
                     var data = snapshot.data.docs[i].data();
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
