@@ -44,7 +44,7 @@ class AppValidator {
       }
       return null;
     }
-    if (type == AppConstants.typeIsTeacher) {
+    if (type == AppConstants.typeIsSupervisor) {
       if ((email.endsWith('@taibahu.edu.sa') == false) ||
           (email.startsWith('tu') == false)) {
         return LocaleKeys.invalidEmail.tr();

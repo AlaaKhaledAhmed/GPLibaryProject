@@ -3,13 +3,15 @@ import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 class AppConstants {
   static String typeIsStudent = 'st';
-  static String typeIsTeacher = 'te';
+  static String typeIsSupervisor = 'te';
   static int statusIsNotSendYet = 0;
   static int statusIsWaiting = 1;
   static int statusIsAcceptation = 2;
   static int statusIsRejection = 3;
   static String student = 'student';
   static String supervisor = 'supervisor';
+  static int filterByMajor=1;
+  static int filterBySearch=2;
   static List<String> majorList = [
     LocaleKeys.softwareEngineering.tr(),
     LocaleKeys.dataScience.tr(),

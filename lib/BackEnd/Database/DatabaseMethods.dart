@@ -15,6 +15,7 @@ class Database {
     required String stId,
     required String major,
     required String phone,
+    required String searchInterest,
   }) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -29,6 +30,7 @@ class Database {
           'major': major,
           'stId': stId,
           'type': AppConstants.student,
+          'searchInterest': searchInterest,
           'auth': ''
         });
         return 'done';

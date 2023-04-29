@@ -20,7 +20,6 @@ import '../../Widget/AppImagePath.dart';
 import 'Login.dart';
 import 'package:provider/provider.dart';
 
-
 class SingUp extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -52,13 +51,14 @@ class SingUp extends StatelessWidget {
                     image: DecorationImage(
                         image: AssetImage(AppImagePath.backgroundImage2),
                         fit: BoxFit.cover)),
-                child: Consumer<ChangConstModel>(builder: (context, model, child) {
+                child:
+                    Consumer<ChangConstModel>(builder: (context, model, child) {
                   return Stack(
                     children: [
 //Screen name=============================================================
                       Positioned(
                           top: AppWidget.getHeight(context) * 0.11,
-                         // bottom: AppWidget.getHeight(context) * 0.12,
+                          // bottom: AppWidget.getHeight(context) * 0.12,
                           left: AppWidget.getHeight(context) * 0.04,
                           right: AppWidget.getHeight(context) * 0.02,
                           child: AppText(
@@ -148,7 +148,7 @@ class SingUp extends StatelessWidget {
                                                     v,
                                                     model.isSupervisor[0]
                                                         ? AppConstants
-                                                            .typeIsTeacher
+                                                            .typeIsSupervisor
                                                         : AppConstants
                                                             .typeIsStudent),
                                           ),
@@ -165,41 +165,44 @@ class SingUp extends StatelessWidget {
                                             obscureText: true,
                                           ),
                                           AppWidget.hSpace(AppSize.hSpace),
-//id or search interest TextField=============================================================
-                                          model.isSupervisor[0]
-                                              ? AppDropList(
-                                                  listItem:
-                                                      AppConstants.searchList,
-                                                  validator: (v) {
-                                                    if (v == null) {
-                                                      return LocaleKeys
-                                                          .mandatoryTx
-                                                          .tr();
-                                                    } else {
-                                                      return null;
-                                                    }
-                                                  },
-                                                  onChanged: (selectedItem) {
-                                                    selectedSearch =
-                                                        model.setSearch(
-                                                            selectedItem!);
-                                                    print(
-                                                        'selectedSearch: ${selectedSearch}');
-                                                  },
-                                                  hintText: LocaleKeys
-                                                      .selectSearchInterest
-                                                      .tr(),
-                                                  dropValue: selectedSearch,
-                                                )
-                                              : AppTextFields(
+//id TextField===================================================================================
+                                          model.isSupervisor[0] == false
+                                              ? AppTextFields(
                                                   controller: idController,
                                                   labelText:
                                                       LocaleKeys.idTx.tr(),
                                                   validator: (v) =>
                                                       AppValidator.validatorID(
                                                           v),
-                                                ),
+                                                )
+                                              : const SizedBox(),
                                           AppWidget.hSpace(AppSize.hSpace),
+//search interest TextField========================================================================
+                                          AppDropList(
+                                            listItem: AppConstants.searchList,
+                                            validator: (v) {
+                                              if (v == null) {
+                                                return LocaleKeys.mandatoryTx
+                                                    .tr();
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                            onChanged: (selectedItem) {
+                                              selectedSearch = model
+                                                  .setSearch(selectedItem!);
+                                              print(
+                                                  'selectedSearch: $selectedSearch');
+                                            },
+                                            hintText: LocaleKeys
+                                                .selectSearchInterest
+                                                .tr(),
+                                            dropValue: selectedSearch,
+                                          ),
+                                          model.isSupervisor[0] == false
+                                              ? AppWidget.hSpace(AppSize.hSpace)
+                                              : const SizedBox(),
+
 //major dropList=============================================================
                                           AppDropList(
                                             listItem: AppConstants.majorList,
@@ -242,7 +245,7 @@ class SingUp extends StatelessWidget {
                                                 AppLoading.show(
                                                     context, '', 'lode');
 
-                                                model.isSupervisor[0]==false
+                                                model.isSupervisor[0] == false
                                                     ? Database.studentSingUpFu(
                                                         name:
                                                             nameController.text,
@@ -252,9 +255,14 @@ class SingUp extends StatelessWidget {
                                                             passwordController
                                                                 .text,
                                                         stId: idController.text,
-                                                        major: selectedMajor!,
+                                                        major: AppWidget
+                                                            .setEnTranslateMajor(
+                                                                selectedMajor!),
                                                         phone: phoneController
                                                             .text,
+                                                        searchInterest: AppWidget
+                                                            .setEnTranslateSearchInterest(
+                                                                selectedSearch!),
                                                       ).then((String v) {
                                                         print(
                                                             '================$v');
@@ -309,15 +317,20 @@ class SingUp extends StatelessWidget {
                                                         password:
                                                             passwordController
                                                                 .text,
-                                                        searchInterest:
-                                                            selectedSearch!,
-                                                        major: selectedMajor!,
+                                                        searchInterest: AppWidget
+                                                            .setEnTranslateSearchInterest(
+                                                                selectedSearch!),
+                                                        major: AppWidget
+                                                            .setEnTranslateMajor(
+                                                                selectedMajor!),
                                                         phone: phoneController
                                                             .text,
                                                       ).then((String v) {
                                                         print(
                                                             '================$v');
                                                         if (v == 'done') {
+                                                          Navigator.pop(
+                                                              context);
                                                           AppLoading.show(
                                                               context,
                                                               LocaleKeys.singUp
@@ -449,7 +462,7 @@ class SingUp extends StatelessWidget {
                                         ),
                                         onTap: () {
                                           AppRoutes.pushReplacementTo(
-                                              context,  Login());
+                                              context, Login());
                                         }),
                                   ],
                                 ),

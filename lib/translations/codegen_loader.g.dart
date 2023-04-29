@@ -75,7 +75,9 @@ class CodegenLoader extends AssetLoader{
   "sendRequest": "ارسال طلب",
   "sendRequestTo": "ارسال طلب الى",
   "canNotSend": "لقد قمت بارسال طلب مسبقا لهذا المشرف",
-  "all": "عرض الكل"
+  "all": "عرض الكل",
+  "history": "عمليات البحث الأخيرة",
+  "results": "عدد النتائج"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -137,7 +139,9 @@ static const Map<String,dynamic> en = {
   "sendRequest": "Send request",
   "sendRequestTo": "Send request to",
   "canNotSend": "You have already sent a request to this supervisor",
-  "all": "Show all"
+  "all": "Show all",
+  "history": "History",
+  "results": "Results number"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

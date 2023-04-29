@@ -85,30 +85,92 @@ class AppWidget {
       // AppText(text: LocaleKeys.myTeam.tr(), fontSize: WidgetSize.titleTextSize);
     }));
   }
-  //get Translate word======================================================================
-  static String getTranslate(String word) {
-    if(word=="الذكاء الاصطناعي" ||word=="Artificial Intelligence"){
+
+  //get Translate Search Interest======================================================================
+  static String getTranslateSearchInterest(String search) {
+    if (search == "الذكاء الاصطناعي" || search == "Artificial Intelligence") {
       return LocaleKeys.artificialIntelligence.tr();
     }
-    if(word=="تطوير البرمجيات" ||word== "Software Development"){
+    if (search == "تطوير البرمجيات" || search == "Software Development") {
       return LocaleKeys.softwareDevelopment.tr();
     }
-    if(word=="إدارة البيانات" ||word=="Data Management"){
+    if (search == "إدارة البيانات" || search == "Data Management") {
       return LocaleKeys.dataManagement.tr();
     }
-    if(word=="تطوير مواقع الانترنت" ||word=="Web Development"){
+    if (search == "تطوير مواقع الانترنت" || search == "Web Development") {
       return LocaleKeys.webDevelopment.tr();
     }
 
     return '';
   }
 
+  //set Translate Search Interest======================================================================
+  static String setEnTranslateSearchInterest(String search) {
+    if (search == "الذكاء الاصطناعي" || search == "Artificial Intelligence") {
+      return "Artificial Intelligence";
+    }
+    if (search == "تطوير البرمجيات" || search == "Software Development") {
+      return "Software Development";
+    }
+    if (search == "إدارة البيانات" || search == "Data Management") {
+      return "Data Management";
+    }
+    if (search == "تطوير مواقع الانترنت" || search == "Web Development") {
+      return "Web Development";
+    }
+
+    return '';
+  }
+
+  //get Translate major======================================================================
+  static String getTranslateMajor(String major) {
+    if (major == "هندسة برمجيات" || major == "Software Engineering") {
+      return LocaleKeys.softwareEngineering.tr();
+    }
+    if (major == "علم البيانات" || major == "Data Science") {
+      return LocaleKeys.dataScience.tr();
+    }
+    if (major == "أمن المعلومات" || major == "Information Security") {
+      return LocaleKeys.informationSecurity.tr();
+    }
+    if (major == "تكنولوجيا المعلومات" || major == "Information Technology") {
+      return LocaleKeys.informationTechnology.tr();
+    }
+    if (major == "هندسة الشبكات" || major == "Network Engineering") {
+      return LocaleKeys.softwareEngineering.tr();
+    }
+
+    return '';
+  }
+
+  //set Translate major======================================================================
+  static String setEnTranslateMajor(String major) {
+    if (major == "هندسة برمجيات" || major == "Software Engineering") {
+      return "Software Engineering";
+    }
+    if (major == "علم البيانات" || major == "Data Science") {
+      return "Data Science";
+    }
+    if (major == "أمن المعلومات" || major == "Information Security") {
+      return "Information Security";
+    }
+    if (major == "تكنولوجيا المعلومات" || major == "Information Technology") {
+      return "Information Technology";
+    }
+    if (major == "هندسة الشبكات" || major == "Network Engineering") {
+      return "Network Engineering";
+    }
+
+    return '';
+  }
+
   //container decoration===============================================================
- static BoxDecoration decoration({double? radius, Color? color}) {
+  static BoxDecoration decoration({double? radius, Color? color}) {
     return BoxDecoration(
         color: color ?? AppColor.white,
         borderRadius: BorderRadius.all(Radius.circular(radius ?? 20.r)));
   }
+
   //unique number========================================================================
   static int uniqueOrder() {
     return DateTime.now().millisecondsSinceEpoch.remainder(100000);

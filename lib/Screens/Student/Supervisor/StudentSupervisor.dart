@@ -10,20 +10,19 @@ import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../BackEnd/Provider/ChangConstModel.dart';
 import '../../../Widget/AppLoading.dart';
 import '../../../Widget/AppSize.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_project/Widget/AppSvg.dart';
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
 import 'dart:math' as math;
-
 import 'SearchSupervisors.dart';
+import 'package:provider/provider.dart';
 
 class StudentSupervisor extends StatefulWidget {
-  const StudentSupervisor();
+  const StudentSupervisor({Key? key}) : super(key: key);
 
   @override
   State<StudentSupervisor> createState() => _StudentSupervisorState();
@@ -31,17 +30,19 @@ class StudentSupervisor extends StatefulWidget {
 
 class _StudentSupervisorState extends State<StudentSupervisor> {
   String? userId;
+  String? studentData;
+  int?resultCount;
   List supervisorsNames = [];
   var userCollection = FirebaseFirestore.instance
       .collection("users")
-      .where('type', isEqualTo: 'supervisor');
+      .where('type', isEqualTo: AppConstants.supervisor);
+  int iniFilter = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     userId = FirebaseAuth.instance.currentUser?.uid;
-
     userCollection.get().then((value) {
       for (var element in value.docs) {
         setState(() {
@@ -58,77 +59,102 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
         appBar: AppBarMain(
           title: LocaleKeys.mySuperVisor.tr(),
         ),
-        body: SizedBox(
-          // color: Colors.green,
-          height: AppWidget.getHeight(context),
-          width: AppWidget.getWidth(context),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10.h,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
+        body: Consumer<ChangConstModel>(builder: (context, model, child) {
+          return SizedBox(
+            // color: Colors.green,
+            height: AppWidget.getHeight(context),
+            width: AppWidget.getWidth(context),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10.h,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
 //search and filter=====================================================
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 15.h,
-                    ),
-                    height: 60.h,
-                    width: AppWidget.getWidth(context),
-                    //color: Colors.green,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () => showSearch(
-                              context: context,
-                              delegate: SearchSupervisors(
-                                  supervisorsNamesList: supervisorsNames,
-                                  context: context,
-                                  userId: userId!,
-                                  local: context.locale)),
-                          child: Container(
-                            height: double.infinity,
-                            width: AppWidget.getWidth(context) * 0.75,
-                            decoration: AppWidget.decoration(),
-                            child: rowData(),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        vertical: 15.h,
+                      ),
+                      height: 60.h,
+                      width: AppWidget.getWidth(context),
+                      //color: Colors.green,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () => showSearch(
+                                context: context,
+                                delegate: SearchSupervisors(
+                                    supervisorsNamesList: supervisorsNames,
+                                    context: context,
+                                    userId: userId!,
+                                    local: context.locale)),
+                            child: Container(
+                              height: double.infinity,
+                              width: AppWidget.getWidth(context) * 0.75,
+                              decoration: AppWidget.decoration(),
+                              child: rowData(),
+                            ),
                           ),
-                        ),
-                        showFilter()
-                      ],
+                          showFilter(model)
+                        ],
+                      ),
                     ),
-                  ),
-                  AppWidget.hSpace(10),
-//body=====================================================
-                  Container(
-                    height: AppWidget.getHeight(context) * 0.55,
-                    decoration: AppWidget.decoration(
-                        radius: 10.r, color: AppColor.noColor),
-                    width: AppWidget.getWidth(context),
-                    child: StreamBuilder(
-                        stream: userCollection.snapshots(),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                                child: Text("Error check internet!"));
-                          }
-                          if (snapshot.hasData) {
-                            return body(snapshot);
-                          }
+                    AppWidget.hSpace(10),
+//search and filter=====================================================
+                    resultCount!=null?
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(text: LocaleKeys.results.tr(), fontSize: AppSize.title2TextSize,color: AppColor.iconColor,),
+                          AppText(text: '$resultCount', fontSize: AppSize.title2TextSize,color: AppColor.iconColor,)
 
-                          return const Center(
-                              child: CircularProgressIndicator(
-                            color: AppColor.appBarColor,
-                          ));
-                        }),
-                  )
-                ],
+                        ],
+                      ),
+                    ):const SizedBox(),
+                    AppWidget.hSpace(15),
+//body=====================================================
+                    Container(
+                      height: AppWidget.getHeight(context) * 0.55,
+                      decoration: AppWidget.decoration(
+                          radius: 10.r, color: AppColor.noColor),
+                      width: AppWidget.getWidth(context),
+                      child: StreamBuilder(
+                          stream: iniFilter == 1
+                              ? userCollection
+                                  .where('major', isEqualTo: studentData)
+                                  .snapshots()
+                              : iniFilter == 2
+                                  ? userCollection
+                                      .where('searchInterest',
+                                          isEqualTo: '$studentData')
+                                      .snapshots()
+                                  : userCollection.snapshots(),
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text("Error check internet!"));
+                            }
+                            if (snapshot.hasData) {
+                              return body(snapshot, model);
+                            }
+
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              color: AppColor.appBarColor,
+                            ));
+                          }),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ));
+          );
+        }));
   }
 
 //search box===============================================================
@@ -145,20 +171,22 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
   }
 
 //show data from database========================================================================
-  Widget body(snapshot) {
-    return Container(
-      height: AppWidget.getHeight(context) * 0.55,
-      decoration: AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
-      width: AppWidget.getWidth(context),
-      child: snapshot.data.docs.length >= 0
-          ? Container(
+  Widget body(snapshot, model) {
+    resultCount=snapshot.data.docs.length;
+    return snapshot.data.docs.isNotEmpty
+        ? Container(
+            height: AppWidget.getHeight(context) * 0.55,
+            decoration:
+                AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
+            width: AppWidget.getWidth(context),
+            child: Container(
               height: AppWidget.getHeight(context) * 0.55,
               decoration:
                   AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
               width: AppWidget.getWidth(context),
               child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.data.docs.length,
+                  itemCount: resultCount,
                   itemBuilder: (context, i) {
                     var data = snapshot.data.docs[i].data();
                     return Padding(
@@ -184,7 +212,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                             subtitle: Padding(
                               padding: EdgeInsets.only(top: 10.h),
                               child: AppText(
-                                text: AppWidget.getTranslate(
+                                text: AppWidget.getTranslateSearchInterest(
                                     data['searchInterest']),
                                 fontSize: AppSize.title2TextSize,
                               ),
@@ -200,13 +228,13 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                           ? 0
                                           : math.pi),
                                   child: FutureBuilder(
-                                      future: getImage(
+                                      future: getStatus(
                                           stId: userId!, supId: data['userId']),
                                       builder: (context, AsyncSnapshot sn) {
-                                        if (snapshot.hasError) {
+                                        if (sn.hasError) {
                                           return const Center(child: Text("!"));
                                         }
-                                        if (snapshot.hasData) {
+                                        if (sn.hasData) {
                                           // print(sn.data);
                                           return SvgPicture.asset(
                                             sn.data ==
@@ -235,7 +263,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                               ),
                             ),
                             onTap: () async {
-                              await getImage(
+                              await getStatus(
                                           stId: userId!,
                                           supId: data['userId']) ==
                                       AppConstants.statusIsNotSendYet
@@ -255,13 +283,14 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                                   supervisorName: data['name'],
                                                   supervisorInterest:
                                                       data['searchInterest'],
-                                                  studentName: await  Database.getDataViUserId(currentUserUid: userId!)
-
-                                          )
+                                                  studentName: await Database
+                                                      .getDataViUserId(
+                                                          currentUserUid:
+                                                              userId!))
                                               .then((v) {
                                         print('================$v');
                                         if (v == 'done') {
-                                          setState(() {});
+                                          model.refreshPage();
                                           Navigator.pop(context);
                                           AppLoading.show(
                                               context,
@@ -280,7 +309,6 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                       context,
                                       LocaleKeys.sendRequest.tr(),
                                       LocaleKeys.canNotSend.tr());
-                              setState(() {});
                             },
                           ),
                         ),
@@ -288,21 +316,17 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                       ),
                     );
                   }),
-            )
-          : Center(
-              child: Padding(
-                  padding:
-                      EdgeInsets.only(top: AppWidget.getHeight(context) / 2),
-                  child: AppText(
-                      text: LocaleKeys.noData.tr(),
-                      fontSize: AppSize.titleTextSize,
-                      fontWeight: FontWeight.bold)),
-            ),
-    );
+            ))
+        : Center(
+            child: AppText(
+                text: LocaleKeys.noData.tr(),
+                fontSize: AppSize.titleTextSize,
+                fontWeight: FontWeight.bold),
+          );
   }
 
-//=======================================================================
-  getImage({required String stId, required String supId}) async {
+//get Status of student request=======================================================================
+  getStatus({required String stId, required String supId}) async {
     // print('stId:$stId');
     // print('supId:$supId');
     late int st = 0;
@@ -314,8 +338,6 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
       for (QueryDocumentSnapshot element in getData.docs) {
         if (element.exists) {
           st = element['status'];
-          // print('st: $st');
-          // setState(() {});
         }
       }
     });
@@ -324,7 +346,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
   }
 
 //Filter data=========================================================================
-  showFilter() => Container(
+  showFilter(model) => Container(
         width: AppWidget.getWidth(context) * 0.14,
         height: double.infinity,
         decoration: AppWidget.decoration(radius: 10.r),
@@ -333,28 +355,44 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
             menuList: [
               ///show all
               PopupMenuItem(
-                onTap: ()=>print('all'),
+                onTap: () {
+                  iniFilter = 0;
+                  model.refreshPage();
+                  print('iniFilter:$iniFilter');
+                },
                 child: AppText(
                   text: LocaleKeys.all.tr(),
                   fontSize: AppSize.subTextSize,
                 ),
               ),
-              ///filter by searchInterest
-              // PopupMenuItem(
-              //   onTap: ()=>print('searchInterest'),
-              //   child: AppText(
-              //     text: LocaleKeys.searchInterestTx.tr(),
-              //     fontSize: AppSize.subTextSize,
-              //   ),
-              // ),
+
               ///filter by major
               PopupMenuItem(
-                onTap: ()=>print('majorTx'),
+                onTap: () async {
+                  await getStudentMajor(filterBy: AppConstants.filterByMajor);
+                  iniFilter = 1;
+                  model.refreshPage();
+                  print('iniFilter:$iniFilter');
+                },
                 child: AppText(
                   text: LocaleKeys.majorTx.tr(),
                   fontSize: AppSize.subTextSize,
                 ),
-              )
+              ),
+
+              ///filter by search Interest
+              PopupMenuItem(
+                onTap: () async {
+                  await getStudentMajor(filterBy: null);
+                  iniFilter = 2;
+                  model.refreshPage();
+                  print('iniFilter:$iniFilter');
+                },
+                child: AppText(
+                  text: LocaleKeys.searchInterestTx.tr(),
+                  fontSize: AppSize.subTextSize,
+                ),
+              ),
             ],
             icon: SvgPicture.asset(
               AppSvg.filterSvg,
@@ -364,4 +402,21 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
           ),
         ),
       );
+//get Student major===================================================================================================
+  Future<void> getStudentMajor({required filterBy}) async {
+    var c = await AppConstants.userCollection
+        .where('userId', isEqualTo: userId!)
+        .get();
+    c.docs.forEach((element) {
+      if (element.exists) {
+        if (filterBy != null) {
+          studentData = element['major'];
+          print('studentMajor: $studentData');
+        } else {
+          studentData = element['searchInterest'];
+          print('studentSearchInterest: $studentData');
+        }
+      }
+    });
+  }
 }

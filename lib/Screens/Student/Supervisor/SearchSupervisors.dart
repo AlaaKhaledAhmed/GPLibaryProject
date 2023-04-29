@@ -13,7 +13,12 @@ import '../../../../Widget/AppSize.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_project/Widget/AppSvg.dart';
 import 'dart:math' as math;
+import '../../../BackEnd/Database/DatabaseMethods.dart';
+import '../../../BackEnd/Provider/ChangConstModel.dart';
+import '../../../Widget/AppConstants.dart';
+import '../../../Widget/AppLoading.dart';
 import '../../../Widget/AppWidget.dart';
+import 'package:provider/provider.dart';
 
 class SearchSupervisors extends SearchDelegate {
   List<String> _oldFilters = [];
@@ -63,7 +68,10 @@ class SearchSupervisors extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     saveToRecentSearchesSupervisor(query);
     return StreamBuilder(
-        stream: userCollection.where("name", isEqualTo: query).snapshots(),
+        stream: userCollection
+            .where("type", isEqualTo: AppConstants.supervisor)
+            .where("name", isEqualTo: query)
+            .snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return const Center(child: Text("Error check internet!"));
@@ -181,27 +189,24 @@ class SearchSupervisors extends SearchDelegate {
         ? const SizedBox()
         : Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 22.w, top: 15.h),
-                    child: Align(
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Align(
                         alignment: Alignment.topRight,
                         child: Text(
-                          "عمليات البحث الأخيرة",
+                          LocaleKeys.history.tr(),
                           style: TextStyle(
-                            fontSize: 17.sp,
+                            fontSize: AppSize.subTextSize,
                             color: AppColor.black,
                             fontFamily: local.toString() == 'en'
                                 ? GoogleFonts.quicksand().fontFamily
                                 : GoogleFonts.almarai().fontFamily,
                           ),
                         )),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 22.w, top: 15.h),
-                    child: Align(
+                    Align(
                         alignment: Alignment.topLeft,
                         child: GestureDetector(
                           onTap: () {
@@ -211,9 +216,9 @@ class SearchSupervisors extends SearchDelegate {
                             removeHistory();
                           },
                           child: Text(
-                            'مسح',
+                            LocaleKeys.delete.tr(),
                             style: TextStyle(
-                              fontSize: 17.sp,
+                              fontSize: AppSize.subTextSize,
                               color: AppColor.iconColor,
                               fontFamily: local.toString() == 'en'
                                   ? GoogleFonts.quicksand().fontFamily
@@ -221,8 +226,8 @@ class SearchSupervisors extends SearchDelegate {
                             ),
                           ),
                         )),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Expanded(
                 child: ListView.builder(
@@ -319,86 +324,185 @@ class SearchSupervisors extends SearchDelegate {
 
   //show data from database========================================================================
   Widget body(snapshot) {
-    return Container(
-      height: AppWidget.getHeight(context) * 0.55,
-      decoration: AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
-      width: AppWidget.getWidth(context),
-      child: snapshot.data.docs.length >= 0
-          ? Container(
-              height: AppWidget.getHeight(context) * 0.55,
-              decoration:
-                  AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
-              width: AppWidget.getWidth(context),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (context, i) {
-                    var data = snapshot.data.docs[i].data();
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: SizedBox(
-                        height: 120,
-                        width: AppWidget.getWidth(context),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                            //set border radius more than 50% of height and width to make circle
-                          ),
+    return snapshot.data.docs.isNotEmpty
+        ? Consumer<ChangConstModel>(builder: (context, model, child) {
+            return Container(
+                height: AppWidget.getHeight(context) * 0.55,
+                decoration:
+                    AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
+                width: AppWidget.getWidth(context),
+                child: Container(
+                  height: AppWidget.getHeight(context) * 0.55,
+                  decoration: AppWidget.decoration(
+                      radius: 10.r, color: AppColor.noColor),
+                  width: AppWidget.getWidth(context),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, i) {
+                        var data = snapshot.data.docs[i].data();
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.h),
+                          child: SizedBox(
+                            height: 120,
+                            width: AppWidget.getWidth(context),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                                //set border radius more than 50% of height and width to make circle
+                              ),
 //dr name=================================================================
-                          child: ListTile(
-                            title: Padding(
-                              padding: EdgeInsets.only(top: 30.h),
-                              child: AppText(
-                                text: data['name'],
-                                fontSize: AppSize.title2TextSize,
-                                fontFamily: local.toString() == 'en'
-                                    ? GoogleFonts.quicksand().fontFamily
-                                    : GoogleFonts.almarai().fontFamily,
-                              ),
-                            ),
-//search interest=================================================================
-                            subtitle: Padding(
-                              padding: EdgeInsets.only(top: 10.h),
-                              child: AppText(
-                                text: AppWidget.getTranslate(
-                                    data['searchInterest']),
-                                fontSize: AppSize.title2TextSize,
-                                fontFamily: local.toString() == 'en'
-                                    ? GoogleFonts.quicksand().fontFamily
-                                    : GoogleFonts.almarai().fontFamily,
-                              ),
-                            ),
-//send icon=================================================================
-                            trailing: Padding(
-                              padding: EdgeInsets.only(top: 20.h),
-                              child: Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.rotationY(
-                                    local.toString() == 'en' ? 0 : math.pi),
-                                child: SvgPicture.asset(
-                                  AppSvg.sendSvg,
-                                  height: 40.r,
-                                  width: 40.r,
+                              child: ListTile(
+                                title: Padding(
+                                  padding: EdgeInsets.only(top: 30.h),
+                                  child: AppText(
+                                    text: data['name'],
+                                    fontSize: AppSize.title2TextSize,
+                                  ),
                                 ),
+//search interest=================================================================
+                                subtitle: Padding(
+                                  padding: EdgeInsets.only(top: 10.h),
+                                  child: AppText(
+                                    text: AppWidget.getTranslateSearchInterest(
+                                        data['searchInterest']),
+                                    fontSize: AppSize.title2TextSize,
+                                  ),
+                                ),
+//send icon=================================================================
+                                trailing: FittedBox(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 20.h),
+                                    child: Transform(
+                                      alignment: Alignment.center,
+                                      transform: Matrix4.rotationY(
+                                          context.locale.toString() == 'en'
+                                              ? 0
+                                              : math.pi),
+                                      child: FutureBuilder(
+                                          future: getStatus(
+                                              stId: userId,
+                                              supId: data['userId']),
+                                          builder: (context, AsyncSnapshot sn) {
+                                            if (sn.hasError) {
+                                              return const Center(
+                                                  child: Text("!"));
+                                            }
+                                            if (sn.hasData) {
+                                              // print(sn.data);
+                                              return SvgPicture.asset(
+                                                sn.data ==
+                                                        AppConstants
+                                                            .statusIsWaiting
+                                                    ? AppSvg.waitSvg
+                                                    : sn.data ==
+                                                            AppConstants
+                                                                .statusIsRejection
+                                                        ? AppSvg.rejectFileSvg
+                                                        : sn.data ==
+                                                                AppConstants
+                                                                    .statusIsAcceptation
+                                                            ? AppSvg
+                                                                .acceptFileSvg
+                                                            : AppSvg.sendSvg,
+                                                height: 40.r,
+                                                width: 40.r,
+                                              );
+                                            }
+
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: AppColor.appBarColor,
+                                            ));
+                                          }),
+                                    ),
+                                  ),
+                                ),
+                                onTap: () async {
+                                  await getStatus(
+                                              stId: userId,
+                                              supId: data['userId']) ==
+                                          AppConstants.statusIsNotSendYet
+                                      ? AppLoading.show(
+                                          context,
+                                          LocaleKeys.sendRequest.tr(),
+                                          '${LocaleKeys.sendRequestTo.tr()} ' +
+                                              data['name'],
+                                          higth: 100.h,
+                                          showButtom: true,
+                                          noFunction: () =>
+                                              Navigator.pop(context),
+                                          yesFunction: () async => Database
+                                                  .studentSupervisionRequests(
+                                                      context: context,
+                                                      studentUid: userId,
+                                                      supervisorUid:
+                                                          data['userId'],
+                                                      supervisorName:
+                                                          data['name'],
+                                                      supervisorInterest: data[
+                                                          'searchInterest'],
+                                                      studentName: await Database
+                                                          .getDataViUserId(
+                                                              currentUserUid:
+                                                                  userId))
+                                              .then((v) {
+                                            print('================$v');
+                                            if (v == 'done') {
+                                              model.refreshPage();
+                                              Navigator.pop(context);
+                                              AppLoading.show(
+                                                  context,
+                                                  LocaleKeys.mySuperVisor.tr(),
+                                                  LocaleKeys.done.tr());
+                                            } else {
+                                              Navigator.pop(context);
+                                              AppLoading.show(
+                                                  context,
+                                                  LocaleKeys.mySuperVisor.tr(),
+                                                  LocaleKeys.error.tr());
+                                            }
+                                          }),
+                                        )
+                                      : AppLoading.show(
+                                          context,
+                                          LocaleKeys.sendRequest.tr(),
+                                          LocaleKeys.canNotSend.tr());
+                                },
                               ),
                             ),
-                          ),
 //==========================================================================
-                        ),
-                      ),
-                    );
-                  }),
-            )
-          : Center(
-              child: Padding(
-                  padding:
-                      EdgeInsets.only(top: AppWidget.getHeight(context) / 2),
-                  child: AppText(
-                      color: Colors.black,
-                      text: LocaleKeys.noData.tr(),
-                      fontSize: AppSize.titleTextSize,
-                      fontWeight: FontWeight.bold)),
-            ),
-    );
+                          ),
+                        );
+                      }),
+                ));
+          })
+        : Center(
+            child: AppText(
+                text: LocaleKeys.noData.tr(),
+                fontSize: AppSize.titleTextSize,
+                fontWeight: FontWeight.bold),
+          );
+  }
+
+//get Status of student request=======================================================================
+  getStatus({required String stId, required String supId}) async {
+    // print('stId:$stId');
+    // print('supId:$supId');
+    late int st = 0;
+    await AppConstants.requestCollection
+        .where('studentUid', isEqualTo: stId)
+        .where('supervisorUid', isEqualTo: supId)
+        .get()
+        .then((getData) {
+      for (QueryDocumentSnapshot element in getData.docs) {
+        if (element.exists) {
+          st = element['status'];
+        }
+      }
+    });
+
+    return st;
   }
 }
