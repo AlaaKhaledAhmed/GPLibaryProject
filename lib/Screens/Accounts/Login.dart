@@ -20,8 +20,7 @@ import '../Student/NavStudent.dart';
 import '../Superviser/NavSuperviser.dart';
 import 'SingUp.dart';
 
-
-class Login extends StatelessWidget{
+class Login extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> loggingKey = GlobalKey();
@@ -107,14 +106,12 @@ class Login extends StatelessWidget{
                                     key: loggingKey,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
-
                                       children: [
 //welcome Tx=============================================================
                                         AppWidget.hSpace(AppSize.hSpace),
                                         AppText(
                                           fontSize: AppSize.subTextSize,
-                                          text:
-                                          LocaleKeys.welcomeLoginTx.tr(),
+                                          text: LocaleKeys.welcomeLoginTx.tr(),
                                           color: AppColor.white,
                                         ),
                                         AppWidget.hSpace(AppSize.hSpace + 5),
@@ -140,74 +137,78 @@ class Login extends StatelessWidget{
 
 //create Account button=============================================================
                                         AppWidget.hSpace(10),
-                                        AppButtons(
-                                          onPressed: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            if (loggingKey.currentState
-                                                    ?.validate() ==
-                                                true) {
-                                              AppLoading.show(context, '', 'lode');
-                                              Database.loggingToApp(
-                                                      email:
-                                                          emailController.text,
-                                                      password:
-                                                          passwordController
-                                                              .text)
-                                                  .then((String v) {
-                                                if (v == 'error') {
-                                                  Navigator.pop(context);
-                                                  AppLoading.show(
-                                                      context,
-                                                      LocaleKeys.login.tr(),
-                                                      LocaleKeys.error.tr());
-                                                } else if (v ==
-                                                    'user-not-found') {
-                                                  Navigator.pop(context);
-                                                  AppLoading.show(
-                                                      context,
-                                                      LocaleKeys.login.tr(),
-                                                      LocaleKeys.userNotFound
-                                                          .tr());
-                                                } else if (v ==
-                                                    'wrong-password') {
-                                                  Navigator.pop(context);
-                                                  AppLoading.show(
-                                                      context,
-                                                      LocaleKeys.login.tr(),
-                                                      LocaleKeys.userNotFound
-                                                          .tr());
-                                                } else {
-                                                  print('respoms is: $v');
-                                                  FirebaseFirestore.instance
-                                                      .collection('users')
-                                                      .where('userId',
-                                                          isEqualTo: v)
-                                                      .get()
-                                                      .then((value) {
-                                                    Navigator.pop(context);
-                                                    value.docs
-                                                        .forEach((element) {
-                                                      print('respoms is: $v');
-                                                      if (element
-                                                              .data()['type'] ==
-                                                          'student') {
-                                                        AppRoutes.pushReplacementTo(
-                                                            context,
-                                                            const NavStudent());
-                                                      } else {
-                                                        AppRoutes.pushReplacementTo(
-                                                            context,
-                                                            const NavSuperviser());
-                                                      }
+                                        Builder(builder: (co) {
+                                          return AppButtons(
+                                            onPressed: () {
+                                              FocusManager.instance.primaryFocus
+                                                  ?.unfocus();
+                                              if (loggingKey.currentState
+                                                      ?.validate() ==
+                                                  true) {
+                                                AppLoading.show(co, '', 'lode');
+                                                Database.loggingToApp(
+                                                        email: emailController
+                                                            .text,
+                                                        password:
+                                                            passwordController
+                                                                .text)
+                                                    .then((String v) {
+                                                  if (v == 'error') {
+                                                    Navigator.pop(co);
+                                                    AppLoading.show(
+                                                        context,
+                                                        LocaleKeys.login.tr(),
+                                                        LocaleKeys.error.tr());
+                                                  } else if (v ==
+                                                      'user-not-found') {
+                                                    Navigator.pop(co);
+                                                    AppLoading.show(
+                                                        context,
+                                                        LocaleKeys.login.tr(),
+                                                        LocaleKeys.userNotFound
+                                                            .tr());
+                                                  } else if (v ==
+                                                      'wrong-password') {
+                                                    Navigator.pop(co);
+                                                    AppLoading.show(
+                                                        context,
+                                                        LocaleKeys.login.tr(),
+                                                        LocaleKeys.userNotFound
+                                                            .tr());
+                                                  } else {
+                                                    print('respoms is: $v');
+                                                    FirebaseFirestore.instance
+                                                        .collection('users')
+                                                        .where('userId',
+                                                            isEqualTo: v)
+                                                        .get()
+                                                        .then((value) {
+                                                      Navigator.pop(context);
+                                                      value.docs
+                                                          .forEach((element) {
+                                                        print('respoms is: $v');
+                                                        if (element.data()[
+                                                                'type'] ==
+                                                            'student') {
+                                                          AppRoutes
+                                                              .pushReplacementTo(
+                                                                  context,
+                                                                  const NavStudent());
+                                                        } else {
+                                                          AppRoutes
+                                                              .pushReplacementTo(
+                                                                  context,
+                                                                  const NavSuperviser());
+                                                        }
+                                                      });
                                                     });
-                                                  });
-                                                }
-                                              });
-                                            }
-                                          },
-                                          text: LocaleKeys.login.tr(),
-                                        )
+                                                  }
+                                                });
+                                              }
+                                            },
+                                            text: LocaleKeys.login.tr(),
+                                          );
+                                        })
                                       ],
                                     ),
                                   ),
@@ -248,7 +249,7 @@ class Login extends StatelessWidget{
                                       ),
                                       onTap: () {
                                         AppRoutes.pushReplacementTo(
-                                            context,  SingUp());
+                                            context, SingUp());
                                       }),
                                 ],
                               ),
