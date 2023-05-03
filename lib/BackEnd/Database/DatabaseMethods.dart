@@ -102,7 +102,7 @@ class Database {
         return 'user-not-found';
       }
       if (e.code == 'wrong-password') {
-        return 'user-not-found';
+        return 'wrong-password';
       }
     } catch (e) {
       return 'error';

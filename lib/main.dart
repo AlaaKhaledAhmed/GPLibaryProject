@@ -11,6 +11,8 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:library_project/translations/codegen_loader.g.dart';
 import 'package:provider/provider.dart';
 
+import 'Screens/Superviser/NavSuperviser.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -67,7 +69,7 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          home: NavStudent(),
+          home: NavSupervisor(),
         );
       },
     );

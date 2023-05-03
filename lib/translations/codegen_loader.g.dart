@@ -37,6 +37,8 @@ class CodegenLoader extends AssetLoader{
   "invalidPhone": "رقم الجوال يجب ان يكون ١٠ خانات",
   "invalidId": "رقم الطالب يجب ان يكون 6 خانات",
   "emailFound": "البريد الالكتروني موجود بالفعل",
+  "emailNotFound": "البريد الالكتروني غير صحيح",
+  "passNotFound": "كلمة المرور غير صحيحة",
   "error": "حدث خطأ. الرجاء معاودة المحاولة في وقت لاحق",
   "userNotFound": "المستخدم غير موجود",
   "invalidPassword": "يجب أن تتكون كلمة المرور 6 خانات على الأقل",
@@ -77,7 +79,10 @@ class CodegenLoader extends AssetLoader{
   "canNotSend": "لقد قمت بارسال طلب مسبقا لهذا المشرف",
   "all": "عرض الكل",
   "history": "عمليات البحث الأخيرة",
-  "results": "عدد النتائج"
+  "results": "عدد النتائج",
+  "superVisorMajorTx": "التخصص",
+  "requests": "الطلبات",
+  "supervisorProject": "مشاريعي"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -102,6 +107,8 @@ static const Map<String,dynamic> en = {
   "invalidPhone": "Mobile number must be 10 digits",
   "invalidId": "The student ID must be 6 digits",
   "emailFound": "The email already exists",
+  "emailNotFound": "The email is wrong",
+  "passNotFound": "The password is wrong",
   "error": "An error occurred. Please try again later",
   "userNotFound": "The user does not exist",
   "invalidPassword": "Password must be at least 6 digits",
@@ -141,7 +148,10 @@ static const Map<String,dynamic> en = {
   "canNotSend": "You have already sent a request to this supervisor",
   "all": "Show all",
   "history": "History",
-  "results": "Results number"
+  "results": "Results number",
+  "superVisorMajorTx": "Major",
+  "requests": "Requests",
+  "supervisorProject": "My projects"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

@@ -31,7 +31,8 @@ class StudentSupervisor extends StatefulWidget {
 class _StudentSupervisorState extends State<StudentSupervisor> {
   String? userId;
   String? studentData;
-  int?resultCount;
+
+  String? resultCount;
   List supervisorsNames = [];
   var userCollection = FirebaseFirestore.instance
       .collection("users")
@@ -104,18 +105,26 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                     ),
                     AppWidget.hSpace(10),
 //search and filter=====================================================
-                    resultCount!=null?
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 10.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AppText(text: LocaleKeys.results.tr(), fontSize: AppSize.title2TextSize,color: AppColor.iconColor,),
-                          AppText(text: '$resultCount', fontSize: AppSize.title2TextSize,color: AppColor.iconColor,)
-
-                        ],
-                      ),
-                    ):const SizedBox(),
+                    resultCount != null && iniFilter==0
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AppText(
+                                  text: LocaleKeys.results.tr(),
+                                  fontSize: AppSize.title2TextSize,
+                                  color: AppColor.iconColor,
+                                ),
+                                AppText(
+                                  text: '$resultCount',
+                                  fontSize: AppSize.title2TextSize,
+                                  color: AppColor.iconColor,
+                                )
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
                     AppWidget.hSpace(15),
 //body=====================================================
                     Container(
@@ -172,7 +181,6 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 
 //show data from database========================================================================
   Widget body(snapshot, model) {
-
     return snapshot.data.docs.isNotEmpty
         ? Container(
             height: AppWidget.getHeight(context) * 0.55,
@@ -188,12 +196,11 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                   shrinkWrap: true,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, i) {
-                    resultCount=snapshot.data.docs.length;
                     var data = snapshot.data.docs[i].data();
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
                       child: SizedBox(
-                        height: 120,
+                        height: 200.h,
                         width: AppWidget.getWidth(context),
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -205,20 +212,40 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                             title: Padding(
                               padding: EdgeInsets.only(top: 30.h),
                               child: AppText(
-                                text: data['name'],
+                                text:'${LocaleKeys.dr.tr()}: ${ data['name']}',
                                 fontSize: AppSize.title2TextSize,
                               ),
                             ),
 //search interest=================================================================
                             subtitle: Padding(
                               padding: EdgeInsets.only(top: 10.h),
-                              child: AppText(
-                                text: AppWidget.getTranslateSearchInterest(
-                                    data['searchInterest']),
-                                fontSize: AppSize.title2TextSize,
+                              child: Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AppText(
+                                      text: '${LocaleKeys.searchInterestTx.tr()}: '+AppWidget.getTranslateSearchInterest(
+                                          data['searchInterest']),
+                                      fontSize: AppSize.subTextSize+2,
+                                    ),
+                                    AppWidget.hSpace(8),
+                                    AppText(
+                                      text: '${LocaleKeys.superVisorMajorTx.tr()}: '+AppWidget.getTranslateMajor(
+                                          data['major']),
+                                      fontSize: AppSize.subTextSize+2,
+                                    ),
+                                    AppWidget.hSpace(8),
+                                    AppText(
+                                      text: '${LocaleKeys.emailTx.tr()}: '+ data['email'],
+                                      fontSize: AppSize.subTextSize+2,
+                                    ),
+                                   // AppWidget.hSpace(7),
+                                  ],
+                                ),
                               ),
                             ),
 //send icon=================================================================
+
                             trailing: FittedBox(
                               child: Padding(
                                 padding: EdgeInsets.only(top: 20.h),
@@ -356,7 +383,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
             menuList: [
               ///show all
               PopupMenuItem(
-                onTap: () {
+                onTap: () async {
                   iniFilter = 0;
                   model.refreshPage();
                   print('iniFilter:$iniFilter');
@@ -370,8 +397,8 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
               ///filter by major
               PopupMenuItem(
                 onTap: () async {
-                  await getStudentMajor(filterBy: AppConstants.filterByMajor);
                   iniFilter = 1;
+                  await getStudentMajor(filterBy: AppConstants.filterByMajor);
                   model.refreshPage();
                   print('iniFilter:$iniFilter');
                 },
@@ -384,8 +411,8 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
               ///filter by search Interest
               PopupMenuItem(
                 onTap: () async {
-                  await getStudentMajor(filterBy: null);
                   iniFilter = 2;
+                  await getStudentMajor(filterBy: null);
                   model.refreshPage();
                   print('iniFilter:$iniFilter');
                 },

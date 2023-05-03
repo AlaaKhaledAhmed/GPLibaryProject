@@ -23,6 +23,8 @@ abstract class  LocaleKeys {
   static const invalidPhone = 'invalidPhone';
   static const invalidId = 'invalidId';
   static const emailFound = 'emailFound';
+  static const emailNotFound = 'emailNotFound';
+  static const passNotFound = 'passNotFound';
   static const error = 'error';
   static const userNotFound = 'userNotFound';
   static const invalidPassword = 'invalidPassword';
@@ -64,5 +66,8 @@ abstract class  LocaleKeys {
   static const all = 'all';
   static const history = 'history';
   static const results = 'results';
+  static const superVisorMajorTx = 'superVisorMajorTx';
+  static const requests = 'requests';
+  static const supervisorProject = 'supervisorProject';
 
 }

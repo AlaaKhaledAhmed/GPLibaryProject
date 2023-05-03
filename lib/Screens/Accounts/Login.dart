@@ -165,7 +165,7 @@ class Login extends StatelessWidget {
                                                     AppLoading.show(
                                                         context,
                                                         LocaleKeys.login.tr(),
-                                                        LocaleKeys.userNotFound
+                                                        LocaleKeys.emailNotFound
                                                             .tr());
                                                   } else if (v ==
                                                       'wrong-password') {
@@ -173,7 +173,7 @@ class Login extends StatelessWidget {
                                                     AppLoading.show(
                                                         context,
                                                         LocaleKeys.login.tr(),
-                                                        LocaleKeys.userNotFound
+                                                        LocaleKeys.passNotFound
                                                             .tr());
                                                   } else {
                                                     print('respoms is: $v');
@@ -198,7 +198,7 @@ class Login extends StatelessWidget {
                                                           AppRoutes
                                                               .pushReplacementTo(
                                                                   context,
-                                                                  const NavSuperviser());
+                                                                  const NavSupervisor());
                                                         }
                                                       });
                                                     });

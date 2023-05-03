@@ -27,10 +27,10 @@ class _NavStudentState extends State<NavStudent> {
   int selectedIndex = 0;
   PageController? pageController;
   List<Widget> page = const [
-    StudentHome(),
-    MyProjectMain(),
+    HomeScreen(),
+    StudentProjectScreen(),
     StudentSupervisor(),
-    MyTeamMain()
+    TeamScreen()
   ];
   @override
   void initState() {

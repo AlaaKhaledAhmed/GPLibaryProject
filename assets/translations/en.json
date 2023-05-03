@@ -21,6 +21,8 @@
   "invalidPhone": "Mobile number must be 10 digits",
   "invalidId": "The student ID must be 6 digits",
   "emailFound": "The email already exists",
+  "emailNotFound": "The email is wrong",
+  "passNotFound": "The password is wrong",
   "error": "An error occurred. Please try again later",
   "userNotFound": "The user does not exist",
   "invalidPassword": "Password must be at least 6 digits",
@@ -63,6 +65,9 @@
   "canNotSend": "You have already sent a request to this supervisor",
   "all": "Show all",
   "history": "History",
-  "results": "Results number"
+  "results": "Results number",
+  "superVisorMajorTx":"Major",
+  "requests": "Requests",
+  "supervisorProject": "My projects"
 
 }

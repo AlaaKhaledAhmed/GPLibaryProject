@@ -6,14 +6,14 @@ import 'package:library_project/Widget/AppWidget.dart';
 import '../../../Widget/AppSize.dart';
 import '../../../Widget/AppText.dart';
 import 'package:easy_localization/easy_localization.dart';
-class StudentHome extends StatefulWidget {
-  const StudentHome();
+class HomeScreen extends StatefulWidget {
+  const HomeScreen();
 
   @override
-  State<StudentHome> createState() => _StudentHomeState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _StudentHomeState extends State<StudentHome> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

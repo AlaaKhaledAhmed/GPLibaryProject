@@ -8,7 +8,7 @@ class ChangConstModel extends ChangeNotifier {
   // late var supervisorList;
 
   List<bool> isSupervisor = [false];
-  List<bool> setType() {
+  List<bool> setType( ) {
     isSupervisor[0] = !isSupervisor[0];
     notifyListeners();
     return isSupervisor;

@@ -20,4 +20,7 @@ class AppSvg {
   static String rejectFileSvg = 'assets/Svg/rejectFile.svg';
   static String waitSvg = 'assets/Svg/wait.svg';
 
+  static String requestNoColor = 'assets/Svg/request_nc.svg';
+  static String requestColor = 'assets/Svg/request_c.svg';
+
 }

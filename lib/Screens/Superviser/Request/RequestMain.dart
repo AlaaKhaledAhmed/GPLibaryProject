@@ -4,28 +4,22 @@ import 'package:library_project/Widget/AppSize.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TeamScreen extends StatefulWidget {
-  const TeamScreen();
+class RequestMain extends StatelessWidget {
+  const RequestMain({Key? key}) : super(key: key);
 
-  @override
-  State<TeamScreen> createState() => _TeamScreenState();
-}
-
-class _TeamScreenState extends State<TeamScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarMain(
-          title: LocaleKeys.myTeam.tr(),
+          title: LocaleKeys.requests.tr(),
         ),
         body: AppWidget.body(
             child: Container(
-            margin: EdgeInsets.only(bottom: AppSize.bottomPageSize),
-            child: Column(
-            children: [],
-          ),
-        )));
+              margin: EdgeInsets.only(bottom: AppSize.bottomPageSize),
+              child: Column(
+                children: [],
+              ),
+            )));
   }
 }
