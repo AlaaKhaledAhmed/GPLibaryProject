@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
+import 'package:library_project/Screens/Superviser/SupervisorProject/ProjectDetials.dart';
 import 'package:library_project/Widget/AppBarMain.dart';
-import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppConstants.dart';
+import 'package:library_project/Widget/AppRoutes.dart';
 import 'package:library_project/Widget/AppSize.dart';
-import 'package:library_project/Widget/AppSvg.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SupervisorProjectScreen extends StatefulWidget {
   const SupervisorProjectScreen({Key? key}) : super(key: key);
@@ -136,12 +134,14 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                                     decoration: AppWidget.decoration(
                                         radius: 10.r,
                                         color: AppColor.cherryLightPink),
-                                    margin:EdgeInsets.symmetric(vertical: 10.h),
+                                    margin:
+                                        EdgeInsets.symmetric(vertical: 10.h),
                                     padding: const EdgeInsets.all(10),
                                     child: AppText(
                                       text:
                                           "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
                                       fontSize: AppSize.subTextSize + 2,
+                                      color: AppColor.white,
                                     ),
                                   )
 
@@ -149,6 +149,15 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                                 ],
                               ),
                             ),
+                            onTap: () {
+                              AppRoutes.pushTo(
+                                  context,
+                                  ProjectDetails(
+                                    studentLeaderId: data['studentUid'],
+                                    requestId: data['requestId'],
+                                    superId: data['supervisorUid'],
+                                  ));
+                            },
                           ),
                         ),
 //==========================================================================
