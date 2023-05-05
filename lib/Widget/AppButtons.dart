@@ -13,6 +13,7 @@ class AppButtons extends StatelessWidget {
   final Color? textStyleColor;
   final TextOverflow? overflow;
   final double? width;
+  final double? elevation;
   const AppButtons({
     Key? key,
     required this.onPressed,
@@ -21,6 +22,7 @@ class AppButtons extends StatelessWidget {
     this.overflow,
     this.textStyleColor,
     this.width,
+    this.elevation,
   }) : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class AppButtons extends StatelessWidget {
         ),
         style: ElevatedButton.styleFrom(
           primary: bagColor ?? AppColor.buttonsColor,
+          elevation: elevation ?? 1,
           textStyle: TextStyle(
               fontFamily: context.locale.toString() == 'en'
                   ? GoogleFonts.quicksand().fontFamily

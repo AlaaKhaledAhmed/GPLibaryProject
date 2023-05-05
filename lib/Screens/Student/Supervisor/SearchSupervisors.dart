@@ -104,7 +104,7 @@ class SearchSupervisors extends SearchDelegate {
       return nameLower.startsWith(queryLower);
     }).toList();
     return query.isEmpty && _oldFilters.isEmpty
-        ? const SizedBox()
+        ? const AppText(text:'eeee',fontSize: 15,)
         : query.isEmpty && _oldFilters.isNotEmpty
             ? showHistory(context, _oldFilters)
             : getSuggestionList(listSearch);
