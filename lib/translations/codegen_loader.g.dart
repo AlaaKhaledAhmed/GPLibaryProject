@@ -151,7 +151,7 @@ static const Map<String,dynamic> en = {
   "results": "Results number",
   "superVisorMajorTx": "Major",
   "requests": "Requests",
-  "supervisorProject": "My projects"
+  "supervisorProject": "Projects"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }
