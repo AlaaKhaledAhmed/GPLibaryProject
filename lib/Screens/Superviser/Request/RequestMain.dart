@@ -3,23 +3,15 @@ import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
 import 'package:library_project/Widget/AppBarMain.dart';
 import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppColors.dart';
-import 'package:library_project/Widget/AppIcons.dart';
-import 'package:library_project/Widget/AppLoading.dart';
-import 'package:library_project/Widget/AppPopUpMen.dart';
+import 'package:library_project/Widget/AppConstants.dart';
 import 'package:library_project/Widget/AppSize.dart';
 import 'package:library_project/Widget/AppSvg.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../BackEnd/Provider/ChangConstModel.dart';
-import '../../../Widget/AppConstants.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:math' as math;
 
 class RequestMain extends StatefulWidget {
   const RequestMain({Key? key}) : super(key: key);
@@ -44,69 +36,54 @@ class _RequestMainState extends State<RequestMain> {
         appBar: AppBarMain(
           title: LocaleKeys.requests.tr(),
         ),
-        body: Consumer<ChangConstModel>(builder: (context, model, child) {
-          return SizedBox(
-            // color: Colors.green,
-            height: AppWidget.getHeight(context),
-            width: AppWidget.getWidth(context),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 10.h,
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AppWidget.hSpace(20.h),
+        body: SizedBox(
+          // color: Colors.green,
+          height: AppWidget.getHeight(context),
+          width: AppWidget.getWidth(context),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.h,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AppWidget.hSpace(20.h),
 
 //body====================================================================
-                    Container(
-                      height: AppWidget.getHeight(context) * 0.80,
-                      decoration: AppWidget.decoration(
-                          radius: 10.r, color: AppColor.noColor),
-                      width: AppWidget.getWidth(context),
-                      child: StreamBuilder(
-                          stream: AppConstants.requestCollection
-                              .where('supervisorUid', isEqualTo: userId)
-                              .snapshots(),
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasError) {
-                              return const Center(
-                                  child: Text("Error check internet!"));
-                            }
-                            if (snapshot.hasData) {
-                              return body(snapshot, model);
-                            }
-
+                  Container(
+                    height: AppWidget.getHeight(context) * 0.80,
+                    decoration: AppWidget.decoration(
+                        radius: 10.r, color: AppColor.noColor),
+                    width: AppWidget.getWidth(context),
+                    child: StreamBuilder(
+                        stream: AppConstants.requestCollection
+                            .where('supervisorUid', isEqualTo: userId)
+                            .snapshots(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasError) {
                             return const Center(
-                                child: CircularProgressIndicator(
-                              color: AppColor.appBarColor,
-                            ));
-                          }),
-                    )
-                  ],
-                ),
+                                child: Text("Error check internet!"));
+                          }
+                          if (snapshot.hasData) {
+                            return body(snapshot);
+                          }
+
+                          return const Center(
+                              child: CircularProgressIndicator(
+                            color: AppColor.appBarColor,
+                          ));
+                        }),
+                  )
+                ],
               ),
             ),
-          );
-        }));
-  }
-
-//search box===============================================================
-  Widget rowData() {
-    return Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.r),
-          child: Icon(AppIcons.search),
-        ),
-        AppText(text: LocaleKeys.search.tr(), fontSize: AppSize.subTextSize)
-      ],
-    );
+          ),
+        ));
   }
 
 //show data from database========================================================================
-  Widget body(snapshot, model) {
+  Widget body(snapshot) {
     return snapshot.data.docs.isNotEmpty
         ? Container(
             //  height: AppWidget.getHeight(context) * 0.55,
