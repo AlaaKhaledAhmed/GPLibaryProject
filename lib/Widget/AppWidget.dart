@@ -5,6 +5,7 @@ import 'package:library_project/Widget/AppColors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../BackEnd/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AppWidget {
   final BuildContext context;
@@ -28,7 +29,7 @@ class AppWidget {
   //==========================================================
   static Widget wSpace(space) {
     return SizedBox(
-      width: space.w,
+      width: space,
     );
   }
 
@@ -50,7 +51,7 @@ class AppWidget {
         width: 30,
       ),
       title: title,
-      dotColor: AppColor.iconsColor,
+      dotColor: AppColor.cherry,
       onTap: onTap,
     );
   }
@@ -174,5 +175,11 @@ class AppWidget {
   //unique number========================================================================
   static int uniqueOrder() {
     return DateTime.now().millisecondsSinceEpoch.remainder(100000);
+  }
+
+  //==========================================================
+  static String? getUid()  {
+    String? uid=FirebaseAuth.instance.currentUser?.uid;
+    return uid;
   }
 }

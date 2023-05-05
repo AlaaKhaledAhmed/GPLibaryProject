@@ -82,7 +82,17 @@ class CodegenLoader extends AssetLoader{
   "results": "عدد النتائج",
   "superVisorMajorTx": "التخصص",
   "requests": "الطلبات",
-  "supervisorProject": "مشاريعي"
+  "supervisorProject": "مشاريعي",
+  "leaderName": "اسم القائد",
+  "projectDescription": "وصف المشروع",
+  "reject": "رقض",
+  "accept": "قبول",
+  "attachFile": "ارفاق ملف",
+  "downloadFile": "تحميل",
+  "acceptConfirm": "هل تريد قبول الطلب؟",
+  "rejectConfirm": "هل تريد رفض الطلب؟",
+  "acceptAlready": "تم قبول الطلب مسبقا",
+  "rejectAlready": "تم رفض الطلب مسبقا"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -151,7 +161,17 @@ static const Map<String,dynamic> en = {
   "results": "Results number",
   "superVisorMajorTx": "Major",
   "requests": "Requests",
-  "supervisorProject": "Projects"
+  "supervisorProject": "Projects",
+  "leaderName": "Leader name",
+  "projectDescription": "Project Description",
+  "reject": "Reject",
+  "accept": "Accept",
+  "attachFile": "Attach file",
+  "downloadFile": "Download",
+  "acceptConfirm": "Do you want to accept the request?",
+  "rejectConfirm": "Do you want to reject the request?",
+  "acceptAlready": "The request has already been accepted",
+  "rejectAlready": "The request has already been rejected"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

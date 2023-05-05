@@ -17,10 +17,10 @@ class AppColor {
   static Color errorColor = Colors.red;
   static Color textFieldBorderColor = Colors.brown.shade200;
   static Color buttonsColor = Colors.brown.shade600;
-  static Color iconColor = Colors.grey.shade600;
+  static Color grey600 = Colors.grey.shade600;
   static Color buttonsTextColor =white;
   static Color noColor =Colors.transparent;
-  static const Color iconsColor = Color(0xFFfd6868);
+  static const Color cherry = Color(0xFFfd6868);
   static const Color cherryLightPink = Color(0xFFFA7F80);
   static const Color lightPink = Color(0xFFFAC0BE);
 }

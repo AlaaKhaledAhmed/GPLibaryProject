@@ -69,6 +69,16 @@
   "results": "عدد النتائج",
   "superVisorMajorTx":"التخصص",
   "requests": "الطلبات",
-  "supervisorProject": "مشاريعي"
+  "supervisorProject": "مشاريعي",
+  "leaderName": "اسم القائد",
+  "projectDescription": "وصف المشروع",
+  "reject": "رقض",
+  "accept": "قبول",
+  "attachFile": "ارفاق ملف",
+  "downloadFile": "تحميل",
+  "acceptConfirm": "هل تريد قبول الطلب؟",
+  "rejectConfirm": "هل تريد رفض الطلب؟",
 
+  "acceptAlready": "تم قبول الطلب مسبقا",
+  "rejectAlready": "تم رفض الطلب مسبقا"
 }

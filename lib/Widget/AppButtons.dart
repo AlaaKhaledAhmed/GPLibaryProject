@@ -13,15 +13,17 @@ class AppButtons extends StatelessWidget {
   final Color? textStyleColor;
   final TextOverflow? overflow;
   final double? width;
-  const AppButtons({
-    Key? key,
-    required this.onPressed,
-    required this.text,
-    this.bagColor,
-    this.overflow,
-    this.textStyleColor,
-    this.width,
-  }) : super(key: key);
+  final double? elevation;
+  const AppButtons(
+      {Key? key,
+      required this.onPressed,
+      required this.text,
+      this.bagColor,
+      this.overflow,
+      this.textStyleColor,
+      this.width,
+      this.elevation})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,14 @@ class AppButtons extends StatelessWidget {
         child: AppText(
           fontSize: AppSize.buttonsFontSize,
           text: text,
+          color: textStyleColor ?? AppColor.buttonsTextColor,
+          fontFamily: context.locale.toString() == 'en'
+              ? GoogleFonts.quicksand().fontFamily
+              : GoogleFonts.almarai().fontFamily,
         ),
         style: ElevatedButton.styleFrom(
           primary: bagColor ?? AppColor.buttonsColor,
+          elevation: elevation ?? 1.5,
           textStyle: TextStyle(
               fontFamily: context.locale.toString() == 'en'
                   ? GoogleFonts.quicksand().fontFamily
