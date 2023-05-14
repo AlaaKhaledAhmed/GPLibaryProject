@@ -80,5 +80,11 @@
   "rejectConfirm": "هل تريد رفض الطلب؟",
 
   "acceptAlready": "تم قبول الطلب مسبقا",
-  "rejectAlready": "تم رفض الطلب مسبقا"
+  "rejectAlready": "تم رفض الطلب مسبقا",
+
+  "projectName": "إسم المشروع",
+  "addProject": "إضافة مشروع ",
+  "year": "التاريخ"
+
+
 }

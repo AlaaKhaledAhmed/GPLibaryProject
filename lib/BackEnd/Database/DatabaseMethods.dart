@@ -1,9 +1,12 @@
-import 'dart:math';
+import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:library_project/Widget/AppConstants.dart';
 import 'package:library_project/Widget/AppWidget.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Database {
   //=======================Student Sing up method======================================
@@ -179,14 +182,66 @@ class Database {
       return 'error';
     }
   }
+
 //==========================================================================
-  static Future updateStatus({required int status,required String docId}) async {
+  static Future updateStatus(
+      {required int status, required String docId}) async {
     try {
-      await AppConstants.requestCollection.doc(docId).update({'status': status});
+      await AppConstants.requestCollection
+          .doc(docId)
+          .update({'status': status});
       return 'done';
     } catch (e) {
       print('Update Status Error $e');
       return 'error';
     }
+  }
+
+//=========================================================================================================
+  static Future<String> addProject(
+      {required String name,
+      required String year,
+      required String link,
+      required String fileName,
+      required String major,
+      required String searchInterest,
+      required String superName}) async {
+    try {
+      AppConstants.projectCollection.add({
+        'name': name,
+        'year': year,
+        'link': link,
+        'fileName': fileName,
+        'major': major,
+        'searchInterest': searchInterest,
+        'superName': superName
+      });
+      return 'done';
+    } catch (e) {
+      return 'error';
+    }
+  }
+
+  //=========================Dawonlde file===========================================
+  static Future lodeFirbase(String url) async {
+    try {
+      final refPDF = FirebaseStorage.instance.ref('project/$url');
+      final byets = await refPDF.getData(1024 * 1024 * 15);
+      return storFile(url, byets!);
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  //=========================show file===========================================
+  static Future<File> storFile(String url, List<int> byets) async {
+    final filename = path.basename(url);
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$filename');
+    await file.writeAsBytes(
+      byets,
+      flush: true,
+    );
+    return file;
   }
 }

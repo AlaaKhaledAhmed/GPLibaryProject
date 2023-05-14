@@ -79,5 +79,8 @@ abstract class  LocaleKeys {
   static const rejectConfirm = 'rejectConfirm';
   static const acceptAlready = 'acceptAlready';
   static const rejectAlready = 'rejectAlready';
+  static const projectName = 'projectName';
+  static const addProject = 'addProject';
+  static const year = 'year';
 
 }

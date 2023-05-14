@@ -12,9 +12,11 @@ class AppTextFields extends StatelessWidget {
   final TextEditingController? controller;
   final String? labelText;
   final FontWeight? fontWeight;
+  final void Function()? onTap;
   const AppTextFields({
     Key? key,
     required this.validator,
+    this.onTap,
     this.inputFormatters,
     this.keyboardType,
     required this.controller,
@@ -26,6 +28,7 @@ class AppTextFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap:onTap,
       obscureText: obscureText ?? false,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,

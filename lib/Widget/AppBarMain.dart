@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:library_project/Widget/AppSize.dart';
 import 'package:library_project/Widget/AppText.dart';
@@ -10,9 +12,13 @@ class AppBarMain extends StatelessWidget with PreferredSizeWidget {
   final Color? textColor;
   final double? elevation;
   final double? radius;
+  final List<Widget>?action;
   final double? high;
+  final Widget?leading;
   const AppBarMain(
       {Key? key,
+      this.action,
+      this.leading,
       required this.title,
       this.background,
       this.elevation,
@@ -24,6 +30,8 @@ class AppBarMain extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading:leading??SizedBox() ,
+      actions: action??[],
       centerTitle: true,
       elevation: elevation ?? 2,
       backgroundColor: background ?? AppColor.appBarColor,

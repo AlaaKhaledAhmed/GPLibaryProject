@@ -92,7 +92,10 @@ class CodegenLoader extends AssetLoader{
   "acceptConfirm": "هل تريد قبول الطلب؟",
   "rejectConfirm": "هل تريد رفض الطلب؟",
   "acceptAlready": "تم قبول الطلب مسبقا",
-  "rejectAlready": "تم رفض الطلب مسبقا"
+  "rejectAlready": "تم رفض الطلب مسبقا",
+  "projectName": "إسم المشروع",
+  "addProject": "إضافة مشروع ",
+  "year": "التاريخ"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -171,7 +174,10 @@ static const Map<String,dynamic> en = {
   "acceptConfirm": "Do you want to accept the request?",
   "rejectConfirm": "Do you want to reject the request?",
   "acceptAlready": "The request has already been accepted",
-  "rejectAlready": "The request has already been rejected"
+  "rejectAlready": "The request has already been rejected",
+  "projectName": "Project name",
+  "addProject": "Add project",
+  "year": "Year"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

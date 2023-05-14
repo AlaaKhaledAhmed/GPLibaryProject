@@ -33,4 +33,6 @@ class AppConstants {
   FirebaseFirestore.instance.collection('users');
   static CollectionReference requestCollection =
   FirebaseFirestore.instance.collection('requests');
+  static CollectionReference projectCollection =
+  FirebaseFirestore.instance.collection('project');
 }

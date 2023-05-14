@@ -16,7 +16,19 @@ class AppValidator {
 
 //valid name data============================================================
   static String? validatorName(name) {
-    final nameRegExp = RegExp(r"^\s*([A-Za-z]{2,10})$");
+    final nameRegExp = RegExp(r"^\s*([A-Za-z\s]{2,10})$");
+    if (name.isEmpty) {
+      return LocaleKeys.mandatoryTx.tr();
+    }
+    if (nameRegExp.hasMatch(name) == false) {
+      return LocaleKeys.invalidName.tr();
+    } else {
+      return null;
+    }
+  }
+  //valid name En/Ar data============================================================
+  static String? validatorNameEnAr(name) {
+    final nameRegExp = RegExp(r"^\s*([A-Za-z\s]{2,20})$");
     if (name.isEmpty) {
       return LocaleKeys.mandatoryTx.tr();
     }

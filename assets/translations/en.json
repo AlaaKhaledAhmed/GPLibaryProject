@@ -78,7 +78,11 @@
   "acceptConfirm": "Do you want to accept the request?",
   "rejectConfirm": "Do you want to reject the request?",
   "acceptAlready": "The request has already been accepted",
-  "rejectAlready": "The request has already been rejected"
+  "rejectAlready": "The request has already been rejected",
+
+  "projectName": "Project name",
+  "addProject": "Add project",
+  "year": "Year"
 
 
 }

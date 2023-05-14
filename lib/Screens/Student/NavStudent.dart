@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/services.dart';
+import 'package:library_project/Screens/Student/Home/AddProject.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
@@ -87,6 +88,14 @@ class _NavStudentState extends State<NavStudent> {
             ),
           ),
           centerIconChild: [
+//close ================================================================
+            AppWidget.centerIcon(icon: AppIcons.close, onTap: () {
+            
+            }),
+//add project================================================================
+            AppWidget.centerIcon(icon: AppIcons.addProject, onTap: () {
+              AppRoutes.pushTo(context, const AddProject());
+            }),
 //language================================================================
             AppWidget.centerIcon(
                 icon: AppIcons.language,
@@ -107,8 +116,6 @@ class _NavStudentState extends State<NavStudent> {
                   FirebaseAuth.instance.signOut();
                   AppRoutes.pushReplacementTo(context, Login());
                 }),
-//close================================================================
-            AppWidget.centerIcon(icon: AppIcons.close, onTap: () {}),
           ],
         ),
       ),
