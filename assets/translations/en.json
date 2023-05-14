@@ -68,6 +68,21 @@
   "results": "Results number",
   "superVisorMajorTx":"Major",
   "requests": "Requests",
+<<<<<<< HEAD
   "supervisorProject": "My project"
+=======
+  "supervisorProject": "Projects",
+  "leaderName": "Leader name",
+  "projectDescription": "Project Description",
+  "reject": "Reject",
+  "accept": "Accept",
+  "attachFile": "Attach file",
+  "downloadFile": "Download",
+  "acceptConfirm": "Do you want to accept the request?",
+  "rejectConfirm": "Do you want to reject the request?",
+  "acceptAlready": "The request has already been accepted",
+  "rejectAlready": "The request has already been rejected"
+
+>>>>>>> dacd35f0981fedcb78f76eebb0e8ad538ce103b0
 
 }

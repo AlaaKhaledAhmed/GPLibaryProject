@@ -10,6 +10,8 @@ class AppConstants {
   static int statusIsRejection = 3;
   static String student = 'student';
   static String supervisor = 'supervisor';
+  static int selectStudentFile=1;
+  static int selectSuperFile=1;
   static int filterByMajor=1;
   static int filterBySearch=2;
   static List<String> majorList = [

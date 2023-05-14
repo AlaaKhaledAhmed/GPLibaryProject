@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:library_project/BackEnd/Provider/ChangConstModel.dart';
-import 'package:library_project/Screens/Accounts/SingUp.dart';
-import 'package:library_project/Screens/Student/NavStudent.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +8,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:library_project/translations/codegen_loader.g.dart';
 import 'package:provider/provider.dart';
-
 import 'Screens/Superviser/NavSuperviser.dart';
 
 void main() async {

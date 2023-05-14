@@ -114,12 +114,12 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                 AppText(
                                   text: LocaleKeys.results.tr(),
                                   fontSize: AppSize.title2TextSize,
-                                  color: AppColor.iconColor,
+                                  color: AppColor.grey600,
                                 ),
                                 AppText(
                                   text: '$resultCount',
                                   fontSize: AppSize.title2TextSize,
-                                  color: AppColor.iconColor,
+                                  color: AppColor.grey600,
                                 )
                               ],
                             ),

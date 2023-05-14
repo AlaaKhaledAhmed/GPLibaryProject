@@ -69,5 +69,15 @@ abstract class  LocaleKeys {
   static const superVisorMajorTx = 'superVisorMajorTx';
   static const requests = 'requests';
   static const supervisorProject = 'supervisorProject';
+  static const leaderName = 'leaderName';
+  static const projectDescription = 'projectDescription';
+  static const reject = 'reject';
+  static const accept = 'accept';
+  static const attachFile = 'attachFile';
+  static const downloadFile = 'downloadFile';
+  static const acceptConfirm = 'acceptConfirm';
+  static const rejectConfirm = 'rejectConfirm';
+  static const acceptAlready = 'acceptAlready';
+  static const rejectAlready = 'rejectAlready';
 
 }

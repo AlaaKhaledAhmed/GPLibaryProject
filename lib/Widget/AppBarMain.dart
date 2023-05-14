@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppBarMain extends StatelessWidget with PreferredSizeWidget {
   final String title;
   final Color? background;
+  final Color? textColor;
   final double? elevation;
   final double? radius;
   final double? high;
@@ -16,7 +17,8 @@ class AppBarMain extends StatelessWidget with PreferredSizeWidget {
       this.background,
       this.elevation,
       this.radius,
-      this.high})
+      this.high,
+      this.textColor})
       : super(key: key);
 
   @override
@@ -24,11 +26,11 @@ class AppBarMain extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       elevation: elevation ?? 2,
-      backgroundColor: AppColor.appBarColor,
+      backgroundColor: background ?? AppColor.appBarColor,
       title: AppText(
         fontSize: AppSize.titleTextSize,
         text: title,
-        color: AppColor.white,
+        color: textColor ?? AppColor.white,
         fontWeight: FontWeight.bold,
       ),
       shape: RoundedRectangleBorder(

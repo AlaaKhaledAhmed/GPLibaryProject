@@ -170,7 +170,7 @@ class SearchSupervisors extends SearchDelegate {
                       ),
                       Icon(
                         Icons.north_west,
-                        color: AppColor.iconColor,
+                        color: AppColor.grey600,
                         size: 22.sp,
                       ),
                     ],
@@ -219,7 +219,7 @@ class SearchSupervisors extends SearchDelegate {
                             LocaleKeys.delete.tr(),
                             style: TextStyle(
                               fontSize: AppSize.subTextSize,
-                              color: AppColor.iconColor,
+                              color: AppColor.grey600,
                               fontFamily: local.toString() == 'en'
                                   ? GoogleFonts.quicksand().fontFamily
                                   : GoogleFonts.almarai().fontFamily,
@@ -253,7 +253,7 @@ class SearchSupervisors extends SearchDelegate {
                             ),
                             Icon(
                               Icons.north_west,
-                              color: AppColor.iconColor,
+                              color: AppColor.grey600,
                               size: 22.sp,
                             ),
                           ],

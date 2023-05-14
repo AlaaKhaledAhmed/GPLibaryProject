@@ -141,7 +141,7 @@ class Database {
 
 //get request status=============================================================================
   static Future<int> getStatus({required String id}) async {
-    var status=0;
+    var status = 0;
 
     await AppConstants.requestCollection
         .where('studentUid', isEqualTo: id)
@@ -149,7 +149,6 @@ class Database {
         .then((getData) {
       getData.docs.forEach((element) {
         print('status: ${element.id}');
-
       });
       print('status: $status');
     });
@@ -177,6 +176,16 @@ class Database {
       });
       return 'done';
     } catch (e) {
+      return 'error';
+    }
+  }
+//==========================================================================
+  static Future updateStatus({required int status,required String docId}) async {
+    try {
+      await AppConstants.requestCollection.doc(docId).update({'status': status});
+      return 'done';
+    } catch (e) {
+      print('Update Status Error $e');
       return 'error';
     }
   }

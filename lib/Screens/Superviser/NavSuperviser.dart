@@ -79,7 +79,7 @@ class _NavSupervisorState extends State<NavSupervisor> {
         ],
 //================================================================
         bottomBarCenterModel: BottomBarCenterModel(
-          centerBackgroundColor: AppColor.iconsColor,
+          centerBackgroundColor: AppColor.cherry,
           centerIcon: FloatingCenterButton(
             child: Icon(
               AppIcons.settings,
