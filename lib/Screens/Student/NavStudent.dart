@@ -89,9 +89,7 @@ class _NavStudentState extends State<NavStudent> {
           ),
           centerIconChild: [
 //close ================================================================
-            AppWidget.centerIcon(icon: AppIcons.close, onTap: () {
-            
-            }),
+            AppWidget.centerIcon(icon: AppIcons.close, onTap: () { }),
 //add project================================================================
             AppWidget.centerIcon(icon: AppIcons.addProject, onTap: () {
               AppRoutes.pushTo(context, const AddProject());
