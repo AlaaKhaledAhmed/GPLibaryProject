@@ -84,7 +84,11 @@
 
   "projectName": "إسم المشروع",
   "addProject": "إضافة مشروع ",
-  "year": "التاريخ"
+  "year": "التاريخ",
 
+  "complete": "مكتمل",
+  "underWork": "قيد العمل",
+  "superFile": "ملفات المشرف",
+  "studentFile": "ملفات الطالب"
 
 }

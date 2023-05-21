@@ -27,7 +27,7 @@ class _NavSupervisorState extends State<NavSupervisor> {
   int selectedIndex = 0;
   PageController? pageController;
   List<Widget> page = const [
-    HomeScreen(),
+    StudentHome(),
     SupervisorProjectScreen(),
     RequestMain(),
     TeamScreen()

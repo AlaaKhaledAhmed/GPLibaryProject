@@ -95,7 +95,11 @@ class CodegenLoader extends AssetLoader{
   "rejectAlready": "تم رفض الطلب مسبقا",
   "projectName": "إسم المشروع",
   "addProject": "إضافة مشروع ",
-  "year": "التاريخ"
+  "year": "التاريخ",
+  "complete": "مكتمل",
+  "underWork": "قيد العمل",
+  "superFile": "ملفات المشرف",
+  "studentFile": "ملفات الطالب"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -177,7 +181,11 @@ static const Map<String,dynamic> en = {
   "rejectAlready": "The request has already been rejected",
   "projectName": "Project name",
   "addProject": "Add project",
-  "year": "Year"
+  "year": "Year",
+  "complete": "Complete",
+  "underWork": "Un complete",
+  "superFile": "Supervisor files",
+  "studentFile": "Student files"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

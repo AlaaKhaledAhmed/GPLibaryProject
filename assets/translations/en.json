@@ -82,7 +82,12 @@
 
   "projectName": "Project name",
   "addProject": "Add project",
-  "year": "Year"
+  "year": "Year",
+
+  "complete": "Complete",
+  "underWork": "Un complete",
+  "superFile": "Supervisor files",
+  "studentFile": "Student files"
 
 
 }

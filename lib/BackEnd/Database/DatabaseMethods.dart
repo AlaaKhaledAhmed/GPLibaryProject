@@ -198,14 +198,16 @@ class Database {
   }
 
 //=========================================================================================================
-  static Future<String> addProject(
-      {required String name,
-      required String year,
-      required String link,
-      required String fileName,
-      required String major,
-      required String searchInterest,
-      required String superName}) async {
+  static Future<String> addProject({
+    required String name,
+    required String year,
+    required String link,
+    required String fileName,
+    required String major,
+    required String searchInterest,
+    required String superName,
+    required String from,
+  }) async {
     try {
       AppConstants.projectCollection.add({
         'name': name,
@@ -214,7 +216,35 @@ class Database {
         'fileName': fileName,
         'major': major,
         'searchInterest': searchInterest,
-        'superName': superName
+        'superName': superName,
+        'status': AppConstants.statusIsComplete,
+        'from': from
+      });
+      return 'done';
+    } catch (e) {
+      return 'error';
+    }
+  }
+
+//Update project=========================================================================================================
+  static Future<String> updateProject(
+      {required String name,
+      required String year,
+      required String link,
+      required String fileName,
+      required String major,
+      required String searchInterest,
+      required String superName,
+      required String docId}) async {
+    try {
+      AppConstants.projectCollection.doc(docId).update({
+        'name': name,
+        'year': year,
+        'link': link,
+        'fileName': fileName,
+        'major': major,
+        'searchInterest': searchInterest,
+        'superName': superName,
       });
       return 'done';
     } catch (e) {

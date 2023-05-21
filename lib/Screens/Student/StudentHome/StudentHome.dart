@@ -1,39 +1,29 @@
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
-import 'package:library_project/BackEnd/Provider/ChangConstModel.dart';
-import 'package:library_project/Screens/Student/Home/AddProject.dart';
-import 'package:library_project/Screens/Student/Home/DawonlodeProject.dart';
-import 'package:library_project/Screens/Student/Home/ViewProject.dart';
+import 'package:library_project/Screens/Student/MyProject/AddProject.dart';
+import 'package:library_project/Screens/Student/MyProject/ViewProject.dart';
 import 'package:library_project/Widget/AppColors.dart';
-import 'package:library_project/Widget/AppDropList.dart';
 import 'package:library_project/Widget/AppLoading.dart';
 import 'package:library_project/Widget/AppRoutes.dart';
 import 'package:library_project/Widget/AppText.dart';
-import 'package:library_project/Widget/AppTextFields.dart';
-import 'package:library_project/Widget/AppValidator.dart';
-import 'package:path/path.dart' as path;
 import 'package:library_project/Widget/AppBarMain.dart';
-import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppConstants.dart';
 import 'package:library_project/Widget/AppSize.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen();
+import '../MyProject/DawonlodeProject.dart';
+
+class StudentHome extends StatefulWidget {
+  const StudentHome();
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<StudentHome> createState() => _StudentHomeState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _StudentHomeState extends State<StudentHome> {
   @override
   void initState() {
     super.initState();
@@ -82,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return InkWell(
                       onTap: () {
                         AppRoutes.pushTo(
-                            context,
+                           context,
                             AddProject(
                                 // date: data['year'],
                                 // name: data['name'],

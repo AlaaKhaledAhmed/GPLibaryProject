@@ -82,5 +82,9 @@ abstract class  LocaleKeys {
   static const projectName = 'projectName';
   static const addProject = 'addProject';
   static const year = 'year';
+  static const complete = 'complete';
+  static const underWork = 'underWork';
+  static const superFile = 'superFile';
+  static const studentFile = 'studentFile';
 
 }

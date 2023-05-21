@@ -34,7 +34,7 @@ class _AddProjectState extends State<AddProject> {
   TextEditingController nameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController projectPathController = TextEditingController();
-   TextEditingController superNameController = TextEditingController();
+  TextEditingController superNameController = TextEditingController();
 
   GlobalKey<FormState> addKey = GlobalKey();
   Reference? fileRef;
@@ -178,26 +178,23 @@ class _AddProjectState extends State<AddProject> {
                                 year: dateController.text,
                                 link: fileURL!,
                                 fileName: projectPathController.text,
-                                superName:superNameController.text,
+                                superName: superNameController.text,
                                 major: AppWidget.setEnTranslateMajor(
                                     selectedMajor!),
                                 searchInterest:
                                     AppWidget.setEnTranslateSearchInterest(
                                         selectedSearch!),
+                                from: AppConstants.typeIsStudent,
                               ).then((v) {
                                 print('================$v');
                                 if (v == "done") {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
-                                  AppLoading.show(
-                                      context,
-                                      LocaleKeys.add.tr(),
+                                  AppLoading.show(context, LocaleKeys.add.tr(),
                                       LocaleKeys.done.tr());
                                 } else {
                                   Navigator.pop(context);
-                                  AppLoading.show(
-                                      context,
-                                      LocaleKeys.add.tr(),
+                                  AppLoading.show(context, LocaleKeys.add.tr(),
                                       LocaleKeys.error.tr());
                                 }
                               });

@@ -8,12 +8,15 @@ class AppConstants {
   static int statusIsWaiting = 1;
   static int statusIsAcceptation = 2;
   static int statusIsRejection = 3;
+  static int statusIsComplete=4;
+  static int statusIsUnComplete=5;
   static String student = 'student';
   static String supervisor = 'supervisor';
   static int selectStudentFile=1;
   static int selectSuperFile=1;
   static int filterByMajor=1;
   static int filterBySearch=2;
+
   static List<String> majorList = [
     LocaleKeys.softwareEngineering.tr(),
     LocaleKeys.dataScience.tr(),
@@ -27,6 +30,17 @@ class AppConstants {
     LocaleKeys.softwareDevelopment.tr(),
     LocaleKeys.dataManagement.tr(),
     LocaleKeys.webDevelopment.tr()
+  ];
+
+  static List<String> studentTabsMenu = [
+    LocaleKeys.complete.tr(),
+    LocaleKeys.underWork.tr(),
+    LocaleKeys.superFile.tr(),
+  ];
+  static List<String> superTabsMenu = [
+    LocaleKeys.complete.tr(),
+    LocaleKeys.underWork.tr(),
+    LocaleKeys.studentFile.tr(),
   ];
 
   static CollectionReference userCollection =
