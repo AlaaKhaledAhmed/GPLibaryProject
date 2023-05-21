@@ -13,6 +13,7 @@ class AppLoading {
       {bool showButtom = false,
       void Function()? yesFunction,
       void Function()? noFunction,
+      Widget? customContin,
       double? higth}) {
     return showDialog(
         //barrierDismissible: false,
@@ -49,8 +50,9 @@ class AppLoading {
                 : const SizedBox(),
 //continent area-------------------------------------------------------------------
 
-            content: content != "lode"
-                ? SizedBox(
+            content: content != "lode" 
+                ? 
+                SizedBox(
                     height: higth ?? 70.h,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
