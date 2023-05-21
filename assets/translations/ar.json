@@ -44,7 +44,7 @@
   "singUp":"انشاء حساب",
   "done":"تمت العملية بنجاح",
   "myProject":"مشروعي",
-  "myTeam":"فريقي",
+  "myTeam":"ملفي",
   "mySuperVisor":"المشرفين",
 
   "softwareEngineering":  "هندسة برمجيات",
@@ -89,6 +89,8 @@
   "complete": "مكتمل",
   "underWork": "قيد العمل",
   "superFile": "ملفات المشرف",
-  "studentFile": "ملفات الطالب"
+  "studentFile": "ملفات الطالب",
+  "comment": "التعليقات",
+  "noSupervisor": "لم يقم اي مشرف بقبول مشروعك في الوقت الحالى"
 
 }

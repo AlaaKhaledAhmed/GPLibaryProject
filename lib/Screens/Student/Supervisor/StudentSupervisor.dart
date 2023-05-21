@@ -105,7 +105,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                     ),
                     AppWidget.hSpace(10),
 //search and filter=====================================================
-                    resultCount != null && iniFilter==0
+                    resultCount != null && iniFilter == 0
                         ? Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             child: Row(
@@ -212,7 +212,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                             title: Padding(
                               padding: EdgeInsets.only(top: 30.h),
                               child: AppText(
-                                text:'${LocaleKeys.dr.tr()}: ${ data['name']}',
+                                text: '${LocaleKeys.dr.tr()}: ${data['name']}',
                                 fontSize: AppSize.title2TextSize,
                               ),
                             ),
@@ -224,22 +224,28 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     AppText(
-                                      text: '${LocaleKeys.searchInterestTx.tr()}: '+AppWidget.getTranslateSearchInterest(
-                                          data['searchInterest']),
-                                      fontSize: AppSize.subTextSize+2,
+                                      text:
+                                          '${LocaleKeys.searchInterestTx.tr()}: ' +
+                                              AppWidget
+                                                  .getTranslateSearchInterest(
+                                                      data['searchInterest']),
+                                      fontSize: AppSize.subTextSize + 2,
                                     ),
                                     AppWidget.hSpace(8),
                                     AppText(
-                                      text: '${LocaleKeys.superVisorMajorTx.tr()}: '+AppWidget.getTranslateMajor(
-                                          data['major']),
-                                      fontSize: AppSize.subTextSize+2,
+                                      text:
+                                          '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                              AppWidget.getTranslateMajor(
+                                                  data['major']),
+                                      fontSize: AppSize.subTextSize + 2,
                                     ),
                                     AppWidget.hSpace(8),
                                     AppText(
-                                      text: '${LocaleKeys.emailTx.tr()}: '+ data['email'],
-                                      fontSize: AppSize.subTextSize+2,
+                                      text: '${LocaleKeys.emailTx.tr()}: ' +
+                                          data['email'],
+                                      fontSize: AppSize.subTextSize + 2,
                                     ),
-                                   // AppWidget.hSpace(7),
+                                    // AppWidget.hSpace(7),
                                   ],
                                 ),
                               ),
@@ -348,7 +354,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
         : Center(
             child: AppText(
                 text: LocaleKeys.noData.tr(),
-                fontSize: AppSize.titleTextSize,
+                fontSize: AppSize.subTextSize,
                 fontWeight: FontWeight.bold),
           );
   }

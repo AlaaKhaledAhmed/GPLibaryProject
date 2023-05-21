@@ -69,7 +69,7 @@ class AppWidget {
   }
 
 //scroll body===========================================================
-  static body({required Widget? child}) {
+  static Widget body({required Widget? child}) {
     return LayoutBuilder(builder: ((context, constraints) {
       return NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (OverscrollIndicatorNotification? overscroll) {

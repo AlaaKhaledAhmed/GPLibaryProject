@@ -1,8 +1,5 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:library_project/Screens/Student/MyProject/UpdateProject.dart';
 import 'package:library_project/Widget/AppButtons.dart';
 import 'package:library_project/Widget/AppColors.dart';
@@ -20,11 +17,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path/path.dart' as path;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'ViewProject.dart';
 
 class StudentProjectScreen extends StatefulWidget {
-  const StudentProjectScreen();
+  const StudentProjectScreen({Key? key}) : super(key: key);
 
   @override
   State<StudentProjectScreen> createState() => _StudentProjectScreenState();
@@ -39,14 +36,24 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   String? section;
   String? fileURL;
   File? file;
+  String? userId;
+  List<String> projectData = [];
+  bool? isFoundSupervisor;
   @override
   void initState() {
-    tab = 0;
     super.initState();
+    tab = 0;
+    userId = FirebaseAuth.instance.currentUser!.uid;
+    Future.delayed(Duration.zero, () async {
+      await getMajorAndSearch();
+      await getSuperName();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('projectData: $projectData');
+    print('isFoundSupervisor: $isFoundSupervisor');
     return Scaffold(
       appBar: AppBarMain(
         title: LocaleKeys.myProject.tr(),
@@ -96,7 +103,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
     );
   }
 
-  //Tabs=================================================================
+//Tabs=================================================================
   Widget showTabs() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 20.h),
@@ -108,7 +115,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: AppButtons(
                   text: context.locale.toString() == 'en'
                       ? AppConstants.studentTabsMenuEn[index]
@@ -122,7 +129,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                       tab == index ? AppColor.cherryLightPink : AppColor.white,
                   textStyleColor:
                       tab == index ? AppColor.white : AppColor.black,
-                  width: 120.w,
+                  width: 160.w,
                 ),
               );
             }),
@@ -350,8 +357,9 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                               nameController: data['name'],
                               selectedMajor:
                                   AppWidget.getTranslateMajor(data['major']),
-                              selectedSearch: AppWidget.getTranslateSearchInterest(
-                                  data['searchInterest']),
+                              selectedSearch:
+                                  AppWidget.getTranslateSearchInterest(
+                                      data['searchInterest']),
                               superNameController: data['superName'],
                               fileName: data['fileName'],
                               fileURL: data['link'],
@@ -419,22 +427,33 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
               padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
               child: InkWell(
                 onTap: () {
-                  setState(() {
-                    getFile(context).whenComplete(() {
-                      print('fillllllllllllle:${file!.path}');
-
-                      AppLoading.show(
+                  ///chick if found supervisor or not
+                  isFoundSupervisor == null || isFoundSupervisor == false
+                      ? AppLoading.show(
                           context,
                           LocaleKeys.attachFile.tr(),
-                          LocaleKeys.attachFile.tr() +
-                              (context.locale.toString() == 'en' ? "?" : "؟"),
-                          higth: 100.h,
-                          noFunction: () => Navigator.pop(context),
-                          yesFunction: () => uplodeFileFromDevice(
-                              fileName: path.basename(file!.path)),
-                          showButtom: true);
-                    });
-                  });
+                          LocaleKeys.noSupervisor.tr(),
+                        )
+
+                      /// pick file
+                      : setState(() {
+                          getFile(context).whenComplete(() {
+                            print('fillllllllllllle:${file!.path}');
+
+                            AppLoading.show(
+                                context,
+                                LocaleKeys.attachFile.tr(),
+                                LocaleKeys.attachFile.tr() +
+                                    (context.locale.toString() == 'en'
+                                        ? "?"
+                                        : "؟"),
+                                higth: 100.h,
+                                noFunction: () => Navigator.pop(context),
+                                yesFunction: () => uploadedFileFromDevice(
+                                    fileName: path.basename(file!.path)),
+                                showButtom: true);
+                          });
+                        });
                 },
                 child: AppText(
                   text: LocaleKeys.attachFile.tr(),
@@ -460,7 +479,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   }
 
 //===============================================================
-  uplodeFileFromDevice({required String fileName}) async {
+  uploadedFileFromDevice({required String fileName}) async {
     AppLoading.show(context, '', 'lode');
     FocusManager.instance.primaryFocus?.unfocus();
     fileRef = FirebaseStorage.instance.ref('project').child(fileName);
@@ -475,10 +494,9 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
         link: fileURL!,
         fileName: fileName,
         from: AppConstants.typeIsStudent,
-        superName: 'superName',
-        major: AppWidget.setEnTranslateMajor('Software Engineering'),
-        searchInterest:
-            AppWidget.setEnTranslateSearchInterest('Artificial Intelligence'),
+        superName: projectData[2],
+        major: AppWidget.setEnTranslateMajor(projectData[0]),
+        searchInterest: AppWidget.setEnTranslateSearchInterest(projectData[1]),
       ).then((String v) {
         print('================$v');
         if (v == "done") {
@@ -489,6 +507,46 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
           Navigator.pop(context);
           AppLoading.show(
               context, LocaleKeys.update.tr(), LocaleKeys.error.tr());
+        }
+      });
+    });
+  }
+
+//get Major And Search=================================================================================================
+  Future<void> getMajorAndSearch() async {
+    await AppConstants.userCollection
+        .where("userId", isEqualTo: userId!)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        projectData.insert(
+            0, AppWidget.getTranslateMajor("${element["major"]}"));
+        projectData.insert(
+            1,
+            AppWidget.getTranslateSearchInterest(
+                "${element["searchInterest"]}"));
+        setState(() {});
+      });
+    });
+  }
+
+  //get Super Name==============================================================
+  Future<void> getSuperName() async {
+    await AppConstants.requestCollection
+        .where("studentUid", isEqualTo: userId!)
+        .where('status', isEqualTo: AppConstants.statusIsAcceptation)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        if (element.exists) {
+          projectData.insert(2, "${element["supervisorName"]}");
+          print('existsexistsexists');
+          isFoundSupervisor = true;
+          setState(() {});
+        } else {
+          isFoundSupervisor = false;
+          print('nnnnnnnnnot exists');
+          setState(() {});
         }
       });
     });

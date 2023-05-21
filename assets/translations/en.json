@@ -44,7 +44,7 @@
   "singUp":"Sing Up",
   "done":"operation accomplished successfully",
   "myProject":"My project",
-  "myTeam":"Team",
+  "myTeam":"Profile",
   "mySuperVisor":"Supervisor",
 
   "softwareEngineering": "Software Engineering",
@@ -87,7 +87,7 @@
   "complete": "Complete",
   "underWork": "Un complete",
   "superFile": "Supervisor files",
-  "studentFile": "Student files"
-
-
+  "studentFile": "Student files",
+  "comment": "Comments",
+  "noSupervisor": "No supervisor has accepted your project at this time"
 }

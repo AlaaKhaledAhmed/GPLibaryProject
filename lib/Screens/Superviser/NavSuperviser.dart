@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
+import 'package:library_project/Screens/Student/MyProfile/Profile.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppIcons.dart';
 import 'package:library_project/Widget/AppSvg.dart';
+import '../../Widget/AppConstants.dart';
 import '../../Widget/AppRoutes.dart';
 import '../Accounts/Login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../Student/MyTeam/MyTeamMain.dart';
 import '../Student/StudentHome/StudentHome.dart';
 import 'Request/RequestMain.dart';
 import 'SupervisorProject/SupervisorProjectScreen.dart';
@@ -26,11 +26,11 @@ class NavSupervisor extends StatefulWidget {
 class _NavSupervisorState extends State<NavSupervisor> {
   int selectedIndex = 0;
   PageController? pageController;
-  List<Widget> page = const [
+  List<Widget> page = [
     StudentHome(),
     SupervisorProjectScreen(),
     RequestMain(),
-    TeamScreen()
+    Profile(type: AppConstants.typeIsStudent)
   ];
   @override
   void initState() {

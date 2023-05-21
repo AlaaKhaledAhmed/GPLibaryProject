@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:library_project/Widget/AppConstants.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
   //=======================Student Sing up method======================================
@@ -34,7 +35,7 @@ class Database {
           'stId': stId,
           'type': AppConstants.student,
           'searchInterest': searchInterest,
-          'auth': ''
+          'phone': phone
         });
         return 'done';
       }
@@ -72,10 +73,53 @@ class Database {
           'email': email,
           'major': major,
           'searchInterest': searchInterest,
-          'type': AppConstants.supervisor
+          'type': AppConstants.supervisor,
+          'phone': phone
         });
         return 'done';
       }
+    } on FirebaseException catch (e) {
+      if (e.code == 'weak-password') {
+        return 'weak-password';
+      }
+      if (e.code == 'email-already-in-use') {
+        return 'email-already-in-use';
+      }
+    } catch (e) {
+      return e.toString();
+    }
+    return 'error';
+  }
+
+//student Update Profile============================================================================================
+  static Future<String> updateProfile(
+      {required String name,
+      String? stId,
+      required String major,
+      required String phone,
+      required String searchInterest,
+      required String docId,
+      required String type}) async {
+    try {
+      await AppConstants.userCollection
+          .doc(docId)
+          .update(type == AppConstants.typeIsStudent
+              ? {
+                  'name': name,
+                  'major': major,
+                  'stId': stId,
+                  'type': AppConstants.typeIsStudent,
+                  'searchInterest': searchInterest,
+                  'phone': phone
+                }
+              : {
+                  'name': name,
+                  'major': major,
+                  'type': AppConstants.typeIsSupervisor,
+                  'searchInterest': searchInterest,
+                  'phone': phone
+                });
+      return 'done';
     } on FirebaseException catch (e) {
       if (e.code == 'weak-password') {
         return 'weak-password';
@@ -110,19 +154,6 @@ class Database {
     } catch (e) {
       return 'error';
     }
-    return 'error';
-  }
-
-//=======================Add team======================================
-  static Future<String> addTeam(
-      {required String name,
-      required String stId,
-      required String auth,
-      required String userId}) async {
-    try {} catch (e) {
-      return e.toString();
-    }
-
     return 'error';
   }
 
@@ -219,7 +250,9 @@ class Database {
         'searchInterest': searchInterest,
         'superName': superName,
         'status': status,
-        'from': from
+        'from': from,
+        'projectId': AppWidget.uniqueOrder(),
+        'createdOn': FieldValue.serverTimestamp(),
       });
       return 'done';
     } catch (e) {
@@ -247,7 +280,30 @@ class Database {
         'major': major,
         'searchInterest': searchInterest,
         'superName': superName,
-       'status': status,
+        'status': status,
+      });
+      return 'done';
+    } catch (e) {
+      return 'error';
+    }
+  }
+
+  //=======================add comment======================================
+  static Future<String> addComment({
+    required String comment,
+    required String data,
+    required String name,
+    required String userId,
+    required int projectId,
+  }) async {
+    try {
+      await FirebaseFirestore.instance.collection('comments').add({
+        'comment': comment,
+        'data': data,
+        'name': name,
+        'userId': userId,
+        'createdOn': FieldValue.serverTimestamp(),
+        'projectId': projectId
       });
       return 'done';
     } catch (e) {

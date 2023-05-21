@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
-import 'package:library_project/Screens/Student/MyProject/AddProject.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:library_project/Screens/Student/MyProject/ViewProject.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppLoading.dart';
@@ -13,8 +14,9 @@ import 'package:library_project/Widget/AppSize.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../MyProject/DawonlodeProject.dart';
+import 'CommentPage.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome();
@@ -24,9 +26,15 @@ class StudentHome extends StatefulWidget {
 }
 
 class _StudentHomeState extends State<StudentHome> {
+  String? userId;
+  String? name;
   @override
   void initState() {
     super.initState();
+    userId = FirebaseAuth.instance.currentUser?.uid;
+    Future.delayed(Duration.zero, () async {
+      await getName(userId);
+    });
   }
 
   @override
@@ -59,6 +67,7 @@ class _StudentHomeState extends State<StudentHome> {
 
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   Widget body(context, snapshat) {
+    print('name: $name');
     return snapshat.data.docs.length > 0
         ? Expanded(
             child: SizedBox(
@@ -125,13 +134,20 @@ class _StudentHomeState extends State<StudentHome> {
 //view comment---------------------------------------------------------------------------------
 
                                     IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.comment)),
+                                        onPressed: () {
+                                          AppRoutes.pushTo(
+                                              context,
+                                              CommentPage(
+                                                name: name!,
+                                                projectId: data['projectId'],
+                                                userId: userId!,
+                                              ));
+                                        },
+                                        icon: const Icon(Icons.comment)),
 //view file---------------------------------------------------------------------------------
                                     IconButton(
                                         onPressed: () async {
-                                          AppLoading.show(
-                                              context, "", "lode");
+                                          AppLoading.show(context, "", "lode");
                                           final file =
                                               await Database.lodeFirbase(
                                                       data['fileName'])
@@ -148,8 +164,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                 link: data['link'],
                                               ));
                                         },
-                                        icon:
-                                            Icon(Icons.view_carousel_sharp)),
+                                        icon: const Icon(
+                                            Icons.view_carousel_sharp)),
 //dwonlode file---------------------------------------------------------------------------------
                                     IconButton(
                                         onPressed: () async {
@@ -162,7 +178,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           );
                                         },
-                                        icon: Icon(Icons.download)),
+                                        icon: const Icon(Icons.download)),
 //-----------------------------------------------------------------------------------------------
                                   ],
                                 )),
@@ -176,15 +192,15 @@ class _StudentHomeState extends State<StudentHome> {
           ))
         : Center(
             child: Padding(
-              padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 2),
+              padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 3),
               child: AppText(
                   text: LocaleKeys.noData.tr(),
-                  fontSize: AppSize.titleTextSize,
+                  fontSize: AppSize.subTextSize,
                   fontWeight: FontWeight.bold),
             ),
           );
   }
-
+//==========================================================================================
   //================delete Information============================================================
   // Widget deleteInformation(i, String id, snapshat, Widget child) {
   //   return Dismissible(
@@ -255,4 +271,17 @@ class _StudentHomeState extends State<StudentHome> {
   //   );
   // }
 
+//get user name===============================================
+  Future<void> getName(String? userId) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('userId', isEqualTo: userId)
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        name = element.data()['name'];
+        setState(() {});
+      }
+    });
+  }
 }

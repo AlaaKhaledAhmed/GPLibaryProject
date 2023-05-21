@@ -86,5 +86,7 @@ abstract class  LocaleKeys {
   static const underWork = 'underWork';
   static const superFile = 'superFile';
   static const studentFile = 'studentFile';
+  static const comment = 'comment';
+  static const noSupervisor = 'noSupervisor';
 
 }

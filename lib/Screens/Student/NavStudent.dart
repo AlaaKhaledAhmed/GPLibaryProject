@@ -7,10 +7,11 @@ import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:library_project/Widget/AppIcons.dart';
 import 'package:library_project/Widget/AppSvg.dart';
+import '../../Widget/AppConstants.dart';
 import '../../Widget/AppRoutes.dart';
 import '../Accounts/Login.dart';
+import 'MyProfile/Profile.dart';
 import 'MyProject/MyProjectMain.dart';
-import 'MyTeam/MyTeamMain.dart';
 import 'StudentHome/StudentHome.dart';
 import 'Supervisor/StudentSupervisor.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -27,11 +28,11 @@ class NavStudent extends StatefulWidget {
 class _NavStudentState extends State<NavStudent> {
   int selectedIndex = 0;
   PageController? pageController;
-  List<Widget> page = const [
+  List<Widget> page = [
     StudentHome(),
     StudentProjectScreen(),
     StudentSupervisor(),
-    TeamScreen()
+    Profile(type: AppConstants.typeIsStudent)
   ];
   @override
   void initState() {
@@ -89,11 +90,13 @@ class _NavStudentState extends State<NavStudent> {
           ),
           centerIconChild: [
 //close ================================================================
-            AppWidget.centerIcon(icon: AppIcons.close, onTap: () { }),
+            AppWidget.centerIcon(icon: AppIcons.close, onTap: () {}),
 //add project================================================================
-            AppWidget.centerIcon(icon: AppIcons.addProject, onTap: () {
-              AppRoutes.pushTo(context, const AddProject());
-            }),
+            AppWidget.centerIcon(
+                icon: AppIcons.addProject,
+                onTap: () {
+                  AppRoutes.pushTo(context, const AddProject());
+                }),
 //language================================================================
             AppWidget.centerIcon(
                 icon: AppIcons.language,

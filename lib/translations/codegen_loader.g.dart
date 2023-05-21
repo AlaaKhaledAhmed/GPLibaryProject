@@ -60,7 +60,7 @@ class CodegenLoader extends AssetLoader{
   "singUp": "انشاء حساب",
   "done": "تمت العملية بنجاح",
   "myProject": "مشروعي",
-  "myTeam": "فريقي",
+  "myTeam": "ملفي",
   "mySuperVisor": "المشرفين",
   "softwareEngineering": "هندسة برمجيات",
   "dataScience": "علم البيانات",
@@ -99,7 +99,9 @@ class CodegenLoader extends AssetLoader{
   "complete": "مكتمل",
   "underWork": "قيد العمل",
   "superFile": "ملفات المشرف",
-  "studentFile": "ملفات الطالب"
+  "studentFile": "ملفات الطالب",
+  "comment": "التعليقات",
+  "noSupervisor": "لم يقم اي مشرف بقبول مشروعك في الوقت الحالى"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -147,7 +149,7 @@ static const Map<String,dynamic> en = {
   "singUp": "Sing Up",
   "done": "operation accomplished successfully",
   "myProject": "My project",
-  "myTeam": "Team",
+  "myTeam": "Profile",
   "mySuperVisor": "Supervisor",
   "softwareEngineering": "Software Engineering",
   "dataScience": "Data Science",
@@ -185,7 +187,9 @@ static const Map<String,dynamic> en = {
   "complete": "Complete",
   "underWork": "Un complete",
   "superFile": "Supervisor files",
-  "studentFile": "Student files"
+  "studentFile": "Student files",
+  "comment": "Comments",
+  "noSupervisor": "No supervisor has accepted your project at this time"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }
