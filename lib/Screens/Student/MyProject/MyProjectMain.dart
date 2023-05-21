@@ -19,15 +19,24 @@ class StudentProjectScreen extends StatefulWidget {
 
 class _StudentProjectScreenState extends State<StudentProjectScreen> {
   String? selectedTab;
-  int tab = 0;
+  int? tab;
   @override
   void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((c) async {
+      setState(() {
+        tab = 0;
+      });
+    });
     super.initState();
-    selectedTab = AppConstants.studentTabsMenu[0];
   }
 
   @override
   Widget build(BuildContext context) {
+    if (tab == null) {
+      selectedTab = (context.deviceLocale.toString() == 'en_EG'
+          ? AppConstants.studentTabsMenuEn[0]
+          : AppConstants.studentTabsMenuAr[0]);
+    }
     return Scaffold(
       appBar: AppBarMain(
         title: LocaleKeys.myProject.tr(),
@@ -81,26 +90,35 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
         height: 60.h,
         width: double.infinity,
         child: ListView.builder(
-            itemCount: AppConstants.studentTabsMenu.length,
+            itemCount: AppConstants.studentTabsMenuAr.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: AppButtons(
-                  text: AppConstants.studentTabsMenu[index],
+                  text: context.locale.toString() == 'en'
+                      ? AppConstants.studentTabsMenuEn[index]
+                      : AppConstants.studentTabsMenuAr[index],
                   onPressed: () {
                     setState(() {
-                      selectedTab = AppConstants.studentTabsMenu[index];
+                      selectedTab = (context.locale.toString() == 'en'
+                          ? AppConstants.studentTabsMenuEn[index]
+                          : AppConstants.studentTabsMenuAr[index]);
                       tab = index;
                     });
                   },
-                  bagColor: selectedTab == AppConstants.studentTabsMenu[index]
+                  bagColor: selectedTab ==
+                          (context.locale.toString() == 'en'
+                              ? AppConstants.studentTabsMenuEn[index]
+                              : AppConstants.studentTabsMenuAr[index])
                       ? AppColor.cherryLightPink
-                      : AppColor.grey600,
-                  textStyleColor:
-                      selectedTab == AppConstants.studentTabsMenu[index]
-                          ? AppColor.white
-                          : AppColor.textFieldBorderColor,
+                      : AppColor.white,
+                  textStyleColor: selectedTab ==
+                          (context.locale.toString() == 'en'
+                              ? AppConstants.studentTabsMenuEn[index]
+                              : AppConstants.studentTabsMenuAr[index])
+                      ? AppColor.white
+                      : AppColor.black,
                   width: 120.w,
                 ),
               );
@@ -113,4 +131,5 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   Widget body(BuildContext context, AsyncSnapshot snapshat) {
     return Text('data');
   }
+
 }
