@@ -41,30 +41,26 @@ class AppDropList extends StatelessWidget {
                 ),
               ))
           .toList(),
-      value: dropValue,
+      value: dropValue ,
       decoration: InputDecoration(
-
           filled: true,
           fillColor: AppColor.white,
           border: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderRadius: BorderRadius.circular(AppSize.textFieldsBorderRadius),
             borderSide: BorderSide(
               color: Colors.blue,
               width: AppSize.textFieldsBorderWidth,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderRadius: BorderRadius.circular(AppSize.textFieldsBorderRadius),
             borderSide: BorderSide(
               color: AppColor.buttonsColor,
               width: AppSize.textFieldsBorderWidth,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderRadius: BorderRadius.circular(AppSize.textFieldsBorderRadius),
             borderSide: BorderSide(
               color: AppColor.textFieldBorderColor,
               width: AppSize.textFieldsBorderWidth,
@@ -76,13 +72,11 @@ class AppDropList extends StatelessWidget {
       onChanged: onChanged,
       dropdownMaxHeight: 300.h,
       dropdownDecoration: BoxDecoration(
-
           color: AppColor.white,
           borderRadius: BorderRadius.all(
               Radius.circular(AppSize.textFieldsBorderRadius))),
       iconDisabledColor: AppColor.buttonsColor,
       iconEnabledColor: AppColor.buttonsColor,
-
       scrollbarAlwaysShow: true,
     );
   }

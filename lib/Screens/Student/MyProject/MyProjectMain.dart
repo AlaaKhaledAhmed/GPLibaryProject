@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:library_project/Screens/Student/MyProject/UpdateProject.dart';
@@ -20,6 +21,8 @@ import 'package:path/path.dart' as path;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 
+import 'ViewProject.dart';
+
 class StudentProjectScreen extends StatefulWidget {
   const StudentProjectScreen();
 
@@ -38,21 +41,12 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   File? file;
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((c) async {
-      setState(() {
-        tab = 0;
-      });
-    });
+    tab = 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (tab == null) {
-      selectedTab = (context.deviceLocale.toString() == 'en_EG'
-          ? AppConstants.studentTabsMenuEn[0]
-          : AppConstants.studentTabsMenuAr[0]);
-    }
     return Scaffold(
       appBar: AppBarMain(
         title: LocaleKeys.myProject.tr(),
@@ -121,24 +115,13 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                       : AppConstants.studentTabsMenuAr[index],
                   onPressed: () {
                     setState(() {
-                      selectedTab = (context.locale.toString() == 'en'
-                          ? AppConstants.studentTabsMenuEn[index]
-                          : AppConstants.studentTabsMenuAr[index]);
                       tab = index;
                     });
                   },
-                  bagColor: selectedTab ==
-                          (context.locale.toString() == 'en'
-                              ? AppConstants.studentTabsMenuEn[index]
-                              : AppConstants.studentTabsMenuAr[index])
-                      ? AppColor.cherryLightPink
-                      : AppColor.white,
-                  textStyleColor: selectedTab ==
-                          (context.locale.toString() == 'en'
-                              ? AppConstants.studentTabsMenuEn[index]
-                              : AppConstants.studentTabsMenuAr[index])
-                      ? AppColor.white
-                      : AppColor.black,
+                  bagColor:
+                      tab == index ? AppColor.cherryLightPink : AppColor.white,
+                  textStyleColor:
+                      tab == index ? AppColor.white : AppColor.black,
                   width: 120.w,
                 ),
               );
@@ -161,114 +144,21 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                   itemBuilder: (context, i) {
                     var data = snapshat.data.docs[i].data();
                     return InkWell(
-                      onTap: data['status'] == AppConstants.statusIsComplete
-                          ? null
-                          : () {
-                              AppRoutes.pushTo(
-                                  context,
-                                  UpdateProject(
-                                    dateController: data['year'],
-                                    docId: snapshat.data.docs[i].id,
-                                    nameController: data['name'],
-                                    selectedMajor: data['major'],
-                                    selectedSearch: data['searchInterest'],
-                                    superNameController: data['superName'],
-                                    fileName: data['fileName'],
-                                  ));
-                            },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.h),
-                        height: 250.h,
-                        child: Card(
-                            color: AppColor.white,
-                            elevation: 5,
-                            child: ListTile(
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 20.h),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.year.tr() +
-                                        ": ${data['year']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text:
-                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                            AppWidget.getTranslateMajor(
-                                                data['major']),
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.searchInterestTx.tr() +
-                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.mySuperVisor.tr() +
-                                        ": ${data['superName']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  SizedBox(height: 20.h),
-                                ],
-                              ),
-                            )),
-                      ),
-                    );
-                  }),
-            ),
-          ))
-        : Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 2),
-              child: AppText(
-                  text: LocaleKeys.noData.tr(),
-                  fontSize: AppSize.subTextSize,
-                  fontWeight: FontWeight.bold),
-            ),
-          );
-  }
-
-//======================================================================
-  Widget getSuperVisorFile(BuildContext context, AsyncSnapshot snapshat) {
-    return snapshat.data.docs.length > 0
-        ? Expanded(
-            child: SizedBox(
-            width: double.infinity,
-            height: 150.h,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: ListView.builder(
-                  itemCount: snapshat.data.docs.length,
-                  itemBuilder: (context, i) {
-                    var data = snapshat.data.docs[i].data();
-                    return InkWell(
-                      onTap: () {
+                      onTap: () async {
+                        AppLoading.show(context, "", "lode");
+                        final file =
+                            await Database.lodeFirbase(data['fileName'])
+                                .whenComplete(() {
+                          Navigator.pop(context);
+                        });
+                        // ignore: unnecessary_null_comparison
+                        if (file == null) return;
                         AppRoutes.pushTo(
                             context,
-                            UpdateProject(
-                              dateController: data['year'],
-                              docId: snapshat.data.docs[i].id,
-                              nameController: data['name'],
-                              selectedMajor: data['major'],
-                              selectedSearch: data['searchInterest'],
-                              superNameController: data['superName'],
+                            ViewPdf(
+                              file: file,
                               fileName: data['fileName'],
+                              link: data['link'],
                             ));
                       },
                       child: Container(
@@ -331,61 +221,16 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
         : Center(
             child: Padding(
               padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
-              child: AppButtons(
-                onPressed: () {
-                  setState(() {
-                    getFile(context).whenComplete(() async {
-                      print('fillllllllllllle:${file!.path}');
-                      // projectPathController.text = path.basename(file!.path);
-                      AppLoading.show(context, '', 'lode');
-                            fileRef = FirebaseStorage.instance
-                                .ref('project')
-                                .child(path.basename(file!.path));
-                            await fileRef
-                                ?.putFile(file!)
-                                .then((getValue) async {
-                              fileURL = await fileRef!.getDownloadURL();
-                              Database.addProject(
-                                name: 'nameController.text',
-                                year: 'Data',
-                                link: fileURL!,
-                                fileName: 'projectPathController.text',
-                                superName: 'superNameController.text',
-                                major: AppWidget.setEnTranslateMajor(
-                                    selectedMajor!),
-                                searchInterest:
-                                    AppWidget.setEnTranslateSearchInterest(
-                                        selectedSearch!),
-                                from: AppConstants.typeIsStudent,
-                              ).then((v) {
-                                print('================$v');
-                                if (v == "done") {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  AppLoading.show(context, LocaleKeys.add.tr(),
-                                      LocaleKeys.done.tr());
-                                } else {
-                                  Navigator.pop(context);
-                                  AppLoading.show(context, LocaleKeys.add.tr(),
-                                      LocaleKeys.error.tr());
-                                }
-                              });
-                            });
-                          
-                    });
-                  });
-                },
-                text: LocaleKeys.attachFile.tr(),
-                width: 200.w,
-                bagColor: AppColor.appBarColor,
-                textStyleColor: AppColor.white,
+              child: AppText(
+                text: LocaleKeys.noData.tr(),
+                fontSize: AppSize.subTextSize,
               ),
             ),
           );
   }
 
 //======================================================================
-  Widget getUnCompletedProject(BuildContext context, AsyncSnapshot snapshat) {
+  Widget getSuperVisorFile(BuildContext context, AsyncSnapshot snapshat) {
     return snapshat.data.docs.length > 0
         ? Expanded(
             child: SizedBox(
@@ -398,21 +243,23 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                   itemBuilder: (context, i) {
                     var data = snapshat.data.docs[i].data();
                     return InkWell(
-                      onTap: data['status'] == AppConstants.statusIsComplete
-                          ? null
-                          : () {
-                              AppRoutes.pushTo(
-                                  context,
-                                  UpdateProject(
-                                    dateController: data['year'],
-                                    docId: snapshat.data.docs[i].id,
-                                    nameController: data['name'],
-                                    selectedMajor: data['major'],
-                                    selectedSearch: data['searchInterest'],
-                                    superNameController: data['superName'],
-                                    fileName: data['fileName'],
-                                  ));
-                            },
+                      onTap: () async {
+                        AppLoading.show(context, "", "lode");
+                        final file =
+                            await Database.lodeFirbase(data['fileName'])
+                                .whenComplete(() {
+                          Navigator.pop(context);
+                        });
+                        // ignore: unnecessary_null_comparison
+                        if (file == null) return;
+                        AppRoutes.pushTo(
+                            context,
+                            ViewPdf(
+                              file: file,
+                              fileName: data['fileName'],
+                              link: data['link'],
+                            ));
+                      },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 20.h),
                         height: 250.h,
@@ -472,16 +319,132 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
           ))
         : Center(
             child: Padding(
-              padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 2),
-              child: AppText(
-                  text: LocaleKeys.noData.tr(),
-                  fontSize: AppSize.subTextSize,
-                  fontWeight: FontWeight.bold),
+                padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
+                child: AppText(
+                    text: LocaleKeys.noData.tr(),
+                    fontSize: AppSize.subTextSize)),
+          );
+  }
+
+//======================================================================
+  Widget getUnCompletedProject(BuildContext context, AsyncSnapshot snapshat) {
+    return snapshat.data.docs.length > 0
+        ? Expanded(
+            child: SizedBox(
+            width: double.infinity,
+            height: 150.h,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: ListView.builder(
+                  itemCount: snapshat.data.docs.length,
+                  itemBuilder: (context, i) {
+                    var data = snapshat.data.docs[i].data();
+                    return InkWell(
+                      onTap: () {
+                        AppRoutes.pushTo(
+                            context,
+                            UpdateProject(
+                              status: AppConstants.statusIsUnComplete,
+                              dateController: data['year'],
+                              docId: snapshat.data.docs[i].id,
+                              nameController: data['name'],
+                              selectedMajor:
+                                  AppWidget.getTranslateMajor(data['major']),
+                              selectedSearch: AppWidget.getTranslateSearchInterest(
+                                  data['searchInterest']),
+                              superNameController: data['superName'],
+                              fileName: data['fileName'],
+                              fileURL: data['link'],
+                            ));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.h),
+                        height: 250.h,
+                        child: Card(
+                            color: AppColor.white,
+                            elevation: 5,
+                            child: ListTile(
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.projectName.tr() +
+                                        ": ${data['name']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.year.tr() +
+                                        ": ${data['year']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text:
+                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                            AppWidget.getTranslateMajor(
+                                                data['major']),
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.searchInterestTx.tr() +
+                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.mySuperVisor.tr() +
+                                        ": ${data['superName']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  SizedBox(height: 20.h),
+                                ],
+                              ),
+                            )),
+                      ),
+                    );
+                  }),
+            ),
+          ))
+        : Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    getFile(context).whenComplete(() {
+                      print('fillllllllllllle:${file!.path}');
+
+                      AppLoading.show(
+                          context,
+                          LocaleKeys.attachFile.tr(),
+                          LocaleKeys.attachFile.tr() +
+                              (context.locale.toString() == 'en' ? "?" : "؟"),
+                          higth: 100.h,
+                          noFunction: () => Navigator.pop(context),
+                          yesFunction: () => uplodeFileFromDevice(
+                              fileName: path.basename(file!.path)),
+                          showButtom: true);
+                    });
+                  });
+                },
+                child: AppText(
+                  text: LocaleKeys.attachFile.tr(),
+                  fontSize: AppSize.title2TextSize,
+                ),
+              ),
             ),
           );
   }
 
-//====================================================================
 //show file picker=========================================
   Future getFile(context) async {
     FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
@@ -496,5 +459,38 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
     });
   }
 
-  uplodeFileFromDevice() {}
+//===============================================================
+  uplodeFileFromDevice({required String fileName}) async {
+    AppLoading.show(context, '', 'lode');
+    FocusManager.instance.primaryFocus?.unfocus();
+    fileRef = FirebaseStorage.instance.ref('project').child(fileName);
+    await fileRef?.putFile(file!).then((getValue) async {
+      Navigator.pop(context);
+      fileURL = await fileRef!.getDownloadURL();
+      Database.addProject(
+        status: AppConstants.statusIsUnComplete,
+        name: 'projectName',
+        year:
+            '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+        link: fileURL!,
+        fileName: fileName,
+        from: AppConstants.typeIsStudent,
+        superName: 'superName',
+        major: AppWidget.setEnTranslateMajor('Software Engineering'),
+        searchInterest:
+            AppWidget.setEnTranslateSearchInterest('Artificial Intelligence'),
+      ).then((String v) {
+        print('================$v');
+        if (v == "done") {
+          Navigator.pop(context);
+          AppLoading.show(
+              context, LocaleKeys.update.tr(), LocaleKeys.done.tr());
+        } else {
+          Navigator.pop(context);
+          AppLoading.show(
+              context, LocaleKeys.update.tr(), LocaleKeys.error.tr());
+        }
+      });
+    });
+  }
 }

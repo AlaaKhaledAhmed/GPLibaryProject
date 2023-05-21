@@ -176,7 +176,9 @@ class SingUp extends StatelessWidget {
                                                           v),
                                                 )
                                               : const SizedBox(),
-                                          AppWidget.hSpace(AppSize.hSpace),
+                                          model.isSupervisor[0] == false
+                                              ? AppWidget.hSpace(AppSize.hSpace)
+                                              : const SizedBox(),
 //search interest TextField========================================================================
                                           AppDropList(
                                             listItem: AppConstants.searchList,
@@ -199,10 +201,7 @@ class SingUp extends StatelessWidget {
                                                 .tr(),
                                             dropValue: selectedSearch,
                                           ),
-                                          model.isSupervisor[0] == false
-                                              ? AppWidget.hSpace(AppSize.hSpace)
-                                              : const SizedBox(),
-
+                                          AppWidget.hSpace(AppSize.hSpace),
 //major dropList=============================================================
                                           AppDropList(
                                             listItem: AppConstants.majorList,

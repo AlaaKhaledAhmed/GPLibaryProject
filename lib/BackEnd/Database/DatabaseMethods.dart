@@ -207,6 +207,7 @@ class Database {
     required String searchInterest,
     required String superName,
     required String from,
+    required int status,
   }) async {
     try {
       AppConstants.projectCollection.add({
@@ -217,7 +218,7 @@ class Database {
         'major': major,
         'searchInterest': searchInterest,
         'superName': superName,
-        'status': AppConstants.statusIsComplete,
+        'status': status,
         'from': from
       });
       return 'done';
@@ -235,6 +236,7 @@ class Database {
       required String major,
       required String searchInterest,
       required String superName,
+      required int status,
       required String docId}) async {
     try {
       AppConstants.projectCollection.doc(docId).update({
@@ -245,6 +247,7 @@ class Database {
         'major': major,
         'searchInterest': searchInterest,
         'superName': superName,
+       'status': status,
       });
       return 'done';
     } catch (e) {

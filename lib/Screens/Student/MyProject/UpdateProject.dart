@@ -25,20 +25,24 @@ class UpdateProject extends StatefulWidget {
   final String nameController;
   final String dateController;
   final String fileName;
+  final String fileURL;
   final String superNameController;
   final String selectedSearch;
   final String selectedMajor;
   final String docId;
+  final int status;
 
   const UpdateProject(
       {Key? key,
+      required this.status,
       required this.nameController,
       required this.dateController,
       required this.fileName,
       required this.superNameController,
       required this.docId,
       required this.selectedSearch,
-      required this.selectedMajor})
+      required this.selectedMajor,
+      required this.fileURL})
       : super(key: key);
 
   @override
@@ -67,6 +71,7 @@ class _UpdateProjectState extends State<UpdateProject> {
     superNameController.text = widget.superNameController;
     selectedMajor = widget.selectedMajor;
     selectedSearch = widget.selectedSearch;
+    fileURL = widget.fileURL;
   }
 
   @override
@@ -154,8 +159,8 @@ class _UpdateProjectState extends State<UpdateProject> {
                           selectedSearch = model.setSearch(selectedItem!);
                           print('selectedSearch: $selectedSearch');
                         },
-                        hintText: LocaleKeys.selectSearchInterest.tr(),
-                        dropValue: selectedSearch,
+                        hintText:selectedSearch,
+                        dropValue:selectedSearch,
                       ),
                       AppWidget.hSpace(AppSize.hSpace),
 
@@ -173,11 +178,11 @@ class _UpdateProjectState extends State<UpdateProject> {
                           selectedMajor = model.setMajor(selectedItem!);
                           print('selectedMajor: $selectedMajor');
                         },
-                        hintText: LocaleKeys.selectMajor.tr(),
+                        hintText: selectedMajor,
                         dropValue: selectedMajor,
                       ),
                       AppWidget.hSpace(AppSize.hSpace),
-//==============================add ===============================================================
+//==============================update ===============================================================
 
                       AppButtons(
                         text: LocaleKeys.update.tr(),
@@ -188,9 +193,10 @@ class _UpdateProjectState extends State<UpdateProject> {
                             AppLoading.show(context, '', 'lode');
                             if (file == null) {
                               Database.updateProject(
+                                      status: widget.status,
                                       name: nameController.text,
                                       year: dateController.text,
-                                      link: projectPathController.text,
+                                      link: fileURL!,
                                       fileName: projectPathController.text,
                                       docId: widget.docId,
                                       superName: superNameController.text,
@@ -227,6 +233,7 @@ class _UpdateProjectState extends State<UpdateProject> {
                                 print('fileURLllllllllllllllllllll $fileURL');
                                 // setState(() {file=null;});
                                 Database.updateProject(
+                                   status: widget.status,
                                   name: nameController.text,
                                   year: dateController.text,
                                   link: fileURL!,

@@ -69,133 +69,120 @@ class _StudentHomeState extends State<StudentHome> {
                   itemCount: snapshat.data.docs.length,
                   itemBuilder: (context, i) {
                     var data = snapshat.data.docs[i].data();
-                    return InkWell(
-                      onTap: () {
-                        AppRoutes.pushTo(
-                           context,
-                            AddProject(
-                                // date: data['year'],
-                                // name: data['name'],
-                                // path: data['link'],
-                                // section: data['section'],
-                                // doId: snapshat.data.docs[i].id,
-                                // fileName: data['fileName'],
-                                ));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.h),
-                        height: 250.h,
-                        child: Card(
-                            color: AppColor.white,
-                            elevation: 5,
-                            child: ListTile(
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 20.h),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.year.tr() +
-                                        ": ${data['year']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text:
-                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                            AppWidget.getTranslateMajor(
-                                                data['major']),
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.searchInterestTx.tr() +
-                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
-                                    color: AppColor.appBarColor,
-                                  )), Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.mySuperVisor.tr() +
-                                        ": ${data['superName']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 20.h),
+                      height: 250.h,
+                      child: Card(
+                          color: AppColor.white,
+                          elevation: 5,
+                          child: ListTile(
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 20.h),
+                                Expanded(
+                                    child: AppText(
+                                  fontSize: AppSize.subTextSize,
+                                  text: LocaleKeys.projectName.tr() +
+                                      ": ${data['name']}",
+                                  color: AppColor.appBarColor,
+                                )),
+                                Expanded(
+                                    child: AppText(
+                                  fontSize: AppSize.subTextSize,
+                                  text: LocaleKeys.year.tr() +
+                                      ": ${data['year']}",
+                                  color: AppColor.appBarColor,
+                                )),
+                                Expanded(
+                                    child: AppText(
+                                  fontSize: AppSize.subTextSize,
+                                  text:
+                                      '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                          AppWidget.getTranslateMajor(
+                                              data['major']),
+                                  color: AppColor.appBarColor,
+                                )),
+                                Expanded(
+                                    child: AppText(
+                                  fontSize: AppSize.subTextSize,
+                                  text: LocaleKeys.searchInterestTx.tr() +
+                                      ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
+                                  color: AppColor.appBarColor,
+                                )),
+                                Expanded(
+                                    child: AppText(
+                                  fontSize: AppSize.subTextSize,
+                                  text: LocaleKeys.mySuperVisor.tr() +
+                                      ": ${data['superName']}",
+                                  color: AppColor.appBarColor,
+                                )),
+                                Expanded(
+                                    child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
 //view comment---------------------------------------------------------------------------------
 
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.comment)),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.comment)),
 //view file---------------------------------------------------------------------------------
-                                      IconButton(
-                                          onPressed: () async {
-                                            AppLoading.show(
-                                                context, "", "lode");
-                                            final file =
-                                                await Database.lodeFirbase(
-                                                        data['fileName'])
-                                                    .whenComplete(() {
-                                              Navigator.pop(context);
-                                            });
-                                            // ignore: unnecessary_null_comparison
-                                            if (file == null) return;
-                                            AppRoutes.pushTo(
-                                                context,
-                                                ViewPdf(
-                                                  file: file,
-                                                  fileName: data['fileName'],
-                                                  link: data['link'],
-                                                ));
-                                          },
-                                          icon:
-                                              Icon(Icons.view_carousel_sharp)),
-//dwonlode file---------------------------------------------------------------------------------
-                                      IconButton(
-                                          onPressed: () async {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  DownloadingDialog(
+                                    IconButton(
+                                        onPressed: () async {
+                                          AppLoading.show(
+                                              context, "", "lode");
+                                          final file =
+                                              await Database.lodeFirbase(
+                                                      data['fileName'])
+                                                  .whenComplete(() {
+                                            Navigator.pop(context);
+                                          });
+                                          // ignore: unnecessary_null_comparison
+                                          if (file == null) return;
+                                          AppRoutes.pushTo(
+                                              context,
+                                              ViewPdf(
+                                                file: file,
                                                 fileName: data['fileName'],
-                                                url: data['link'],
-                                              ),
-                                            );
-                                          },
-                                          icon: Icon(Icons.download)),
+                                                link: data['link'],
+                                              ));
+                                        },
+                                        icon:
+                                            Icon(Icons.view_carousel_sharp)),
+//dwonlode file---------------------------------------------------------------------------------
+                                    IconButton(
+                                        onPressed: () async {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                DownloadingDialog(
+                                              fileName: data['fileName'],
+                                              url: data['link'],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.download)),
 //-----------------------------------------------------------------------------------------------
-                                    ],
-                                  )),
-                                  SizedBox(height: 20.h),
-                                ],
-                              ),
-                            )),
-                      ),
+                                  ],
+                                )),
+                                SizedBox(height: 20.h),
+                              ],
+                            ),
+                          )),
                     );
                   }),
             ),
           ))
         : Center(
-          child: Padding(
+            child: Padding(
               padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 2),
               child: AppText(
                   text: LocaleKeys.noData.tr(),
                   fontSize: AppSize.titleTextSize,
                   fontWeight: FontWeight.bold),
             ),
-        );
+          );
   }
 
   //================delete Information============================================================
