@@ -1,36 +1,36 @@
-import 'dart:ui';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
-import 'package:library_project/Widget/AppColors.dart';
-import 'package:library_project/translations/locale_keys.g.dart';
-import '../../../BackEnd/Provider/ChangConstModel.dart';
-import '../../../Widget/AppBarMain.dart';
-import '../../../Widget/AppButtons.dart';
-import '../../../Widget/AppConstants.dart';
-import '../../../Widget/AppDropList.dart';
-import '../../../Widget/AppLoading.dart';
-import '../../../Widget/AppSize.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../Widget/AppTextFields.dart';
-import '../../../Widget/AppValidator.dart';
-import '../../../Widget/AppWidget.dart';
+import '../../BackEnd/Database/DatabaseMethods.dart';
+import '../../BackEnd/Provider/ChangConstModel.dart';
+import '../../BackEnd/translations/locale_keys.g.dart';
+import '../../Widget/AppBarMain.dart';
+import '../../Widget/AppButtons.dart';
+import '../../Widget/AppColors.dart';
+import '../../Widget/AppConstants.dart';
+import '../../Widget/AppDropList.dart';
+import '../../Widget/AppLoading.dart';
+import '../../Widget/AppSize.dart';
+import '../../Widget/AppTextFields.dart';
+import '../../Widget/AppValidator.dart';
+import '../../Widget/AppWidget.dart';
+import 'package:provider/provider.dart';
 
-class Profile extends StatefulWidget {
+class SupervisorProfile extends StatefulWidget {
   final String type;
-  const Profile({required this.type});
+  const SupervisorProfile({required this.type});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<SupervisorProfile> createState() => _SupervisorProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _SupervisorProfileState extends State<SupervisorProfile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController idController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   GlobalKey<FormState> updateKey = GlobalKey<FormState>();
 
@@ -69,17 +69,6 @@ class _ProfileState extends State<Profile> {
                     validator: (v) => AppValidator.validatorName(v),
                   ),
                   AppWidget.hSpace(AppSize.hSpace),
-//id TextField===================================================================================
-                  widget.type == AppConstants.typeIsStudent
-                      ? AppTextFields(
-                          controller: idController,
-                          labelText: LocaleKeys.idTx.tr(),
-                          validator: (v) => AppValidator.validatorID(v),
-                        )
-                      : const SizedBox(),
-                  widget.type == AppConstants.typeIsStudent
-                      ? AppWidget.hSpace(AppSize.hSpace)
-                      : const SizedBox(),
 //phone TextField=============================================================
                   AppTextFields(
                     controller: phoneController,
@@ -148,14 +137,13 @@ class _ProfileState extends State<Profile> {
       FocusManager.instance.primaryFocus?.unfocus();
       AppLoading.show(context, '', 'lode');
       Database.updateProfile(
-              name: nameController.text,
-              stId: idController.text,
-              major: AppWidget.setEnTranslateMajor(selectedMajor!),
-              phone: phoneController.text,
-              searchInterest:
-                  AppWidget.setEnTranslateSearchInterest(selectedSearch!),
-              docId: docId!,
-              type: widget.type)
+          name: nameController.text,
+          major: AppWidget.setEnTranslateMajor(selectedMajor!),
+          phone: phoneController.text,
+          searchInterest:
+          AppWidget.setEnTranslateSearchInterest(selectedSearch!),
+          docId: docId!,
+          type: widget.type)
           .then((String v) {
         print('================$v');
         if (v == 'done') {
@@ -187,9 +175,6 @@ class _ProfileState extends State<Profile> {
           selectedSearch = AppWidget.getTranslateSearchInterest(
               "${element["searchInterest"]}");
           selectedMajor = AppWidget.getTranslateMajor("${element["major"]}");
-          if (widget.type == AppConstants.typeIsStudent) {
-            idController = TextEditingController(text: "${element["stId"]}");
-          }
           docId = element.id;
         });
       });

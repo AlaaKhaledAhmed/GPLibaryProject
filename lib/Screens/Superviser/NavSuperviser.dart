@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 import 'package:library_project/Screens/Student/MyProfile/Profile.dart';
+import 'package:library_project/Screens/Superviser/SupervisorProfile.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
@@ -30,7 +31,7 @@ class _NavSupervisorState extends State<NavSupervisor> {
     StudentHome(),
     SupervisorProjectScreen(),
     RequestMain(),
-    Profile(type: AppConstants.typeIsStudent)
+    SupervisorProfile(type: AppConstants.typeIsSupervisor)
   ];
   @override
   void initState() {

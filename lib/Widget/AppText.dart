@@ -27,7 +27,7 @@ class AppText extends StatelessWidget {
       //softWrap: false,
       style: TextStyle(
         color: color,
-        overflow: overflow,
+        overflow: TextOverflow.clip,
         fontFamily: fontFamily,
         fontSize: fontSize,
         fontWeight: fontWeight,

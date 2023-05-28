@@ -127,11 +127,20 @@ class _RequestMainState extends State<RequestMain> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   AppWidget.hSpace(8.h),
-                                  AppText(
-                                    text: '${LocaleKeys.projectDescription.tr()}:' +
-                                        '\n'
-                                            "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                    fontSize: AppSize.subTextSize + 2,
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: AppColor.cherryLightPink),
+                                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                                    ),
+                                    height: 120.h,
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      child: AppText(
+                                        text: ' ${data['description']}',
+                                        fontSize: AppSize.subTextSize + 2,
+                                        
+                                      ),
+                                    ),
                                   ),
                                   AppWidget.hSpace(10.h),
                                   Row(
