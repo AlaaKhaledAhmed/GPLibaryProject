@@ -17,6 +17,8 @@ import '../../Widget/AppTextFields.dart';
 import '../../Widget/AppColors.dart';
 import '../../Widget/AppDropList.dart';
 import '../../Widget/AppImagePath.dart';
+import '../Student/NavStudent.dart';
+import '../Superviser/NavSuperviser.dart';
 import 'Login.dart';
 import 'package:provider/provider.dart';
 
@@ -268,12 +270,17 @@ class SingUp extends StatelessWidget {
                                                         if (v == 'done') {
                                                           Navigator.pop(
                                                               context);
-                                                          AppLoading.show(
-                                                              context,
-                                                              LocaleKeys.singUp
-                                                                  .tr(),
-                                                              LocaleKeys.done
-                                                                  .tr());
+                                                          if(model.isSupervisor[0] == false){
+                                                            AppRoutes
+                                                                .pushReplacementTo(
+                                                                context,
+                                                                const NavStudent());
+                                                          } else {
+                                                            AppRoutes
+                                                                .pushReplacementTo(
+                                                                context,
+                                                                const NavSupervisor());
+                                                          }
                                                         } else if (v ==
                                                             'weak-password') {
                                                           Navigator.pop(

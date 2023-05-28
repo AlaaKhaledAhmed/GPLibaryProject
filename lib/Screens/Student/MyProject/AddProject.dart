@@ -66,7 +66,7 @@ class _AddProjectState extends State<AddProject> {
                     EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 30.h),
                 child: Form(
                   key: addKey,
-                  child: Column(
+                  child: ListView(
                     children: [
                       // icon(),
                       AppWidget.hSpace(AppSize.hSpace),
