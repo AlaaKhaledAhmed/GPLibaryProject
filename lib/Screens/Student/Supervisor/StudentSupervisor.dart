@@ -7,6 +7,8 @@ import 'package:library_project/Widget/AppConstants.dart';
 import 'package:library_project/Widget/AppIcons.dart';
 import 'package:library_project/Widget/AppPopUpMen.dart';
 import 'package:library_project/Widget/AppText.dart';
+import 'package:library_project/Widget/AppTextFields.dart';
+import 'package:library_project/Widget/AppValidator.dart';
 import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,6 +40,9 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
       .collection("users")
       .where('type', isEqualTo: AppConstants.supervisor);
   int iniFilter = 0;
+  TextEditingController descriptionController = TextEditingController();
+  bool? showDescription = false;
+  GlobalKey<FormState> addKey = GlobalKey();
 
   @override
   void initState() {
@@ -200,7 +205,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
                       child: SizedBox(
-                        height: 200.h,
+                        height: showDescription==true?250.h:200,
                         width: AppWidget.getWidth(context),
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -216,41 +221,56 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                 fontSize: AppSize.title2TextSize,
                               ),
                             ),
-//search interest=================================================================
+//description =====================================================================
                             subtitle: Padding(
                               padding: EdgeInsets.only(top: 10.h),
                               child: Center(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppText(
-                                      text:
-                                          '${LocaleKeys.searchInterestTx.tr()}: ' +
-                                              AppWidget
-                                                  .getTranslateSearchInterest(
-                                                      data['searchInterest']),
-                                      fontSize: AppSize.subTextSize + 2,
-                                    ),
-                                    AppWidget.hSpace(8),
-                                    AppText(
-                                      text:
-                                          '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                              AppWidget.getTranslateMajor(
-                                                  data['major']),
-                                      fontSize: AppSize.subTextSize + 2,
-                                    ),
-                                    AppWidget.hSpace(8),
-                                    AppText(
-                                      text: '${LocaleKeys.emailTx.tr()}: ' +
-                                          data['email'],
-                                      fontSize: AppSize.subTextSize + 2,
-                                    ),
-                                    // AppWidget.hSpace(7),
-                                  ],
-                                ),
+                                child: showDescription == true
+                                    ? Form(
+                                        key: addKey,
+                                        child: AppTextFields(
+                                          controller: descriptionController,
+                                          labelText:
+                                              LocaleKeys.description.tr(),
+                                          validator: (v) =>
+                                              AppValidator.validatorEmpty(v),
+                                          maxLines: 4,
+                                          minLines: 4,
+                                        ),
+                                      )
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          AppText(
+                                            text: '${LocaleKeys.searchInterestTx.tr()}: ' +
+                                                AppWidget
+                                                    .getTranslateSearchInterest(
+                                                        data['searchInterest']),
+                                            fontSize: AppSize.subTextSize + 2,
+                                          ),
+                                          AppWidget.hSpace(8),
+                                          AppText(
+                                            text:
+                                                '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                                    AppWidget.getTranslateMajor(
+                                                        data['major']),
+                                            fontSize: AppSize.subTextSize + 2,
+                                          ),
+                                          AppWidget.hSpace(8),
+                                          AppText(
+                                            text:
+                                                '${LocaleKeys.emailTx.tr()}: ' +
+                                                    data['email'],
+                                            fontSize: AppSize.subTextSize + 2,
+                                          ),
+
+                                          // AppWidget.hSpace(7),
+                                        ],
+                                      ),
                               ),
                             ),
-//send icon=================================================================
+//send icon==========================================================================
 
                             trailing: FittedBox(
                               child: Padding(
@@ -297,52 +317,66 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                               ),
                             ),
                             onTap: () async {
-                              await getStatus(
-                                          stId: userId!,
-                                          supId: data['userId']) ==
-                                      AppConstants.statusIsNotSendYet
-                                  ? AppLoading.show(
-                                      context,
-                                      LocaleKeys.sendRequest.tr(),
-                                      '${LocaleKeys.sendRequestTo.tr()} ' +
-                                          data['name'],
-                                      higth: 100.h,
-                                      showButtom: true,
-                                      noFunction: () => Navigator.pop(context),
-                                      yesFunction: () async =>
-                                          Database.studentSupervisionRequests(
-                                                  context: context,
-                                                  studentUid: userId!,
-                                                  supervisorUid: data['userId'],
-                                                  supervisorName: data['name'],
-                                                  supervisorInterest:
-                                                      data['searchInterest'],
-                                                  studentName: await Database
-                                                      .getDataViUserId(
-                                                          currentUserUid:
-                                                              userId!))
-                                              .then((v) {
-                                        print('================$v');
-                                        if (v == 'done') {
+                              showDescription = true;
+                              model.refreshPage();
+                              if (addKey.currentState?.validate() == true) {
+                                await getStatus(
+                                            stId: userId!,
+                                            supId: data['userId']) ==
+                                        AppConstants.statusIsNotSendYet
+                                    ? AppLoading.show(
+                                        context,
+                                        LocaleKeys.sendRequest.tr(),
+                                        '${LocaleKeys.sendRequestTo.tr()} ' +
+                                            data['name'],
+                                        higth: 100.h,
+                                        showButtom: true,
+                                        noFunction: () {
+                                          Navigator.pop(context);
+                                          showDescription = false;
                                           model.refreshPage();
-                                          Navigator.pop(context);
-                                          AppLoading.show(
-                                              context,
-                                              LocaleKeys.mySuperVisor.tr(),
-                                              LocaleKeys.done.tr());
-                                        } else {
-                                          Navigator.pop(context);
-                                          AppLoading.show(
-                                              context,
-                                              LocaleKeys.mySuperVisor.tr(),
-                                              LocaleKeys.error.tr());
-                                        }
-                                      }),
-                                    )
-                                  : AppLoading.show(
-                                      context,
-                                      LocaleKeys.sendRequest.tr(),
-                                      LocaleKeys.canNotSend.tr());
+                                        },
+                                        yesFunction: () async =>
+                                            Database.studentSupervisionRequests(
+                                                    description:
+                                                        descriptionController
+                                                            .text,
+                                                    context: context,
+                                                    studentUid: userId!,
+                                                    supervisorUid:
+                                                        data['userId'],
+                                                    supervisorName:
+                                                        data['name'],
+                                                    supervisorInterest:
+                                                        data['searchInterest'],
+                                                    studentName: await Database
+                                                        .getDataViUserId(
+                                                            currentUserUid:
+                                                                userId!))
+                                                .then((v) {
+                                          print('================$v');
+                                          if (v == 'done') {
+                                            showDescription = false;
+                                            model.refreshPage();
+                                            Navigator.pop(context);
+                                            AppLoading.show(
+                                                context,
+                                                LocaleKeys.mySuperVisor.tr(),
+                                                LocaleKeys.done.tr());
+                                          } else {
+                                            Navigator.pop(context);
+                                            AppLoading.show(
+                                                context,
+                                                LocaleKeys.mySuperVisor.tr(),
+                                                LocaleKeys.error.tr());
+                                          }
+                                        }),
+                                      )
+                                    : AppLoading.show(
+                                        context,
+                                        LocaleKeys.sendRequest.tr(),
+                                        LocaleKeys.canNotSend.tr());
+                              }
                             },
                           ),
                         ),

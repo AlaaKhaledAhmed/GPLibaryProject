@@ -197,6 +197,7 @@ class Database {
     required String supervisorName,
     required String supervisorInterest,
     required String studentName,
+    required String description,
   }) async {
     try {
       AppConstants.requestCollection.add({
@@ -207,6 +208,7 @@ class Database {
         'supervisorName': supervisorName,
         'supervisorInterest': supervisorInterest,
         'studentName': studentName,
+        'description':description
       });
       return 'done';
     } catch (e) {

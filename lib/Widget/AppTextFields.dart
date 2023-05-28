@@ -11,6 +11,8 @@ class AppTextFields extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? labelText;
+  final int? minLines;
+  final int? maxLines;
   final FontWeight? fontWeight;
   final void Function()? onTap;
   const AppTextFields({
@@ -22,12 +24,14 @@ class AppTextFields extends StatelessWidget {
     required this.controller,
     required this.labelText,
     this.fontWeight,
-    this.obscureText,
+    this.obscureText, this.minLines, this.maxLines,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      minLines: minLines??1,
+      maxLines:maxLines??1 ,
       onTap:onTap,
       obscureText: obscureText ?? false,
       validator: validator,

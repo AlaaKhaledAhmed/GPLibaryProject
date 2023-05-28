@@ -104,7 +104,10 @@ class SearchSupervisors extends SearchDelegate {
       return nameLower.startsWith(queryLower);
     }).toList();
     return query.isEmpty && _oldFilters.isEmpty
-        ? const AppText(text:'eeee',fontSize: 15,)
+        ? const AppText(
+            text: 'eeee',
+            fontSize: 15,
+          )
         : query.isEmpty && _oldFilters.isNotEmpty
             ? showHistory(context, _oldFilters)
             : getSuggestionList(listSearch);
@@ -190,7 +193,7 @@ class SearchSupervisors extends SearchDelegate {
         : Column(
             children: [
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -435,6 +438,7 @@ class SearchSupervisors extends SearchDelegate {
                                               Navigator.pop(context),
                                           yesFunction: () async => Database
                                                   .studentSupervisionRequests(
+                                                      description: 'description.text',
                                                       context: context,
                                                       studentUid: userId,
                                                       supervisorUid:

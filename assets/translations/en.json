@@ -89,5 +89,6 @@
   "superFile": "Supervisor files",
   "studentFile": "Student files",
   "comment": "Comments",
-  "noSupervisor": "No supervisor has accepted your project at this time"
+  "noSupervisor": "No supervisor has accepted your project at this time",
+  "description": "Project description"
 }

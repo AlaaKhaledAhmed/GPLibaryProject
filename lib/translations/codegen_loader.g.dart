@@ -101,7 +101,8 @@ class CodegenLoader extends AssetLoader{
   "superFile": "ملفات المشرف",
   "studentFile": "ملفات الطالب",
   "comment": "التعليقات",
-  "noSupervisor": "لم يقم اي مشرف بقبول مشروعك في الوقت الحالى"
+  "noSupervisor": "لم يقم اي مشرف بقبول مشروعك في الوقت الحالى",
+  "description": "وصف المشروع"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -189,7 +190,8 @@ static const Map<String,dynamic> en = {
   "superFile": "Supervisor files",
   "studentFile": "Student files",
   "comment": "Comments",
-  "noSupervisor": "No supervisor has accepted your project at this time"
+  "noSupervisor": "No supervisor has accepted your project at this time",
+  "description": "Project description"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }
