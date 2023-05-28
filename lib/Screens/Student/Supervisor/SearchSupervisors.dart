@@ -17,6 +17,8 @@ import '../../../BackEnd/Database/DatabaseMethods.dart';
 import '../../../BackEnd/Provider/ChangConstModel.dart';
 import '../../../Widget/AppConstants.dart';
 import '../../../Widget/AppLoading.dart';
+import '../../../Widget/AppTextFields.dart';
+import '../../../Widget/AppValidator.dart';
 import '../../../Widget/AppWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -64,6 +66,9 @@ class SearchSupervisors extends SearchDelegate {
   }
 
   var userCollection = FirebaseFirestore.instance.collection("users");
+  TextEditingController descriptionController = TextEditingController();
+  bool? showDescription = false;
+  GlobalKey<FormState> addKey = GlobalKey();
   @override
   Widget buildResults(BuildContext context) {
     saveToRecentSearchesSupervisor(query);
@@ -104,10 +109,12 @@ class SearchSupervisors extends SearchDelegate {
       return nameLower.startsWith(queryLower);
     }).toList();
     return query.isEmpty && _oldFilters.isEmpty
-        ? const AppText(
-            text: 'eeee',
-            fontSize: 15,
-          )
+        ?  Center(
+          child: AppText(
+              text: LocaleKeys.history.tr(),
+              fontSize: 15,
+            ),
+        )
         : query.isEmpty && _oldFilters.isNotEmpty
             ? showHistory(context, _oldFilters)
             : getSuggestionList(listSearch);
@@ -325,7 +332,7 @@ class SearchSupervisors extends SearchDelegate {
     );
   }
 
-  //show data from database========================================================================
+//show data from database========================================================================
   Widget body(snapshot) {
     return snapshot.data.docs.isNotEmpty
         ? Consumer<ChangConstModel>(builder: (context, model, child) {
@@ -347,7 +354,7 @@ class SearchSupervisors extends SearchDelegate {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 5.h),
                           child: SizedBox(
-                            height: 120,
+                            height: showDescription == true ? 250.h : 200,
                             width: AppWidget.getWidth(context),
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -359,20 +366,68 @@ class SearchSupervisors extends SearchDelegate {
                                 title: Padding(
                                   padding: EdgeInsets.only(top: 30.h),
                                   child: AppText(
-                                    text: data['name'],
+                                    text:
+                                        '${LocaleKeys.dr.tr()}: ${data['name']}',
                                     fontSize: AppSize.title2TextSize,
                                   ),
                                 ),
-//search interest=================================================================
+//description =====================================================================
                                 subtitle: Padding(
                                   padding: EdgeInsets.only(top: 10.h),
-                                  child: AppText(
-                                    text: AppWidget.getTranslateSearchInterest(
-                                        data['searchInterest']),
-                                    fontSize: AppSize.title2TextSize,
+                                  child: Center(
+                                    child: showDescription == true
+                                        ? Form(
+                                            key: addKey,
+                                            child: AppTextFields(
+                                              controller: descriptionController,
+                                              labelText:
+                                                  LocaleKeys.description.tr(),
+                                              validator: (v) =>
+                                                  AppValidator.validatorEmpty(
+                                                      v),
+                                              maxLines: 4,
+                                              minLines: 4,
+                                            ),
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              AppText(
+                                                text: '${LocaleKeys.searchInterestTx.tr()}: ' +
+                                                    AppWidget
+                                                        .getTranslateSearchInterest(
+                                                            data[
+                                                                'searchInterest']),
+                                                fontSize:
+                                                    AppSize.subTextSize + 2,
+                                              ),
+                                              AppWidget.hSpace(8),
+                                              AppText(
+                                                text:
+                                                    '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                                        AppWidget
+                                                            .getTranslateMajor(
+                                                                data['major']),
+                                                fontSize:
+                                                    AppSize.subTextSize + 2,
+                                              ),
+                                              AppWidget.hSpace(8),
+                                              AppText(
+                                                text:
+                                                    '${LocaleKeys.emailTx.tr()}: ' +
+                                                        data['email'],
+                                                fontSize:
+                                                    AppSize.subTextSize + 2,
+                                              ),
+
+                                              // AppWidget.hSpace(7),
+                                            ],
+                                          ),
                                   ),
                                 ),
-//send icon=================================================================
+//send icon==========================================================================
+
                                 trailing: FittedBox(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 20.h),
@@ -384,7 +439,7 @@ class SearchSupervisors extends SearchDelegate {
                                               : math.pi),
                                       child: FutureBuilder(
                                           future: getStatus(
-                                              stId: userId,
+                                              stId: userId!,
                                               supId: data['userId']),
                                           builder: (context, AsyncSnapshot sn) {
                                             if (sn.hasError) {
@@ -423,56 +478,68 @@ class SearchSupervisors extends SearchDelegate {
                                   ),
                                 ),
                                 onTap: () async {
-                                  await getStatus(
-                                              stId: userId,
-                                              supId: data['userId']) ==
-                                          AppConstants.statusIsNotSendYet
-                                      ? AppLoading.show(
-                                          context,
-                                          LocaleKeys.sendRequest.tr(),
-                                          '${LocaleKeys.sendRequestTo.tr()} ' +
-                                              data['name'],
-                                          higth: 100.h,
-                                          showButtom: true,
-                                          noFunction: () =>
-                                              Navigator.pop(context),
-                                          yesFunction: () async => Database
-                                                  .studentSupervisionRequests(
-                                                      description: 'description.text',
-                                                      context: context,
-                                                      studentUid: userId,
-                                                      supervisorUid:
-                                                          data['userId'],
-                                                      supervisorName:
-                                                          data['name'],
-                                                      supervisorInterest: data[
-                                                          'searchInterest'],
-                                                      studentName: await Database
-                                                          .getDataViUserId(
-                                                              currentUserUid:
-                                                                  userId))
-                                              .then((v) {
-                                            print('================$v');
-                                            if (v == 'done') {
+                                  showDescription = true;
+                                  model.refreshPage();
+                                  if (addKey.currentState?.validate() == true) {
+                                    await getStatus(
+                                                stId: userId,
+                                                supId: data['userId']) ==
+                                            AppConstants.statusIsNotSendYet
+                                        ? AppLoading.show(
+                                            context,
+                                            LocaleKeys.sendRequest.tr(),
+                                            '${LocaleKeys.sendRequestTo.tr()} ' +
+                                                data['name'],
+                                            higth: 100.h,
+                                            showButtom: true,
+                                            noFunction: () {
+                                              Navigator.pop(context);
+                                              showDescription = false;
                                               model.refreshPage();
-                                              Navigator.pop(context);
-                                              AppLoading.show(
-                                                  context,
-                                                  LocaleKeys.mySuperVisor.tr(),
-                                                  LocaleKeys.done.tr());
-                                            } else {
-                                              Navigator.pop(context);
-                                              AppLoading.show(
-                                                  context,
-                                                  LocaleKeys.mySuperVisor.tr(),
-                                                  LocaleKeys.error.tr());
-                                            }
-                                          }),
-                                        )
-                                      : AppLoading.show(
-                                          context,
-                                          LocaleKeys.sendRequest.tr(),
-                                          LocaleKeys.canNotSend.tr());
+                                            },
+                                            yesFunction: () async => Database
+                                                    .studentSupervisionRequests(
+                                                        description:
+                                                            descriptionController
+                                                                .text,
+                                                        context: context,
+                                                        studentUid: userId,
+                                                        supervisorUid:
+                                                            data['userId'],
+                                                        supervisorName:
+                                                            data['name'],
+                                                        supervisorInterest: data[
+                                                            'searchInterest'],
+                                                        studentName: await Database
+                                                            .getDataViUserId(
+                                                                currentUserUid:
+                                                                    userId))
+                                                .then((v) {
+                                              print('================$v');
+                                              if (v == 'done') {
+                                                showDescription = false;
+                                                model.refreshPage();
+                                                Navigator.pop(context);
+                                                AppLoading.show(
+                                                    context,
+                                                    LocaleKeys.mySuperVisor
+                                                        .tr(),
+                                                    LocaleKeys.done.tr());
+                                              } else {
+                                                Navigator.pop(context);
+                                                AppLoading.show(
+                                                    context,
+                                                    LocaleKeys.mySuperVisor
+                                                        .tr(),
+                                                    LocaleKeys.error.tr());
+                                              }
+                                            }),
+                                          )
+                                        : AppLoading.show(
+                                            context,
+                                            LocaleKeys.sendRequest.tr(),
+                                            LocaleKeys.canNotSend.tr());
+                                  }
                                 },
                               ),
                             ),
@@ -485,7 +552,7 @@ class SearchSupervisors extends SearchDelegate {
         : Center(
             child: AppText(
                 text: LocaleKeys.noData.tr(),
-                fontSize: AppSize.titleTextSize,
+                fontSize: AppSize.subTextSize,
                 fontWeight: FontWeight.bold),
           );
   }
