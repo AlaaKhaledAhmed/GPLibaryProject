@@ -439,7 +439,7 @@ class SearchSupervisors extends SearchDelegate {
                                               : math.pi),
                                       child: FutureBuilder(
                                           future: getStatus(
-                                              stId: userId!,
+                                              stId: userId,
                                               supId: data['userId']),
                                           builder: (context, AsyncSnapshot sn) {
                                             if (sn.hasError) {
