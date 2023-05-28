@@ -124,24 +124,21 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  AppWidget.hSpace(8.h),
-                                  AppText(
-                                    text:
-                                        '${LocaleKeys.projectDescription.tr()}:',
-                                    fontSize: AppSize.subTextSize + 2,
-                                  ),
                                   Container(
-                                    decoration: AppWidget.decoration(
-                                        radius: 10.r,
-                                        color: AppColor.cherryLightPink),
-                                    margin:
-                                        EdgeInsets.symmetric(vertical: 10.h),
-                                    padding: const EdgeInsets.all(10),
-                                    child: AppText(
-                                      text:
-                                          "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                      fontSize: AppSize.subTextSize + 2,
-                                      color: AppColor.white,
+                                    decoration: BoxDecoration(
+                                      color: AppColor.cherryLightPink,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.r)),
+                                    ),
+                                    height: 120.h,
+                                    padding: EdgeInsets.all(10.r),
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      child: AppText(
+                                        text: ' ${data['description']}',
+                                        fontSize: AppSize.subTextSize + 2,
+                                        color: AppColor.white,
+                                      ),
                                     ),
                                   )
 
