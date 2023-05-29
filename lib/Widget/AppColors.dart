@@ -16,7 +16,7 @@ class AppColor {
   static Color mainColor = Colors.white70;
   static Color errorColor = Colors.red;
   static Color textFieldBorderColor = Colors.brown.shade200;
-  static Color buttonsColor = Colors.brown.shade600;
+  static Color buttonsColor = const Color.fromARGB(255, 84, 168, 241);
   static Color grey600 = Colors.grey.shade600;
   static Color buttonsTextColor =white;
   static Color noColor =Colors.transparent;
