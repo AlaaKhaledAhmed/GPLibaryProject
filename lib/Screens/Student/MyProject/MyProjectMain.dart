@@ -274,59 +274,43 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                             ));
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.h),
-                        height: 250.h,
-                        child: Card(
-                            color: AppColor.white,
-                            elevation: 5,
-                            child: ListTile(
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 20.h),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.year.tr() +
-                                        ": ${data['year']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text:
-                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                            AppWidget.getTranslateMajor(
-                                                data['major']),
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.searchInterestTx.tr() +
-                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.mySuperVisor.tr() +
-                                        ": ${data['superName']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  SizedBox(height: 20.h),
-                                ],
-                              ),
-                            )),
-                      ),
-                    );
+                      margin: EdgeInsets.symmetric(vertical: 20.h),
+                      height: 250.h,
+                      child: Card(
+                          color: AppColor.white,
+                          elevation: 5,
+                          child: ListTile(
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 20.h),
+                                Expanded(
+                                    child: AppText(
+                                      fontSize: AppSize.subTextSize,
+                                      text: LocaleKeys.projectName.tr() +
+                                          ": ${data['name']}",
+                                      color: AppColor.appBarColor,
+                                    )),
+                                Expanded(
+                                    child: AppText(
+                                      fontSize: AppSize.subTextSize,
+                                      text: LocaleKeys.year.tr() +
+                                          ": ${data['year']}",
+                                      color: AppColor.appBarColor,
+                                    )),
+                                Expanded(
+                                    child: AppText(
+                                      fontSize: AppSize.subTextSize,
+                                      text: LocaleKeys.comment.tr() +
+                                          ": ${data['comment']}",
+                                      color: AppColor.appBarColor,
+                                    )),
+                                SizedBox(height: 20.h),
+                              ],
+                            ),
+                          )),
+                    ),
+                  );
                   }),
             ),
           ))
@@ -371,6 +355,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                               fileURL: data['link'],
                               showComment: false,
                               friezeText: true,
+                              comment: '',
                             ));
                       },
                       child: Container(
