@@ -13,6 +13,7 @@ class AppTextFields extends StatelessWidget {
   final String? labelText;
   final int? minLines;
   final int? maxLines;
+  final bool? enable;
   final FontWeight? fontWeight;
   final void Function()? onTap;
   const AppTextFields({
@@ -24,15 +25,19 @@ class AppTextFields extends StatelessWidget {
     required this.controller,
     required this.labelText,
     this.fontWeight,
-    this.obscureText, this.minLines, this.maxLines,
+    this.obscureText,
+    this.minLines,
+    this.maxLines,
+    this.enable,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      minLines: minLines??1,
-      maxLines:maxLines??1 ,
-      onTap:onTap,
+      enabled: enable??true,
+      minLines: minLines ?? 1,
+      maxLines: maxLines ?? 1,
+      onTap: onTap,
       obscureText: obscureText ?? false,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -44,7 +49,6 @@ class AppTextFields extends StatelessWidget {
           color: AppColor.mainTextFieldsColor,
           fontSize: AppSize.textFieldsFontSize),
       decoration: InputDecoration(
-
           filled: true,
           hintStyle: TextStyle(
               color: AppColor.labelTextFieldsColor,
@@ -54,24 +58,21 @@ class AppTextFields extends StatelessWidget {
               color: AppColor.labelTextFieldsColor,
               fontSize: AppSize.textFieldsFontSize),
           border: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderRadius: BorderRadius.circular(AppSize.textFieldsBorderRadius),
             borderSide: BorderSide(
               color: Colors.blue,
               width: AppSize.textFieldsBorderWidth,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderRadius: BorderRadius.circular(AppSize.textFieldsBorderRadius),
             borderSide: BorderSide(
               color: AppColor.buttonsColor,
               width: AppSize.textFieldsBorderWidth,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(AppSize.textFieldsBorderRadius),
+            borderRadius: BorderRadius.circular(AppSize.textFieldsBorderRadius),
             borderSide: BorderSide(
               color: AppColor.textFieldBorderColor,
               width: AppSize.textFieldsBorderWidth,

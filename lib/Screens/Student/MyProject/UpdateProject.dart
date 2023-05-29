@@ -31,7 +31,9 @@ class UpdateProject extends StatefulWidget {
   final String selectedMajor;
   final String docId;
   final int status;
-
+  final String? comment;
+  final bool showComment;
+  final bool friezeText;
   const UpdateProject(
       {Key? key,
       required this.status,
@@ -42,7 +44,10 @@ class UpdateProject extends StatefulWidget {
       required this.docId,
       required this.selectedSearch,
       required this.selectedMajor,
-      required this.fileURL})
+      required this.fileURL,
+      this.comment,
+      required this.showComment,
+      required this.friezeText})
       : super(key: key);
 
   @override
@@ -54,6 +59,7 @@ class _UpdateProjectState extends State<UpdateProject> {
   TextEditingController dateController = TextEditingController();
   TextEditingController projectPathController = TextEditingController();
   TextEditingController superNameController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
 
   GlobalKey<FormState> addKey = GlobalKey();
   Reference? fileRef;
@@ -68,6 +74,7 @@ class _UpdateProjectState extends State<UpdateProject> {
     nameController.text = widget.nameController;
     dateController.text = widget.dateController;
     projectPathController.text = widget.fileName;
+    commentController.text = widget.comment!;
     superNameController.text = widget.superNameController;
     selectedMajor = widget.selectedMajor;
     selectedSearch = widget.selectedSearch;
@@ -91,7 +98,7 @@ class _UpdateProjectState extends State<UpdateProject> {
                     EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 30.h),
                 child: Form(
                   key: addKey,
-                  child: Column(
+                  child: ListView(
                     children: [
                       // icon(),
                       AppWidget.hSpace(AppSize.hSpace),
@@ -109,8 +116,23 @@ class _UpdateProjectState extends State<UpdateProject> {
                         labelText: LocaleKeys.mySuperVisor.tr(),
                         validator: (v) => AppValidator.validatorEmpty(v),
                         obscureText: false,
+                        enable: widget.friezeText == true ? false : true,
                       ),
                       AppWidget.hSpace(AppSize.hSpace),
+//==============================comment===============================================================
+                      widget.showComment == false
+                          ? const SizedBox()
+                          : AppTextFields(
+                              controller: commentController,
+                              labelText: LocaleKeys.comment.tr(),
+                              validator: (v) {},
+                              obscureText: false,
+                              minLines: 4,
+                              maxLines: 4,
+                            ),
+                      widget.showComment == false
+                          ? const SizedBox()
+                          : AppWidget.hSpace(AppSize.hSpace),
 //============================== date===============================================================
                       AppTextFields(
                         controller: dateController,
@@ -159,8 +181,9 @@ class _UpdateProjectState extends State<UpdateProject> {
                           selectedSearch = model.setSearch(selectedItem!);
                           print('selectedSearch: $selectedSearch');
                         },
-                        hintText:selectedSearch,
-                        dropValue:selectedSearch,
+                        hintText: selectedSearch,
+                        dropValue: selectedSearch,
+                        friezeText: widget.friezeText,
                       ),
                       AppWidget.hSpace(AppSize.hSpace),
 
@@ -180,6 +203,7 @@ class _UpdateProjectState extends State<UpdateProject> {
                         },
                         hintText: selectedMajor,
                         dropValue: selectedMajor,
+                        friezeText: widget.friezeText,
                       ),
                       AppWidget.hSpace(AppSize.hSpace),
 //==============================update ===============================================================
@@ -193,6 +217,7 @@ class _UpdateProjectState extends State<UpdateProject> {
                             AppLoading.show(context, '', 'lode');
                             if (file == null) {
                               Database.updateProject(
+                                      comment: commentController.text,
                                       status: widget.status,
                                       name: nameController.text,
                                       year: dateController.text,
@@ -233,7 +258,7 @@ class _UpdateProjectState extends State<UpdateProject> {
                                 print('fileURLllllllllllllllllllll $fileURL');
                                 // setState(() {file=null;});
                                 Database.updateProject(
-                                   status: widget.status,
+                                  status: widget.status,
                                   name: nameController.text,
                                   year: dateController.text,
                                   link: fileURL!,

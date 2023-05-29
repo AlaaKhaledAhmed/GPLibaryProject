@@ -265,9 +265,9 @@ class Database {
         'projectId': projectId,
         'isAccept': isAccept,
         'createdOn': FieldValue.serverTimestamp(),
-        'superId':superId,
-        'studentId':studentId,
-        'comment':comment??''
+        'superId': superId,
+        'studentId': studentId,
+        'comment': comment ?? ''
       });
       return 'done';
     } catch (e) {
@@ -285,6 +285,7 @@ class Database {
       required String searchInterest,
       required String superName,
       required int status,
+      String? comment,
       required String docId}) async {
     try {
       AppConstants.projectCollection.doc(docId).update({
@@ -296,6 +297,7 @@ class Database {
         'searchInterest': searchInterest,
         'superName': superName,
         'status': status,
+        'comment': comment
       });
       return 'done';
     } catch (e) {

@@ -369,6 +369,8 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                               superNameController: data['superName'],
                               fileName: data['fileName'],
                               fileURL: data['link'],
+                              showComment: false,
+                              friezeText: true,
                             ));
                       },
                       child: Container(

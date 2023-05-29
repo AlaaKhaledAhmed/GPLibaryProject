@@ -10,6 +10,7 @@ class AppDropList extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? hintText;
   final String? dropValue;
+  final bool? friezeText;
   final void Function(String?)? onChanged;
   const AppDropList(
       {Key? key,
@@ -17,7 +18,8 @@ class AppDropList extends StatelessWidget {
       required this.validator,
       required this.hintText,
       required this.onChanged,
-      required this.dropValue})
+      required this.dropValue,
+      this.friezeText})
       : super(key: key);
 
   @override
@@ -41,7 +43,7 @@ class AppDropList extends StatelessWidget {
                 ),
               ))
           .toList(),
-      value: dropValue ,
+      value: dropValue,
       decoration: InputDecoration(
           filled: true,
           fillColor: AppColor.white,
@@ -69,7 +71,7 @@ class AppDropList extends StatelessWidget {
           //labelText: labelText,
           //errorStyle: TextStyle(color: AppColor.errorColor, fontSize: WidgetSize.errorSize),
           contentPadding: EdgeInsets.all(AppSize.dropListContentPadding)),
-      onChanged: onChanged,
+      onChanged: friezeText == true ? null : onChanged,
       dropdownMaxHeight: 300.h,
       dropdownDecoration: BoxDecoration(
           color: AppColor.white,
