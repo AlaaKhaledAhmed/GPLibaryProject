@@ -41,9 +41,9 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
       .where('type', isEqualTo: AppConstants.supervisor);
   int iniFilter = 0;
   TextEditingController descriptionController = TextEditingController();
-  bool? showDescription = false;
+  TextEditingController projectNameController = TextEditingController();
   GlobalKey<FormState> addKey = GlobalKey();
-
+  int? tab;
   @override
   void initState() {
     // TODO: implement initState
@@ -188,12 +188,12 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
   Widget body(snapshot, model) {
     return snapshot.data.docs.isNotEmpty
         ? Container(
-            height: AppWidget.getHeight(context) * 0.55,
+            //height: AppWidget.getHeight(context) * 0.55,
             decoration:
                 AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
             width: AppWidget.getWidth(context),
             child: Container(
-              height: AppWidget.getHeight(context) * 0.55,
+              //height: AppWidget.getHeight(context) * 0.55,
               decoration:
                   AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
               width: AppWidget.getWidth(context),
@@ -205,7 +205,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
                       child: SizedBox(
-                        height: showDescription==true?250.h:200,
+                        height: tab == i ? 350.h : 200,
                         width: AppWidget.getWidth(context),
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -225,49 +225,67 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                             subtitle: Padding(
                               padding: EdgeInsets.only(top: 10.h),
                               child: Center(
-                                child: showDescription == true
-                                    ? Form(
-                                        key: addKey,
-                                        child: AppTextFields(
-                                          controller: descriptionController,
-                                          labelText:
-                                              LocaleKeys.description.tr(),
-                                          validator: (v) =>
-                                              AppValidator.validatorEmpty(v),
-                                          maxLines: 4,
-                                          minLines: 4,
-                                        ),
-                                      )
-                                    : Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          AppText(
-                                            text: '${LocaleKeys.searchInterestTx.tr()}: ' +
+                                child: Form(
+                                  key: tab==i?addKey:null,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AppText(
+                                        text:
+                                            '${LocaleKeys.searchInterestTx.tr()}: ' +
                                                 AppWidget
                                                     .getTranslateSearchInterest(
                                                         data['searchInterest']),
-                                            fontSize: AppSize.subTextSize + 2,
-                                          ),
-                                          AppWidget.hSpace(8),
-                                          AppText(
-                                            text:
-                                                '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                                    AppWidget.getTranslateMajor(
-                                                        data['major']),
-                                            fontSize: AppSize.subTextSize + 2,
-                                          ),
-                                          AppWidget.hSpace(8),
-                                          AppText(
-                                            text:
-                                                '${LocaleKeys.emailTx.tr()}: ' +
-                                                    data['email'],
-                                            fontSize: AppSize.subTextSize + 2,
-                                          ),
-
-                                          // AppWidget.hSpace(7),
-                                        ],
+                                        fontSize: AppSize.subTextSize + 2,
                                       ),
+                                      AppWidget.hSpace(8),
+                                      AppText(
+                                        text:
+                                            '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                                AppWidget.getTranslateMajor(
+                                                    data['major']),
+                                        fontSize: AppSize.subTextSize + 2,
+                                      ),
+                                      AppWidget.hSpace(8),
+                                      AppText(
+                                        text: '${LocaleKeys.emailTx.tr()}: ' +
+                                            data['email'],
+                                        fontSize: AppSize.subTextSize + 2,
+                                      ),
+                                      AppWidget.hSpace(20),
+                                      tab == i
+                                          ? AppTextFields(
+                                              controller: projectNameController,
+                                              labelText:
+                                                  LocaleKeys.projectName.tr(),
+                                              validator: (v) =>
+                                                  AppValidator.validatorEmpty(
+                                                      v),
+                                              maxLines: 1,
+                                              minLines: 1,
+                                            )
+                                          : const SizedBox(),
+                                      tab == i
+                                          ? AppWidget.hSpace(8)
+                                          : const SizedBox(),
+                                      tab == i
+                                          ? AppTextFields(
+                                              controller: descriptionController,
+                                              labelText:
+                                                  LocaleKeys.description.tr(),
+                                              validator: (v) =>
+                                                  AppValidator.validatorEmpty(
+                                                      v),
+                                              maxLines: 4,
+                                              minLines: 4,
+                                            )
+                                          : const SizedBox(),
+
+                                      // AppWidget.hSpace(7),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
 //send icon==========================================================================
@@ -289,7 +307,6 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                           return const Center(child: Text("!"));
                                         }
                                         if (sn.hasData) {
-                                          // print(sn.data);
                                           return SvgPicture.asset(
                                             sn.data ==
                                                     AppConstants.statusIsWaiting
@@ -317,7 +334,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                               ),
                             ),
                             onTap: () async {
-                              showDescription = true;
+                              tab = i;
                               model.refreshPage();
                               if (addKey.currentState?.validate() == true) {
                                 await getStatus(
@@ -333,7 +350,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                         showButtom: true,
                                         noFunction: () {
                                           Navigator.pop(context);
-                                          showDescription = false;
+                                          tab = null;
                                           model.refreshPage();
                                         },
                                         yesFunction: () async =>
@@ -356,7 +373,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                                 .then((v) {
                                           print('================$v');
                                           if (v == 'done') {
-                                            showDescription = false;
+                                            tab = null;
                                             model.refreshPage();
                                             Navigator.pop(context);
                                             AppLoading.show(

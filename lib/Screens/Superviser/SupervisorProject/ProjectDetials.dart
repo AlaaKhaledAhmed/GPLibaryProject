@@ -279,7 +279,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                                         : "؟"),
                                 higth: 100.h,
                                 noFunction: () => Navigator.pop(context),
-                                yesFunction: () => setProjectComplete(value),
+                                yesFunction: () => setProjectComplete(value,),
                                 showButtom: true)
                             : {check2 = value!, setState(() {})};
                       },
@@ -594,7 +594,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
 
   //=============================================================================
   setProjectComplete(bool? value) {
-    //Database.updateStouts(docId: 'docId');
+    Database.updateStouts(docId: 'docId');
     Navigator.pop(context);
     check2 = value!;
     setState(() {});
