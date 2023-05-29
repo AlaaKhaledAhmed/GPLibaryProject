@@ -1,5 +1,5 @@
-// ignore_for_file: file_names
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -43,10 +43,12 @@ class _AddProjectState extends State<AddProject> {
   String? section;
   String? fileURL;
   File? file;
+  String? userId;
   @override
   void initState() {
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
+    userId = FirebaseAuth.instance.currentUser!.uid;
   }
 
   @override
@@ -187,9 +189,10 @@ class _AddProjectState extends State<AddProject> {
                                 from: AppConstants.typeIsStudent,
                                 status: AppConstants.statusIsComplete,
                                 projectId: AppWidget.uniqueOrder(),
-                                studentId: '',
+                                studentId: userId!,
                                 superId: '',
                                 isAccept: false,
+                                comment: ''
                               ).then((v) {
                                 print('================$v');
                                 if (v == "done") {
