@@ -56,7 +56,9 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                     width: AppWidget.getWidth(context),
                     child: StreamBuilder(
                         stream: AppConstants.requestCollection
-                            .where('supervisorUid', isEqualTo: userId).where('status',isEqualTo: AppConstants.statusIsAcceptation)
+                            .where('supervisorUid', isEqualTo: userId)
+                            .where('status',
+                                isEqualTo: AppConstants.statusIsAcceptation)
                             .snapshots(),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.hasError) {
@@ -150,9 +152,17 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                               AppRoutes.pushTo(
                                   context,
                                   ProjectDetails(
-                                    studentLeaderId: data['studentUid'],
+                                    description: data['description'],
+                                    isAccept: data['isAccept'],
+                                    projectName: data['projectName'],
                                     requestId: data['requestId'],
-                                    superId: data['supervisorUid'],
+                                    status: data['status'],
+                                    studentName: data['studentName'],
+                                    studentUid: data['studentUid'],
+                                    supervisorInterest:
+                                        data['supervisorInterest'],
+                                    supervisorName: data['supervisorName'],
+                                    supervisorUid: data['supervisorUid'],
                                   ));
                             },
                           ),

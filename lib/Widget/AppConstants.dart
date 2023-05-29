@@ -33,26 +33,15 @@ class AppConstants {
     LocaleKeys.webDevelopment.tr()
   ];
 
-  static List<String> studentTabsMenuAr = [
+  static List<String> tabsMenuAr = [
     "مكتمل",
-    "قيد العمل",
+    "ملفات الطالب",
     "ملفات المشرف",
   ];
-  static List<String> studentTabsMenuEn = [
+  static List<String> tabsMenuEn = [
     "Complete",
-    "Un complete",
+    "Student files",
     "Supervisor files",
-  ];
-  static List<String> superTabsMenuAr = ["مكتمل", "قيد العمل", "ملفات الطالب"];
-  static List<String> superTabsMenuEn = [
-    "Complete",
-    "Un complete",
-    "Student files"
-  ];
-  static List<String> superTabsMenu = [
-    LocaleKeys.complete.tr(),
-    LocaleKeys.underWork.tr(),
-    LocaleKeys.studentFile.tr(),
   ];
 
   static CollectionReference userCollection =

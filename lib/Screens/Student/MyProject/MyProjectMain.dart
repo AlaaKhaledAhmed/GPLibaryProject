@@ -37,7 +37,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   String? fileURL;
   File? file;
   String? userId;
-  List<String> projectData = [];
+  List<dynamic> projectData = [];
   bool? isFoundSupervisor;
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
     userId = FirebaseAuth.instance.currentUser!.uid;
     Future.delayed(Duration.zero, () async {
       await getMajorAndSearch();
-      await getSuperName();
+      await getRequestInfo();
     });
   }
 
@@ -69,15 +69,21 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                     ? AppConstants.projectCollection
                         .where("status",
                             isEqualTo: AppConstants.statusIsComplete)
+                        .where("studentId", isEqualTo: userId!)
+                        .where("from", isEqualTo: AppConstants.typeIsStudent)
                         .snapshots()
                     : tab == 1
                         ? AppConstants.projectCollection
                             .where("status",
                                 isEqualTo: AppConstants.statusIsUnComplete)
+                            .where("from",
+                                isEqualTo: AppConstants.typeIsStudent)
+                            .where("studentId", isEqualTo: userId!)
                             .snapshots()
                         : AppConstants.projectCollection
                             .where("from",
                                 isEqualTo: AppConstants.typeIsSupervisor)
+                            .where("studentId", isEqualTo: userId!)
                             .snapshots(),
                 builder: (context, AsyncSnapshot snapshat) {
                   if (snapshat.hasError) {
@@ -87,8 +93,8 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                     return tab == 0
                         ? getCompletedProject(context, snapshat)
                         : tab == 1
-                            ? getUnCompletedProject(context, snapshat)
-                            : getSuperVisorFile(context, snapshat);
+                            ? getStudentFile(context, snapshat)
+                            : getSupervisorFile(context, snapshat);
                   }
 
                   return const Center(
@@ -111,15 +117,15 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
         height: 60.h,
         width: double.infinity,
         child: ListView.builder(
-            itemCount: AppConstants.studentTabsMenuAr.length,
+            itemCount: AppConstants.tabsMenuAr.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: AppButtons(
                   text: context.locale.toString() == 'en'
-                      ? AppConstants.studentTabsMenuEn[index]
-                      : AppConstants.studentTabsMenuAr[index],
+                      ? AppConstants.tabsMenuEn[index]
+                      : AppConstants.tabsMenuAr[index],
                   onPressed: () {
                     setState(() {
                       tab = index;
@@ -237,7 +243,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   }
 
 //======================================================================
-  Widget getSuperVisorFile(BuildContext context, AsyncSnapshot snapshat) {
+  Widget getSupervisorFile(BuildContext context, AsyncSnapshot snapshat) {
     return snapshat.data.docs.length > 0
         ? Expanded(
             child: SizedBox(
@@ -334,7 +340,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   }
 
 //======================================================================
-  Widget getUnCompletedProject(BuildContext context, AsyncSnapshot snapshat) {
+  Widget getStudentFile(BuildContext context, AsyncSnapshot snapshat) {
     return snapshat.data.docs.length > 0
         ? Expanded(
             child: SizedBox(
@@ -437,7 +443,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
 
                       /// pick file
                       : setState(() {
-                          getFile(context).whenComplete(() {
+                          pickFile(context).whenComplete(() {
                             print('fillllllllllllle:${file!.path}');
 
                             AppLoading.show(
@@ -449,7 +455,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                                         : "؟"),
                                 higth: 100.h,
                                 noFunction: () => Navigator.pop(context),
-                                yesFunction: () => uploadedFileFromDevice(
+                                yesFunction: () => uploadStudentFile(
                                     fileName: path.basename(file!.path)),
                                 showButtom: true);
                           });
@@ -465,7 +471,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   }
 
 //show file picker=========================================
-  Future getFile(context) async {
+  Future pickFile(context) async {
     FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: false,
@@ -479,7 +485,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   }
 
 //===============================================================
-  uploadedFileFromDevice({required String fileName}) async {
+  uploadStudentFile({required String fileName}) async {
     AppLoading.show(context, '', 'lode');
     FocusManager.instance.primaryFocus?.unfocus();
     fileRef = FirebaseStorage.instance.ref('project').child(fileName);
@@ -488,15 +494,19 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
       fileURL = await fileRef!.getDownloadURL();
       Database.addProject(
         status: AppConstants.statusIsUnComplete,
-        name: 'projectName',
+        major: AppWidget.setEnTranslateMajor(projectData[0]),
+        searchInterest: AppWidget.setEnTranslateSearchInterest(projectData[1]),
+        superName: projectData[2],
+        superId: projectData[3],
+        projectId: int.parse(projectData[4]),
+        name: projectData[5],
         year:
             '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
         link: fileURL!,
         fileName: fileName,
         from: AppConstants.typeIsStudent,
-        superName: projectData[2],
-        major: AppWidget.setEnTranslateMajor(projectData[0]),
-        searchInterest: AppWidget.setEnTranslateSearchInterest(projectData[1]),
+        studentId: userId!,
+        isAccept: true,
       ).then((String v) {
         print('================$v');
         if (v == "done") {
@@ -531,15 +541,18 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
   }
 
   //get Super Name==============================================================
-  Future<void> getSuperName() async {
+  Future<void> getRequestInfo() async {
     await AppConstants.requestCollection
         .where("studentUid", isEqualTo: userId!)
-        .where('status', isEqualTo: AppConstants.statusIsAcceptation)
+        .where('isAccept', isEqualTo: true)
         .get()
         .then((value) {
       value.docs.forEach((element) {
         if (element.exists) {
           projectData.insert(2, "${element["supervisorName"]}");
+          projectData.insert(3, "${element["supervisorUid"]}");
+          projectData.insert(4, "${element["requestId"]}");
+          projectData.insert(5, "${element["projectName"]}");
           print('existsexistsexists');
           isFoundSupervisor = true;
           setState(() {});

@@ -187,7 +187,8 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 //show data from database========================================================================
   Widget body(snapshot, model) {
     return snapshot.data.docs.isNotEmpty
-        ? Container(
+        ?
+    Container(
             //height: AppWidget.getHeight(context) * 0.55,
             decoration:
                 AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
@@ -205,7 +206,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
                       child: SizedBox(
-                        height: tab == i ? 350.h : 200,
+                        height: tab == i ? 400.h : 200,
                         width: AppWidget.getWidth(context),
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -226,7 +227,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                               padding: EdgeInsets.only(top: 10.h),
                               child: Center(
                                 child: Form(
-                                  key: tab==i?addKey:null,
+                                  key: tab == i ? addKey : null,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -353,10 +354,13 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                           tab = null;
                                           model.refreshPage();
                                         },
-                                        yesFunction: () async =>
-                                            Database.studentSupervisionRequests(
+                                        yesFunction: () async => Database
+                                                .studentSupervisionRequests(
                                                     description:
                                                         descriptionController
+                                                            .text,
+                                                    projectName:
+                                                        projectNameController
                                                             .text,
                                                     context: context,
                                                     studentUid: userId!,
@@ -370,7 +374,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
                                                         .getDataViUserId(
                                                             currentUserUid:
                                                                 userId!))
-                                                .then((v) {
+                                            .then((v) {
                                           print('================$v');
                                           if (v == 'done') {
                                             tab = null;

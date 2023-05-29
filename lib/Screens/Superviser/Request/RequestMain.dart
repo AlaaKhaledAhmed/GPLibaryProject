@@ -129,8 +129,10 @@ class _RequestMainState extends State<RequestMain> {
                                   AppWidget.hSpace(8.h),
                                   Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: AppColor.cherryLightPink),
-                                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                                      border: Border.all(
+                                          color: AppColor.cherryLightPink),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.r)),
                                     ),
                                     height: 120.h,
                                     width: double.infinity,
@@ -138,7 +140,6 @@ class _RequestMainState extends State<RequestMain> {
                                       child: AppText(
                                         text: ' ${data['description']}',
                                         fontSize: AppSize.subTextSize + 2,
-                                        
                                       ),
                                     ),
                                   ),
@@ -159,6 +160,7 @@ class _RequestMainState extends State<RequestMain> {
                                                         .data.docs[i].id,
                                                     status: AppConstants
                                                         .statusIsAcceptation,
+                                                    isAccept: true,
                                                   ),
                                           text: LocaleKeys.accept.tr(),
                                           bagColor: AppColor.cherryLightPink,
@@ -179,6 +181,7 @@ class _RequestMainState extends State<RequestMain> {
                                                         .data.docs[i].id,
                                                     status: AppConstants
                                                         .statusIsRejection,
+                                                    isAccept: false,
                                                   ),
                                           text: LocaleKeys.reject.tr(),
                                           textStyleColor: data['status'] ==
@@ -221,7 +224,7 @@ class _RequestMainState extends State<RequestMain> {
             child: AppText(
                 text: LocaleKeys.noData.tr(),
                 align: TextAlign.center,
-                fontSize: AppSize.titleTextSize,
+                fontSize: AppSize.subTextSize,
                 fontWeight: FontWeight.bold),
           );
   }

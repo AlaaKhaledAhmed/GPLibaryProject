@@ -184,7 +184,12 @@ class _AddProjectState extends State<AddProject> {
                                 searchInterest:
                                     AppWidget.setEnTranslateSearchInterest(
                                         selectedSearch!),
-                                from: AppConstants.typeIsStudent, status: AppConstants.statusIsComplete,
+                                from: AppConstants.typeIsStudent,
+                                status: AppConstants.statusIsComplete,
+                                projectId: AppWidget.uniqueOrder(),
+                                studentId: '',
+                                superId: '',
+                                isAccept: false,
                               ).then((v) {
                                 print('================$v');
                                 if (v == "done") {

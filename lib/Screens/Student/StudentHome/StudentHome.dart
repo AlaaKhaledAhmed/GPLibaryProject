@@ -46,7 +46,9 @@ class _StudentHomeState extends State<StudentHome> {
       body: Column(
         children: [
           StreamBuilder(
-            stream: AppConstants.projectCollection.snapshots(),
+            stream: AppConstants.projectCollection
+                .where("status", isEqualTo: AppConstants.statusIsComplete)
+                .snapshots(),
             builder: (context, AsyncSnapshot snapshat) {
               if (snapshat.hasError) {
                 return Center(child: Text('${snapshat.error}'));

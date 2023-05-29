@@ -198,6 +198,7 @@ class Database {
     required String supervisorInterest,
     required String studentName,
     required String description,
+    required String projectName,
   }) async {
     try {
       AppConstants.requestCollection.add({
@@ -208,7 +209,8 @@ class Database {
         'supervisorName': supervisorName,
         'supervisorInterest': supervisorInterest,
         'studentName': studentName,
-        'description': description
+        'description': description,
+        'projectName': projectName
       });
       return 'done';
     } catch (e) {
@@ -218,11 +220,13 @@ class Database {
 
 //==========================================================================
   static Future updateStatus(
-      {required int status, required String docId}) async {
+      {required bool isAccept,
+      required int status,
+      required String docId}) async {
     try {
       await AppConstants.requestCollection
           .doc(docId)
-          .update({'status': status});
+          .update({'status': status, 'isAccept': isAccept});
       return 'done';
     } catch (e) {
       print('Update Status Error $e');
@@ -241,6 +245,11 @@ class Database {
     required String superName,
     required String from,
     required int status,
+    required int projectId,
+    required String superId,
+    required String studentId,
+    required bool isAccept,
+    String? comment,
   }) async {
     try {
       AppConstants.projectCollection.add({
@@ -253,8 +262,12 @@ class Database {
         'superName': superName,
         'status': status,
         'from': from,
-        'projectId': AppWidget.uniqueOrder(),
+        'projectId': projectId,
+        'isAccept': isAccept,
         'createdOn': FieldValue.serverTimestamp(),
+        'superId':superId,
+        'studentId':studentId,
+        'comment':comment??''
       });
       return 'done';
     } catch (e) {
