@@ -208,7 +208,7 @@ class Database {
         'supervisorName': supervisorName,
         'supervisorInterest': supervisorInterest,
         'studentName': studentName,
-        'description':description
+        'description': description
       });
       return 'done';
     } catch (e) {
@@ -283,6 +283,18 @@ class Database {
         'searchInterest': searchInterest,
         'superName': superName,
         'status': status,
+      });
+      return 'done';
+    } catch (e) {
+      return 'error';
+    }
+  }
+
+  //Update status=========================================================================================================
+  static Future<String> updateStouts({required String docId}) async {
+    try {
+      AppConstants.projectCollection.doc(docId).update({
+        'status': AppConstants.statusIsComplete,
       });
       return 'done';
     } catch (e) {

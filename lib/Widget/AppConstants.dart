@@ -37,13 +37,17 @@ class AppConstants {
     "مكتمل",
     "قيد العمل",
     "ملفات المشرف",
-    // "ملفات الطالب"
   ];
   static List<String> studentTabsMenuEn = [
     "Complete",
     "Un complete",
     "Supervisor files",
-    // "Student files"
+  ];
+  static List<String> superTabsMenuAr = ["مكتمل", "قيد العمل", "ملفات الطالب"];
+  static List<String> superTabsMenuEn = [
+    "Complete",
+    "Un complete",
+    "Student files"
   ];
   static List<String> superTabsMenu = [
     LocaleKeys.complete.tr(),

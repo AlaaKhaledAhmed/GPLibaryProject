@@ -56,7 +56,7 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                     width: AppWidget.getWidth(context),
                     child: StreamBuilder(
                         stream: AppConstants.requestCollection
-                            .where('supervisorUid', isEqualTo: userId)
+                            .where('supervisorUid', isEqualTo: userId).where('status',isEqualTo: AppConstants.statusIsAcceptation)
                             .snapshots(),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.hasError) {
@@ -166,7 +166,7 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
             child: AppText(
                 text: LocaleKeys.noData.tr(),
                 align: TextAlign.center,
-                fontSize: AppSize.titleTextSize,
+                fontSize: AppSize.subTextSize,
                 fontWeight: FontWeight.bold),
           );
   }
