@@ -181,7 +181,6 @@ class _ProfileState extends State<Profile> {
       value.docs.forEach((element) {
         setState(() {
           emailController = TextEditingController(text: "${element["email"]}");
-          emailController = TextEditingController(text: "${element["email"]}");
           nameController = TextEditingController(text: "${element["name"]}");
           phoneController = TextEditingController(text: "${element["phone"]}");
           selectedSearch = AppWidget.getTranslateSearchInterest(
