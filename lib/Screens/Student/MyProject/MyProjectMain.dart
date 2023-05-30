@@ -337,8 +337,25 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                   itemBuilder: (context, i) {
                     var data = snapshat.data.docs[i].data();
                     return InkWell(
+                      ///if status IsComplete it will show file only
                       onTap: data['status'] == AppConstants.statusIsComplete
-                          ? null
+                          ? () async {
+                              AppLoading.show(context, "", "lode");
+                              final file =
+                                  await Database.lodeFirbase(data['fileName'])
+                                      .whenComplete(() {
+                                Navigator.pop(context);
+                              });
+                              // ignore: unnecessary_null_comparison
+                              if (file == null) return;
+                              AppRoutes.pushTo(
+                                  context,
+                                  ViewPdf(
+                                    file: file,
+                                    fileName: data['fileName'],
+                                    link: data['link'],
+                                  ));
+                            }
                           : () {
                               AppRoutes.pushTo(
                                   context,
@@ -461,16 +478,18 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
 
 //show file picker=========================================
   Future pickFile(context) async {
-    FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowMultiple: false,
-        allowedExtensions: ['pdf']);
-    if (pickedFile == null) {
-      return null;
-    }
-    setState(() {
-      file = File(pickedFile.paths.first!);
-    });
+    try {
+      FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowMultiple: false,
+          allowedExtensions: ['pdf']);
+      if (pickedFile == null) {
+        return null;
+      }
+      setState(() {
+        file = File(pickedFile.paths.first!);
+      });
+    } catch (e) {}
   }
 
 //===============================================================

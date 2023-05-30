@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
               child: widget!,
             );
           },
-          home: NavSupervisor(),
+          home: NavStudent(),
         );
       },
     );

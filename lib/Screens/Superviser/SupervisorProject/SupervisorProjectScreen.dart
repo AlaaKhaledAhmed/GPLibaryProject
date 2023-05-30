@@ -57,9 +57,10 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                     child: StreamBuilder(
                         stream: AppConstants.requestCollection
                             .where('supervisorUid', isEqualTo: userId)
-                            .where('status',
-                                isEqualTo: AppConstants.statusIsAcceptation)
-                            .snapshots(),
+                            .where('status', whereIn: [
+                          AppConstants.statusIsAcceptation,
+                          AppConstants.statusIsComplete
+                        ]).snapshots(),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.hasError) {
                             return const Center(

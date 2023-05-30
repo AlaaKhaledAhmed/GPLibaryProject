@@ -64,6 +64,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   bool? isChckid = false;
   List<dynamic> projectData = [];
   bool? isFoundSupervisor;
+  String? projectId;
   @override
   void initState() {
     super.initState();
@@ -76,8 +77,8 @@ class _ProjectDetailsState extends State<ProjectDetails> {
 
   @override
   Widget build(BuildContext context) {
-    print('projectData: $projectData');
-    print('isFoundSupervisor: $isFoundSupervisor');
+    // print('projectData: $projectData');
+    // print('isFoundSupervisor: $isFoundSupervisor');
     return Scaffold(
       appBar: AppBarMain(
         title: LocaleKeys.myProject.tr(),
@@ -90,27 +91,11 @@ class _ProjectDetailsState extends State<ProjectDetails> {
               showTabs(),
 
               /// show check box in student file section
-              tab == 1
-                  ? SizedBox(
-                      height: 40.h,
-                      child: Transform.translate(
-                        offset: Offset(5.w, 0),
-                        child: CheckboxListTile(
-                          selectedTileColor: AppColor.black,
-                          contentPadding: EdgeInsets.zero,
-                          controlAffinity: ListTileControlAffinity.leading,
-                          title: AppText(
-                            text: LocaleKeys.complete.tr(),
-                            fontSize: AppSize.subTextSize,
-                          ),
-                          value: isChckid,
-                          onChanged: (value) {
-                            makeProjectComplete(value);
-                          },
-                        ),
-                      ),
-                    )
-                  : const SizedBox(),
+              // tab == 1 &&
+              //         (widget.status == AppConstants.statusIsUnComplete ||
+              //             widget.status == AppConstants.statusIsAcceptation)
+              //     ?
+              //     : const SizedBox(),
               StreamBuilder(
                 stream: tab == 0
                     ? AppConstants.projectCollection
@@ -306,28 +291,48 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                   itemCount: snapshat.data.docs.length,
                   itemBuilder: (context, i) {
                     var data = snapshat.data.docs[i].data();
+
                     return InkWell(
-                      onTap: () {
-                        AppRoutes.pushTo(
-                            context,
-                            UpdateProject(
-                              status: AppConstants.statusIsUnComplete,
-                              dateController: data['year'],
-                              docId: snapshat.data.docs[i].id,
-                              nameController: data['name'],
-                              selectedMajor:
-                                  AppWidget.getTranslateMajor(data['major']),
-                              selectedSearch:
-                                  AppWidget.getTranslateSearchInterest(
-                                      data['searchInterest']),
-                              superNameController: data['superName'],
-                              fileName: data['fileName'],
-                              fileURL: data['link'],
-                              showComment: true,
-                              comment: data['comment'],
-                              friezeText: true,
-                            ));
-                      },
+                      ///if status IsComplete it will show file only
+                      onTap: data['status'] == AppConstants.statusIsComplete
+                          ? () async {
+                              AppLoading.show(context, "", "lode");
+                              final file =
+                                  await Database.lodeFirbase(data['fileName'])
+                                      .whenComplete(() {
+                                Navigator.pop(context);
+                              });
+                              // ignore: unnecessary_null_comparison
+                              if (file == null) return;
+                              AppRoutes.pushTo(
+                                  context,
+                                  ViewPdf(
+                                    file: file,
+                                    fileName: data['fileName'],
+                                    link: data['link'],
+                                  ));
+                            }
+                          : () {
+                              AppRoutes.pushTo(
+                                  context,
+                                  UpdateProject(
+                                    status: AppConstants.statusIsUnComplete,
+                                    dateController: data['year'],
+                                    docId: snapshat.data.docs[i].id,
+                                    nameController: data['name'],
+                                    selectedMajor: AppWidget.getTranslateMajor(
+                                        data['major']),
+                                    selectedSearch:
+                                        AppWidget.getTranslateSearchInterest(
+                                            data['searchInterest']),
+                                    superNameController: data['superName'],
+                                    fileName: data['fileName'],
+                                    fileURL: data['link'],
+                                    showComment: true,
+                                    comment: data['comment'],
+                                    friezeText: true,
+                                  ));
+                            },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 20.h),
                         height: 250.h,
@@ -373,25 +378,29 @@ class _ProjectDetailsState extends State<ProjectDetails> {
             child: Padding(
               padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
               child: InkWell(
-                onTap: () {
-                  /// pick file
-                  setState(() {
-                    pickFile(context).whenComplete(() {
-                      print('fillllllllllllle:${file!.path}');
+                onTap: widget.status == AppConstants.statusIsComplete
+                    ? () {}
+                    : () {
+                        /// pick file
+                        setState(() {
+                          pickFile(context).whenComplete(() {
+                            print('fillllllllllllle:${file!.path}');
 
-                      AppLoading.show(
-                          context,
-                          LocaleKeys.attachFile.tr(),
-                          LocaleKeys.attachFile.tr() +
-                              (context.locale.toString() == 'en' ? "?" : "؟"),
-                          higth: 100.h,
-                          noFunction: () => Navigator.pop(context),
-                          yesFunction: () => uploadSupervisorFile(
-                              fileName: path.basename(file!.path)),
-                          showButtom: true);
-                    });
-                  });
-                },
+                            AppLoading.show(
+                                context,
+                                LocaleKeys.attachFile.tr(),
+                                LocaleKeys.attachFile.tr() +
+                                    (context.locale.toString() == 'en'
+                                        ? "?"
+                                        : "؟"),
+                                higth: 100.h,
+                                noFunction: () => Navigator.pop(context),
+                                yesFunction: () => uploadSupervisorFile(
+                                    fileName: path.basename(file!.path)),
+                                showButtom: true);
+                          });
+                        });
+                      },
                 child: AppText(
                   text: LocaleKeys.attachFile.tr(),
                   fontSize: AppSize.title2TextSize,
@@ -405,89 +414,121 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   Widget getStudentFile(BuildContext context, AsyncSnapshot snapshat) {
     return snapshat.data.docs.length > 0
         ? Expanded(
-            child: SizedBox(
-            width: double.infinity,
-            height: 150.h,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: ListView.builder(
-                  itemCount: snapshat.data.docs.length,
-                  itemBuilder: (context, i) {
-                    var data = snapshat.data.docs[i].data();
-                    return InkWell(
-                      onTap: () async {
-                        AppLoading.show(context, "", "lode");
-                        final file =
-                            await Database.lodeFirbase(data['fileName'])
-                                .whenComplete(() {
-                          Navigator.pop(context);
-                        });
-                        // ignore: unnecessary_null_comparison
-                        if (file == null) return;
-                        AppRoutes.pushTo(
-                            context,
-                            ViewPdf(
-                              file: file,
-                              fileName: data['fileName'],
-                              link: data['link'],
-                            ));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.h),
-                        height: 250.h,
-                        child: Card(
-                            color: AppColor.white,
-                            elevation: 5,
-                            child: ListTile(
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 20.h),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.appBarColor,
+            child: Column(
+            children: [
+              ///check box
+              SizedBox(
+                height: 40.h,
+                child: Transform.translate(
+                  offset: Offset(5.w, 0),
+                  child: CheckboxListTile(
+                    selectedTileColor: AppColor.black,
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: AppText(
+                      text: LocaleKeys.complete.tr(),
+                      fontSize: AppSize.subTextSize,
+                    ),
+                    value: isChckid,
+                    onChanged: (value) {
+                      makeProjectComplete(value,
+                          docId: snapshat.data.docs[0].id);
+                    },
+                  ),
+                ),
+              ),
+
+              ///project
+              Expanded(
+                child: Container(
+                  //color: Colors.red,
+                  width: double.infinity,
+                  height: 150.h,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: ListView.builder(
+                        itemCount: snapshat.data.docs.length,
+                        itemBuilder: (context, i) {
+                          var data = snapshat.data.docs[i].data();
+                          return InkWell(
+                            onTap: () async {
+                              AppLoading.show(context, "", "lode");
+                              final file =
+                                  await Database.lodeFirbase(data['fileName'])
+                                      .whenComplete(() {
+                                Navigator.pop(context);
+                              });
+                              // ignore: unnecessary_null_comparison
+                              if (file == null) return;
+                              AppRoutes.pushTo(
+                                  context,
+                                  ViewPdf(
+                                    file: file,
+                                    fileName: data['fileName'],
+                                    link: data['link'],
+                                  ));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 20.h),
+                              height: 250.h,
+                              child: Card(
+                                  color: AppColor.white,
+                                  elevation: 5,
+                                  child: ListTile(
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(height: 20.h),
+                                        Expanded(
+                                            child: AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text: LocaleKeys.projectName.tr() +
+                                              ": ${data['name']}",
+                                          color: AppColor.appBarColor,
+                                        )),
+                                        Expanded(
+                                            child: AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text: LocaleKeys.year.tr() +
+                                              ": ${data['year']}",
+                                          color: AppColor.appBarColor,
+                                        )),
+                                        Expanded(
+                                            child: AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text:
+                                              '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                                  AppWidget.getTranslateMajor(
+                                                      data['major']),
+                                          color: AppColor.appBarColor,
+                                        )),
+                                        Expanded(
+                                            child: AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text: LocaleKeys.searchInterestTx
+                                                  .tr() +
+                                              ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
+                                          color: AppColor.appBarColor,
+                                        )),
+                                        Expanded(
+                                            child: AppText(
+                                          fontSize: AppSize.subTextSize,
+                                          text: LocaleKeys.mySuperVisor.tr() +
+                                              ": ${data['superName']}",
+                                          color: AppColor.appBarColor,
+                                        )),
+                                        SizedBox(height: 20.h),
+                                      ],
+                                    ),
                                   )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.year.tr() +
-                                        ": ${data['year']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text:
-                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                            AppWidget.getTranslateMajor(
-                                                data['major']),
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.searchInterestTx.tr() +
-                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  Expanded(
-                                      child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.mySuperVisor.tr() +
-                                        ": ${data['superName']}",
-                                    color: AppColor.appBarColor,
-                                  )),
-                                  SizedBox(height: 20.h),
-                                ],
-                              ),
-                            )),
-                      ),
-                    );
-                  }),
-            ),
+                            ),
+                          );
+                        }),
+                  ),
+                ),
+              ),
+            ],
           ))
         : Center(
             child: Padding(
@@ -571,15 +612,55 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   }
 
 //=====================================================
-  void makeProjectComplete(bool? value) {
-    print('isChckid: $isChckid');
-    print('docId: ${widget.docId}');
-    if (isChckid == false) {
-
-      Database.updateStouts(docId: 'HTm9Ht2zLpIpR7cyhA15');
-    }
+  void makeProjectComplete(bool? value, {docId}) async {
     setState(() {
-      isChckid = value!;
+      isChckid = value;
     });
+    if (isChckid == true) {
+      print('showwwww');
+
+      print('isChckid: $isChckid');
+      print('docId: ${widget.docId}');
+      print('projectId: ${docId}');
+      AppLoading.show(
+          context,
+          LocaleKeys.myProject.tr(),
+          LocaleKeys.complete.tr() +
+              (context.locale.toString() == 'en' ? '?' : '؟'),
+          showButtom: true,
+          noFunction: () {
+            Navigator.pop(context);
+          },
+          higth: 100.h,
+          yesFunction: () async {
+            AppLoading.show(context, 'lode', 'lode');
+
+            await Database.updateRequestStatus(
+                    isAccept: false,
+                    status: AppConstants.statusIsComplete,
+                    docId: widget.docId)
+                .then((value) {
+              if (value == 'done') {
+                Database.updateProjectStatus(
+                        docId: '$projectId', isAccept: false)
+                    .then((v) {
+                  if (value == 'done') {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    AppLoading.show(context, LocaleKeys.myProject.tr(),
+                        LocaleKeys.done.tr());
+                  }
+                });
+              } else {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                AppLoading.show(
+                    context, LocaleKeys.myProject.tr(), LocaleKeys.error.tr());
+              }
+            });
+          });
+    } else {
+      print('nnnot show');
+    }
   }
 }

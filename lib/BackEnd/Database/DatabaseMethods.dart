@@ -306,11 +306,11 @@ class Database {
   }
 
   //Update status=========================================================================================================
-  static Future<String> updateStouts({required String docId}) async {
+  static Future<String> updateProjectStatus(
+      {required String docId, required bool isAccept}) async {
     try {
-      AppConstants.projectCollection.doc(docId).update({
-        'status': AppConstants.statusIsComplete,
-      });
+      AppConstants.projectCollection.doc(docId).update(
+          {'status': AppConstants.statusIsComplete, 'isAccept': isAccept});
       return 'done';
     } catch (e) {
       return 'error';

@@ -148,7 +148,8 @@ class Login extends StatelessWidget {
                                                 AppLoading.show(co, '', 'lode');
                                                 Database.loggingToApp(
                                                         email: emailController
-                                                            .text,
+                                                            .text
+                                                            .trim(),
                                                         password:
                                                             passwordController
                                                                 .text)
@@ -176,7 +177,6 @@ class Login extends StatelessWidget {
                                                         LocaleKeys.passNotFound
                                                             .tr());
                                                   } else {
-                                                    print('respoms is: $v');
                                                     FirebaseFirestore.instance
                                                         .collection('users')
                                                         .where('userId',
@@ -187,18 +187,34 @@ class Login extends StatelessWidget {
                                                       value.docs
                                                           .forEach((element) {
                                                         print('respoms is: $v');
+                                                        print(
+                                                            'name is: ${element.data()['name']}');
+                                                        print(
+                                                            'type is: ${element.data()['type']}');
                                                         if (element.data()[
                                                                 'type'] ==
-                                                            AppConstants.student) {
+                                                            AppConstants
+                                                                .student) {
                                                           AppRoutes
                                                               .pushReplacementTo(
                                                                   context,
                                                                   const NavStudent());
-                                                        } else {
+                                                        } else if (element
+                                                                    .data()[
+                                                                'type'] ==
+                                                            AppConstants
+                                                                .supervisor) {
                                                           AppRoutes
                                                               .pushReplacementTo(
                                                                   context,
                                                                   const NavSupervisor());
+                                                        } else {
+                                                          AppLoading.show(
+                                                              context,
+                                                              LocaleKeys.login
+                                                                  .tr(),
+                                                              LocaleKeys.error
+                                                                  .tr());
                                                         }
                                                       });
                                                     });

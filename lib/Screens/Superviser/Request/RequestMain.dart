@@ -59,6 +59,8 @@ class _RequestMainState extends State<RequestMain> {
                     child: StreamBuilder(
                         stream: AppConstants.requestCollection
                             .where('supervisorUid', isEqualTo: userId)
+                            .where('status',
+                                isEqualTo: AppConstants.statusIsWaiting)
                             .snapshots(),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.hasError) {
@@ -155,7 +157,8 @@ class _RequestMainState extends State<RequestMain> {
                                                       AppConstants
                                                           .statusIsAcceptation
                                               ? null
-                                              : () => Database.updateRequestStatus(
+                                              : () =>
+                                                  Database.updateRequestStatus(
                                                     docId: snapshot
                                                         .data.docs[i].id,
                                                     status: AppConstants
@@ -176,7 +179,8 @@ class _RequestMainState extends State<RequestMain> {
                                                       AppConstants
                                                           .statusIsAcceptation
                                               ? null
-                                              : () => Database.updateRequestStatus(
+                                              : () =>
+                                                  Database.updateRequestStatus(
                                                     docId: snapshot
                                                         .data.docs[i].id,
                                                     status: AppConstants
