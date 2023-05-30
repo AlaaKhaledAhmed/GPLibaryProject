@@ -219,7 +219,7 @@ class Database {
   }
 
 //==========================================================================
-  static Future updateStatus(
+  static Future updateRequestStatus(
       {required bool isAccept,
       required int status,
       required String docId}) async {

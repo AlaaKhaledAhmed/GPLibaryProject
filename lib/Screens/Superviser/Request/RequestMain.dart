@@ -155,7 +155,7 @@ class _RequestMainState extends State<RequestMain> {
                                                       AppConstants
                                                           .statusIsAcceptation
                                               ? null
-                                              : () => Database.updateStatus(
+                                              : () => Database.updateRequestStatus(
                                                     docId: snapshot
                                                         .data.docs[i].id,
                                                     status: AppConstants
@@ -176,7 +176,7 @@ class _RequestMainState extends State<RequestMain> {
                                                       AppConstants
                                                           .statusIsAcceptation
                                               ? null
-                                              : () => Database.updateStatus(
+                                              : () => Database.updateRequestStatus(
                                                     docId: snapshot
                                                         .data.docs[i].id,
                                                     status: AppConstants

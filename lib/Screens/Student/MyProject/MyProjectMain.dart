@@ -274,43 +274,43 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                             ));
                       },
                       child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.h),
-                      height: 250.h,
-                      child: Card(
-                          color: AppColor.white,
-                          elevation: 5,
-                          child: ListTile(
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 20.h),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.projectName.tr() +
-                                          ": ${data['name']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.year.tr() +
-                                          ": ${data['year']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.comment.tr() +
-                                          ": ${data['comment']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                SizedBox(height: 20.h),
-                              ],
-                            ),
-                          )),
-                    ),
-                  );
+                        margin: EdgeInsets.symmetric(vertical: 20.h),
+                        height: 250.h,
+                        child: Card(
+                            color: AppColor.white,
+                            elevation: 5,
+                            child: ListTile(
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.projectName.tr() +
+                                        ": ${data['name']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.year.tr() +
+                                        ": ${data['year']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.comment.tr() +
+                                        ": ${data['comment']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  SizedBox(height: 20.h),
+                                ],
+                              ),
+                            )),
+                      ),
+                    );
                   }),
             ),
           ))
@@ -337,27 +337,29 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                   itemBuilder: (context, i) {
                     var data = snapshat.data.docs[i].data();
                     return InkWell(
-                      onTap: () {
-                        AppRoutes.pushTo(
-                            context,
-                            UpdateProject(
-                              status: AppConstants.statusIsUnComplete,
-                              dateController: data['year'],
-                              docId: snapshat.data.docs[i].id,
-                              nameController: data['name'],
-                              selectedMajor:
-                                  AppWidget.getTranslateMajor(data['major']),
-                              selectedSearch:
-                                  AppWidget.getTranslateSearchInterest(
-                                      data['searchInterest']),
-                              superNameController: data['superName'],
-                              fileName: data['fileName'],
-                              fileURL: data['link'],
-                              showComment: false,
-                              friezeText: true,
-                              comment: '',
-                            ));
-                      },
+                      onTap: data['status'] == AppConstants.statusIsComplete
+                          ? null
+                          : () {
+                              AppRoutes.pushTo(
+                                  context,
+                                  UpdateProject(
+                                    status: AppConstants.statusIsUnComplete,
+                                    dateController: data['year'],
+                                    docId: snapshat.data.docs[i].id,
+                                    nameController: data['name'],
+                                    selectedMajor: AppWidget.getTranslateMajor(
+                                        data['major']),
+                                    selectedSearch:
+                                        AppWidget.getTranslateSearchInterest(
+                                            data['searchInterest']),
+                                    superNameController: data['superName'],
+                                    fileName: data['fileName'],
+                                    fileURL: data['link'],
+                                    showComment: false,
+                                    friezeText: true,
+                                    comment: '',
+                                  ));
+                            },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 20.h),
                         height: 250.h,
@@ -532,6 +534,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
     await AppConstants.requestCollection
         .where("studentUid", isEqualTo: userId!)
         .where('isAccept', isEqualTo: true)
+        //.where('status', isNotEqualTo: AppConstants.statusIsComplete)
         .get()
         .then((value) {
       value.docs.forEach((element) {

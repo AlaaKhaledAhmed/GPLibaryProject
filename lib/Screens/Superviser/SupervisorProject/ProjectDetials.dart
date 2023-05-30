@@ -31,18 +31,20 @@ class ProjectDetails extends StatefulWidget {
   final String supervisorUid;
   final String studentUid;
   final String supervisorName;
+  final String docId;
   const ProjectDetails(
       {Key? key,
-        required this.description,
-        required this.isAccept,
-        required this.requestId,
-        required this.projectName,
-        required this.studentName,
-        required this.status,
-        required this.supervisorInterest,
-        required this.supervisorUid,
-        required this.studentUid,
-        required this.supervisorName})
+      required this.description,
+      required this.isAccept,
+      required this.requestId,
+      required this.projectName,
+      required this.studentName,
+      required this.status,
+      required this.supervisorInterest,
+      required this.supervisorUid,
+      required this.studentUid,
+      required this.supervisorName,
+      required this.docId})
       : super(key: key);
 
   @override
@@ -59,6 +61,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   String? fileURL;
   File? file;
   String? userId;
+  bool? isChckid = false;
   List<dynamic> projectData = [];
   bool? isFoundSupervisor;
   @override
@@ -85,31 +88,54 @@ class _ProjectDetailsState extends State<ProjectDetails> {
           child: Column(
             children: [
               showTabs(),
+
+              /// show check box in student file section
+              tab == 1
+                  ? SizedBox(
+                      height: 40.h,
+                      child: Transform.translate(
+                        offset: Offset(5.w, 0),
+                        child: CheckboxListTile(
+                          selectedTileColor: AppColor.black,
+                          contentPadding: EdgeInsets.zero,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: AppText(
+                            text: LocaleKeys.complete.tr(),
+                            fontSize: AppSize.subTextSize,
+                          ),
+                          value: isChckid,
+                          onChanged: (value) {
+                            makeProjectComplete(value);
+                          },
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
               StreamBuilder(
                 stream: tab == 0
                     ? AppConstants.projectCollection
-                    .where("status",
-                    isEqualTo: AppConstants.statusIsComplete)
-                    .where("studentId", isEqualTo: widget.studentUid)
-                    .where("from", isEqualTo: AppConstants.typeIsStudent)
-                    .where("projectId", isEqualTo: widget.requestId)
-                    .snapshots()
+                        .where("status",
+                            isEqualTo: AppConstants.statusIsComplete)
+                        .where("studentId", isEqualTo: widget.studentUid)
+                        .where("from", isEqualTo: AppConstants.typeIsStudent)
+                        .where("projectId", isEqualTo: widget.requestId)
+                        .snapshots()
                     : tab == 1
-                    ? AppConstants.projectCollection
-                    .where("status",
-                    isEqualTo: AppConstants.statusIsUnComplete)
-                    .where("from",
-                    isEqualTo: AppConstants.typeIsStudent)
-                    .where("studentId", isEqualTo: widget.studentUid)
-                    .where("projectId", isEqualTo: widget.requestId)
-                    .snapshots()
-                    : AppConstants.projectCollection
-                    .where("from",
-                    isEqualTo: AppConstants.typeIsSupervisor)
-                    .where("studentId", isEqualTo: widget.studentUid)
-                    .where("superId", isEqualTo: userId)
-                    .where("projectId", isEqualTo: widget.requestId)
-                    .snapshots(),
+                        ? AppConstants.projectCollection
+                            .where("status",
+                                isEqualTo: AppConstants.statusIsUnComplete)
+                            .where("from",
+                                isEqualTo: AppConstants.typeIsStudent)
+                            .where("studentId", isEqualTo: widget.studentUid)
+                            .where("projectId", isEqualTo: widget.requestId)
+                            .snapshots()
+                        : AppConstants.projectCollection
+                            .where("from",
+                                isEqualTo: AppConstants.typeIsSupervisor)
+                            .where("studentId", isEqualTo: widget.studentUid)
+                            .where("superId", isEqualTo: userId)
+                            .where("projectId", isEqualTo: widget.requestId)
+                            .snapshots(),
                 builder: (context, AsyncSnapshot snapshat) {
                   if (snapshat.hasError) {
                     return Center(child: Text('${snapshat.error}'));
@@ -118,8 +144,8 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     return tab == 0
                         ? getCompletedProject(context, snapshat)
                         : tab == 1
-                        ? getStudentFile(context, snapshat)
-                        : getSupervisorFile(context, snapshat);
+                            ? getStudentFile(context, snapshat)
+                            : getSupervisorFile(context, snapshat);
                   }
 
                   return const Center(
@@ -157,9 +183,9 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     });
                   },
                   bagColor:
-                  tab == index ? AppColor.cherryLightPink : AppColor.white,
+                      tab == index ? AppColor.cherryLightPink : AppColor.white,
                   textStyleColor:
-                  tab == index ? AppColor.white : AppColor.black,
+                      tab == index ? AppColor.white : AppColor.black,
                   width: 160.w,
                 ),
               );
@@ -172,304 +198,304 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   Widget getCompletedProject(context, snapshat) {
     return snapshat.data.docs.length > 0
         ? Expanded(
-        child: SizedBox(
-          width: double.infinity,
-          height: 150.h,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: ListView.builder(
-                itemCount: snapshat.data.docs.length,
-                itemBuilder: (context, i) {
-                  var data = snapshat.data.docs[i].data();
-                  return InkWell(
-                    onTap: () async {
-                      AppLoading.show(context, "", "lode");
-                      final file =
-                      await Database.lodeFirbase(data['fileName'])
-                          .whenComplete(() {
-                        Navigator.pop(context);
-                      });
-                      // ignore: unnecessary_null_comparison
-                      if (file == null) return;
-                      AppRoutes.pushTo(
-                          context,
-                          ViewPdf(
-                            file: file,
-                            fileName: data['fileName'],
-                            link: data['link'],
-                          ));
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.h),
-                      height: 250.h,
-                      child: Card(
-                          color: AppColor.white,
-                          elevation: 5,
-                          child: ListTile(
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 20.h),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.projectName.tr() +
-                                          ": ${data['name']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.year.tr() +
-                                          ": ${data['year']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text:
-                                      '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                          AppWidget.getTranslateMajor(
-                                              data['major']),
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.searchInterestTx.tr() +
-                                          ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.mySuperVisor.tr() +
-                                          ": ${data['superName']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                SizedBox(height: 20.h),
-                              ],
-                            ),
-                          )),
-                    ),
-                  );
-                }),
-          ),
-        ))
+            child: SizedBox(
+            width: double.infinity,
+            height: 150.h,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: ListView.builder(
+                  itemCount: snapshat.data.docs.length,
+                  itemBuilder: (context, i) {
+                    var data = snapshat.data.docs[i].data();
+                    return InkWell(
+                      onTap: () async {
+                        AppLoading.show(context, "", "lode");
+                        final file =
+                            await Database.lodeFirbase(data['fileName'])
+                                .whenComplete(() {
+                          Navigator.pop(context);
+                        });
+                        // ignore: unnecessary_null_comparison
+                        if (file == null) return;
+                        AppRoutes.pushTo(
+                            context,
+                            ViewPdf(
+                              file: file,
+                              fileName: data['fileName'],
+                              link: data['link'],
+                            ));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.h),
+                        height: 250.h,
+                        child: Card(
+                            color: AppColor.white,
+                            elevation: 5,
+                            child: ListTile(
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.projectName.tr() +
+                                        ": ${data['name']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.year.tr() +
+                                        ": ${data['year']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text:
+                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                            AppWidget.getTranslateMajor(
+                                                data['major']),
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.searchInterestTx.tr() +
+                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.mySuperVisor.tr() +
+                                        ": ${data['superName']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  SizedBox(height: 20.h),
+                                ],
+                              ),
+                            )),
+                      ),
+                    );
+                  }),
+            ),
+          ))
         : Center(
-      child: Padding(
-        padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
-        child: AppText(
-          text: LocaleKeys.noData.tr(),
-          fontSize: AppSize.subTextSize,
-        ),
-      ),
-    );
+            child: Padding(
+              padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
+              child: AppText(
+                text: LocaleKeys.noData.tr(),
+                fontSize: AppSize.subTextSize,
+              ),
+            ),
+          );
   }
 
 //======================================================================
   Widget getSupervisorFile(BuildContext context, AsyncSnapshot snapshat) {
     return snapshat.data.docs.length > 0
         ? Expanded(
-        child: SizedBox(
-          width: double.infinity,
-          height: 150.h,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: ListView.builder(
-                itemCount: snapshat.data.docs.length,
-                itemBuilder: (context, i) {
-                  var data = snapshat.data.docs[i].data();
-                  return InkWell(
-                    onTap: () {
-                      AppRoutes.pushTo(
-                          context,
-                          UpdateProject(
-                            status: AppConstants.statusIsUnComplete,
-                            dateController: data['year'],
-                            docId: snapshat.data.docs[i].id,
-                            nameController: data['name'],
-                            selectedMajor:
-                            AppWidget.getTranslateMajor(data['major']),
-                            selectedSearch:
-                            AppWidget.getTranslateSearchInterest(
-                                data['searchInterest']),
-                            superNameController: data['superName'],
-                            fileName: data['fileName'],
-                            fileURL: data['link'],
-                            showComment: true,
-                            comment:  data['comment'],
-                            friezeText: true,
-                          ));
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.h),
-                      height: 250.h,
-                      child: Card(
-                          color: AppColor.white,
-                          elevation: 5,
-                          child: ListTile(
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 20.h),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.projectName.tr() +
-                                          ": ${data['name']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.year.tr() +
-                                          ": ${data['year']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.comment.tr() +
-                                          ": ${data['comment']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                SizedBox(height: 20.h),
-                              ],
-                            ),
-                          )),
-                    ),
-                  );
-                }),
-          ),
-        ))
+            child: SizedBox(
+            width: double.infinity,
+            height: 150.h,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: ListView.builder(
+                  itemCount: snapshat.data.docs.length,
+                  itemBuilder: (context, i) {
+                    var data = snapshat.data.docs[i].data();
+                    return InkWell(
+                      onTap: () {
+                        AppRoutes.pushTo(
+                            context,
+                            UpdateProject(
+                              status: AppConstants.statusIsUnComplete,
+                              dateController: data['year'],
+                              docId: snapshat.data.docs[i].id,
+                              nameController: data['name'],
+                              selectedMajor:
+                                  AppWidget.getTranslateMajor(data['major']),
+                              selectedSearch:
+                                  AppWidget.getTranslateSearchInterest(
+                                      data['searchInterest']),
+                              superNameController: data['superName'],
+                              fileName: data['fileName'],
+                              fileURL: data['link'],
+                              showComment: true,
+                              comment: data['comment'],
+                              friezeText: true,
+                            ));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.h),
+                        height: 250.h,
+                        child: Card(
+                            color: AppColor.white,
+                            elevation: 5,
+                            child: ListTile(
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.projectName.tr() +
+                                        ": ${data['name']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.year.tr() +
+                                        ": ${data['year']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.comment.tr() +
+                                        ": ${data['comment']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  SizedBox(height: 20.h),
+                                ],
+                              ),
+                            )),
+                      ),
+                    );
+                  }),
+            ),
+          ))
         : Center(
-      child: Padding(
-        padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
-        child: InkWell(
-          onTap: () {
-            /// pick file
-            setState(() {
-              pickFile(context).whenComplete(() {
-                print('fillllllllllllle:${file!.path}');
+            child: Padding(
+              padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
+              child: InkWell(
+                onTap: () {
+                  /// pick file
+                  setState(() {
+                    pickFile(context).whenComplete(() {
+                      print('fillllllllllllle:${file!.path}');
 
-                AppLoading.show(
-                    context,
-                    LocaleKeys.attachFile.tr(),
-                    LocaleKeys.attachFile.tr() +
-                        (context.locale.toString() == 'en' ? "?" : "؟"),
-                    higth: 100.h,
-                    noFunction: () => Navigator.pop(context),
-                    yesFunction: () => uploadSupervisorFile(
-                        fileName: path.basename(file!.path)),
-                    showButtom: true);
-              });
-            });
-          },
-          child: AppText(
-            text: LocaleKeys.attachFile.tr(),
-            fontSize: AppSize.title2TextSize,
-          ),
-        ),
-      ),
-    );
+                      AppLoading.show(
+                          context,
+                          LocaleKeys.attachFile.tr(),
+                          LocaleKeys.attachFile.tr() +
+                              (context.locale.toString() == 'en' ? "?" : "؟"),
+                          higth: 100.h,
+                          noFunction: () => Navigator.pop(context),
+                          yesFunction: () => uploadSupervisorFile(
+                              fileName: path.basename(file!.path)),
+                          showButtom: true);
+                    });
+                  });
+                },
+                child: AppText(
+                  text: LocaleKeys.attachFile.tr(),
+                  fontSize: AppSize.title2TextSize,
+                ),
+              ),
+            ),
+          );
   }
 
 //======================================================================
   Widget getStudentFile(BuildContext context, AsyncSnapshot snapshat) {
     return snapshat.data.docs.length > 0
         ? Expanded(
-        child: SizedBox(
-          width: double.infinity,
-          height: 150.h,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: ListView.builder(
-                itemCount: snapshat.data.docs.length,
-                itemBuilder: (context, i) {
-                  var data = snapshat.data.docs[i].data();
-                  return InkWell(
-                    onTap: () async {
-                      AppLoading.show(context, "", "lode");
-                      final file =
-                      await Database.lodeFirbase(data['fileName'])
-                          .whenComplete(() {
-                        Navigator.pop(context);
-                      });
-                      // ignore: unnecessary_null_comparison
-                      if (file == null) return;
-                      AppRoutes.pushTo(
-                          context,
-                          ViewPdf(
-                            file: file,
-                            fileName: data['fileName'],
-                            link: data['link'],
-                          ));
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.h),
-                      height: 250.h,
-                      child: Card(
-                          color: AppColor.white,
-                          elevation: 5,
-                          child: ListTile(
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 20.h),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.projectName.tr() +
-                                          ": ${data['name']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.year.tr() +
-                                          ": ${data['year']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text:
-                                      '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                          AppWidget.getTranslateMajor(
-                                              data['major']),
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.searchInterestTx.tr() +
-                                          ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                Expanded(
-                                    child: AppText(
-                                      fontSize: AppSize.subTextSize,
-                                      text: LocaleKeys.mySuperVisor.tr() +
-                                          ": ${data['superName']}",
-                                      color: AppColor.appBarColor,
-                                    )),
-                                SizedBox(height: 20.h),
-                              ],
-                            ),
-                          )),
-                    ),
-                  );
-                }),
-          ),
-        ))
+            child: SizedBox(
+            width: double.infinity,
+            height: 150.h,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: ListView.builder(
+                  itemCount: snapshat.data.docs.length,
+                  itemBuilder: (context, i) {
+                    var data = snapshat.data.docs[i].data();
+                    return InkWell(
+                      onTap: () async {
+                        AppLoading.show(context, "", "lode");
+                        final file =
+                            await Database.lodeFirbase(data['fileName'])
+                                .whenComplete(() {
+                          Navigator.pop(context);
+                        });
+                        // ignore: unnecessary_null_comparison
+                        if (file == null) return;
+                        AppRoutes.pushTo(
+                            context,
+                            ViewPdf(
+                              file: file,
+                              fileName: data['fileName'],
+                              link: data['link'],
+                            ));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.h),
+                        height: 250.h,
+                        child: Card(
+                            color: AppColor.white,
+                            elevation: 5,
+                            child: ListTile(
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.projectName.tr() +
+                                        ": ${data['name']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.year.tr() +
+                                        ": ${data['year']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text:
+                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                            AppWidget.getTranslateMajor(
+                                                data['major']),
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.searchInterestTx.tr() +
+                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.mySuperVisor.tr() +
+                                        ": ${data['superName']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  SizedBox(height: 20.h),
+                                ],
+                              ),
+                            )),
+                      ),
+                    );
+                  }),
+            ),
+          ))
         : Center(
-      child: Padding(
-          padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
-          child: AppText(
-              text: LocaleKeys.noData.tr(),
-              fontSize: AppSize.subTextSize)),
-    );
+            child: Padding(
+                padding: EdgeInsets.only(top: AppWidget.getHeight(context) / 4),
+                child: AppText(
+                    text: LocaleKeys.noData.tr(),
+                    fontSize: AppSize.subTextSize)),
+          );
   }
 
 //show file picker=========================================
@@ -495,22 +521,22 @@ class _ProjectDetailsState extends State<ProjectDetails> {
       Navigator.pop(context);
       fileURL = await fileRef!.getDownloadURL();
       Database.addProject(
-          status: AppConstants.statusIsUnComplete,
-          major: AppWidget.setEnTranslateMajor(projectData[0]),
-          searchInterest:
-          AppWidget.setEnTranslateSearchInterest(projectData[1]),
-          superName: widget.supervisorName,
-          superId: userId!,
-          projectId: widget.requestId,
-          name: widget.projectName,
-          year:
-          '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
-          link: fileURL!,
-          fileName: fileName,
-          from: AppConstants.typeIsSupervisor,
-          studentId: widget.studentUid,
-          isAccept: false,
-          comment: '')
+              status: AppConstants.statusIsUnComplete,
+              major: AppWidget.setEnTranslateMajor(projectData[0]),
+              searchInterest:
+                  AppWidget.setEnTranslateSearchInterest(projectData[1]),
+              superName: widget.supervisorName,
+              superId: userId!,
+              projectId: widget.requestId,
+              name: widget.projectName,
+              year:
+                  '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+              link: fileURL!,
+              fileName: fileName,
+              from: AppConstants.typeIsSupervisor,
+              studentId: widget.studentUid,
+              isAccept: false,
+              comment: '')
           .then((String v) {
         print('================$v');
         if (v == "done") {
@@ -541,6 +567,19 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                 "${element["searchInterest"]}"));
         setState(() {});
       });
+    });
+  }
+
+//=====================================================
+  void makeProjectComplete(bool? value) {
+    print('isChckid: $isChckid');
+    print('docId: ${widget.docId}');
+    if (isChckid == false) {
+
+      Database.updateStouts(docId: 'HTm9Ht2zLpIpR7cyhA15');
+    }
+    setState(() {
+      isChckid = value!;
     });
   }
 }

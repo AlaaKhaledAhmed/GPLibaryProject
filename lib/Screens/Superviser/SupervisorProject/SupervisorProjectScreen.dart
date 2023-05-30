@@ -152,18 +152,18 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
                               AppRoutes.pushTo(
                                   context,
                                   ProjectDetails(
-                                    description: data['description'],
-                                    isAccept: data['isAccept'],
-                                    projectName: data['projectName'],
-                                    requestId: data['requestId'],
-                                    status: data['status'],
-                                    studentName: data['studentName'],
-                                    studentUid: data['studentUid'],
-                                    supervisorInterest:
-                                        data['supervisorInterest'],
-                                    supervisorName: data['supervisorName'],
-                                    supervisorUid: data['supervisorUid'],
-                                  ));
+                                      description: data['description'],
+                                      isAccept: data['isAccept'],
+                                      projectName: data['projectName'],
+                                      requestId: data['requestId'],
+                                      status: data['status'],
+                                      studentName: data['studentName'],
+                                      studentUid: data['studentUid'],
+                                      supervisorInterest:
+                                          data['supervisorInterest'],
+                                      supervisorName: data['supervisorName'],
+                                      supervisorUid: data['supervisorUid'],
+                                      docId: snapshot.data.docs[i].id));
                             },
                           ),
                         ),

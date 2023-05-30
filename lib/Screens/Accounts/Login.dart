@@ -189,7 +189,7 @@ class Login extends StatelessWidget {
                                                         print('respoms is: $v');
                                                         if (element.data()[
                                                                 'type'] ==
-                                                            AppConstants.typeIsStudent) {
+                                                            AppConstants.student) {
                                                           AppRoutes
                                                               .pushReplacementTo(
                                                                   context,
