@@ -104,7 +104,11 @@ class CodegenLoader extends AssetLoader{
   "noSupervisor": "لم يقم اي مشرف بقبول مشروعك في الوقت الحالى",
   "description": "وصف المشروع",
   "similarProjects": "مشاريع مشابهة",
-  "youMightLikeThis": "قد يعجبك هذا"
+  "youMightLikeThis": "قد يعجبك هذا",
+  "reset_password": "نسيت كلمة المرور؟",
+  "resend_email": "لم يصلك رابط؟ اعادة ارسال",
+  "send_link": "إعادة تعيين كلمة المرور",
+  "cheakInbox": "تم إرسال رابط إلى البريد الإلكتروني الذي تم إدخاله ، يرجى التحقق من صندوق الوارد الخاص بك واتباع التعليمات ثم سجل الدخول مرة أخرى"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -195,7 +199,11 @@ static const Map<String,dynamic> en = {
   "noSupervisor": "No supervisor has accepted your project at this time",
   "description": "Project description",
   "similarProjects": "Similar projects",
-  "youMightLikeThis": "You might like this"
+  "youMightLikeThis": "You might like this",
+  "reset_password": "Forgot your password?",
+  "resend_email": "Did you not get a link? Resend",
+  "send_link": "Reset password",
+  "cheakInbox": "A link has been sent to the email entered, please check your inbox and follow the instructions then log in again"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

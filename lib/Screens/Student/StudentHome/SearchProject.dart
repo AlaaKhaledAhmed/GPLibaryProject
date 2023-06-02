@@ -175,14 +175,13 @@ class SearchProject extends SearchDelegate {
 
   //save To Recent Searches Celebrity=====================================================================
   Widget showHistory(context, List suggestions) {
-  
     return Column(
       children: [
 //history===============================================================
         suggestions.isEmpty && query == ''
             ? const SizedBox()
             : SizedBox(
-              height: 163.h,
+                height: 163.h,
                 child: Column(
                   children: [
                     Padding(
@@ -260,13 +259,12 @@ class SearchProject extends SearchDelegate {
                             );
                           }),
                     ),
-                   
                   ],
                 ),
               ),
 //Simeler text===========================================================================
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h ),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: Row(
             children: [
               Text(
@@ -294,9 +292,7 @@ class SearchProject extends SearchDelegate {
                 if (snapshot.hasError) {
                   return const Center(child: Text("Error check internet!"));
                 }
-                if (snapshot.hasData) {
-                  return body(snapshot);
-                }
+            
                 if (snapshot.hasData) {
                   return body(snapshot);
                 }
@@ -312,7 +308,7 @@ class SearchProject extends SearchDelegate {
   }
 
 //show data from database========================================================================
-  Widget body(snapshot) {
+  Widget body(snapshot, {bool? showHorizontal}) {
     return snapshot.data.docs.isNotEmpty
         ? Consumer<ChangConstModel>(builder: (context, model, child) {
             return SizedBox(
@@ -320,6 +316,9 @@ class SearchProject extends SearchDelegate {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: ListView.builder(
+                    scrollDirection: showHorizontal == true
+                        ? Axis.horizontal
+                        : Axis.vertical,
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, i) {
                       var data = snapshot.data.docs[i].data();

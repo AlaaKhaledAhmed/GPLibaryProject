@@ -92,5 +92,10 @@
   "noSupervisor": "No supervisor has accepted your project at this time",
   "description": "Project description",
   "similarProjects":"Similar projects",
-  "youMightLikeThis":"You might like this"
+  "youMightLikeThis":"You might like this",
+  "reset_password": "Forgot your password?",
+  "resend_email": "Did you not get a link? Resend",
+  "send_link": "Reset password",
+  "cheakInbox": "A link has been sent to the email entered, please check your inbox and follow the instructions then log in again"
+  
 }

@@ -23,8 +23,9 @@ import 'SingUp.dart';
 class Login extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController resetEmailController = TextEditingController();
   GlobalKey<FormState> loggingKey = GlobalKey();
-
+  GlobalKey<FormState> restPasswordKey = GlobalKey();
   Login({Key? key}) : super(key: key);
 
   @override
@@ -57,7 +58,7 @@ class Login extends StatelessWidget {
                         child: AppText(
                           fontSize: AppSize.titleTextSize,
                           text: LocaleKeys.loginTx.tr(),
-                          color: AppColor.white,
+                          color: AppColor.black,
                           fontWeight: FontWeight.bold,
                         )),
 
@@ -233,7 +234,23 @@ class Login extends StatelessWidget {
                         ),
                       ),
                     ),
-//Switch SingUp =============================================================
+////==============================reset password===============================================================
+                    Positioned(
+                      bottom: AppWidget.getHeight(context) * 0.2,
+                      child: Container(
+                        width: AppWidget.getWidth(context),
+                        alignment: Alignment.center,
+                        child: InkWell(
+                            child: AppText(
+                              text: LocaleKeys.reset_password.tr(),
+                              fontSize: AppSize.title2TextSize,
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.white,
+                            ),
+                            onTap: () => showButtomsheetResetPassword(context)),
+                      ),
+                    ),
+//==============================go to sinh up===============================================================
                     Positioned(
                       bottom: AppWidget.getHeight(context) * 0.1,
                       child: Container(
@@ -248,7 +265,7 @@ class Login extends StatelessWidget {
                                 alignment: WrapAlignment.center,
                                 children: [
                                   AppText(
-                                    fontSize: AppSize.subTextSize,
+                                    fontSize: AppSize.subTextSize + 1.5,
                                     text: LocaleKeys.goTo.tr(),
                                     color: AppColor.white,
                                     fontWeight: FontWeight.bold,
@@ -258,9 +275,9 @@ class Login extends StatelessWidget {
                                   ),
                                   InkWell(
                                       child: AppText(
-                                        fontSize: AppSize.subTextSize,
+                                        fontSize: AppSize.subTextSize + 1.5,
                                         text: LocaleKeys.singUpStudentTx.tr(),
-                                        color: AppColor.textFieldBorderColor,
+                                        color: AppColor.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                       onTap: () {
@@ -275,6 +292,107 @@ class Login extends StatelessWidget {
                   ],
                 )));
       }),
+    );
+  }
+
+//=======================show Buttom sheet For Reset Password========================================
+  void showButtomsheetResetPassword(context) {
+    showModalBottomSheet<void>(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      barrierColor: Colors.black87,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            margin: EdgeInsets.all(10.h),
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            height: 250.h,
+            decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.all(Radius.circular(10.r))),
+            child: Form(
+              key: restPasswordKey,
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppText(
+                      text: LocaleKeys.send_link.tr(),
+                      fontSize: AppSize.subTextSize,
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+//=====================reset pass tesxfield===============================================
+                    AppTextFields(
+                      controller: resetEmailController,
+                      labelText: LocaleKeys.emailTx.tr(),
+                      validator: (v) => AppValidator.validatorEmail2(v),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+//=======================reset bottom=============================================
+                    Column(
+                      children: [
+                        AppButtons(
+                          text: LocaleKeys.send_link.tr(),
+                          onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            if (restPasswordKey.currentState?.validate() ==
+                                true) {
+                              AppLoading.show(context, '', 'lode');
+                              Database.resetPassword(
+                                email: resetEmailController.text,
+                              ).then((String v) {
+                                Navigator.pop(context);
+                                if (v == 'done') {
+                                  AppLoading.show(
+                                    context,
+                                    LocaleKeys.send_link.tr(),
+                                    LocaleKeys.cheakInbox.tr(),
+                                  );
+                                } else if (v == 'user-not-found') {
+                                  AppLoading.show(
+                                      context,
+                                      LocaleKeys.send_link.tr(),
+                                      LocaleKeys.userNotFound.tr());
+                                } else {
+                                  AppLoading.show(
+                                      context,
+                                      LocaleKeys.send_link.tr(),
+                                      LocaleKeys.error.tr());
+                                }
+                              });
+                            }
+                          },
+                          bagColor: AppColor.cherryLightPink,
+                        ),
+//=====================cancel bottom===============================================
+
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        AppButtons(
+                          text: LocaleKeys.cancel.tr(),
+                          onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            Navigator.pop(context);
+                            resetEmailController.clear();
+                          },
+                          bagColor: AppColor.cherryLightPink,
+                        ),
+                      ],
+                    ),
+                  ]),
+            ),
+          ),
+        );
+      },
     );
   }
 }

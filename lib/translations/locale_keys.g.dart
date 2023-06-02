@@ -91,5 +91,9 @@ abstract class  LocaleKeys {
   static const description = 'description';
   static const similarProjects = 'similarProjects';
   static const youMightLikeThis = 'youMightLikeThis';
+  static const reset_password = 'reset_password';
+  static const resend_email = 'resend_email';
+  static const send_link = 'send_link';
+  static const cheakInbox = 'cheakInbox';
 
 }

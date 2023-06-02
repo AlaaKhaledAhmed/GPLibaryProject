@@ -7,7 +7,7 @@ import 'AppConstants.dart';
 class AppValidator {
 //valid empty data============================================================
   static String? validatorEmpty(v) {
-    if (v.isEmpty || v==null) {
+    if (v.isEmpty || v == null) {
       return LocaleKeys.mandatoryTx.tr();
     } else {
       return null;
@@ -26,6 +26,7 @@ class AppValidator {
       return null;
     }
   }
+
   //valid name En/Ar data============================================================
   static String? validatorNameEnAr(name) {
     final nameRegExp = RegExp(r"^\s*([A-Za-z\s]{2,20})$");
@@ -44,7 +45,7 @@ class AppValidator {
     var match = RegExp(r'(^|\D)\d{6,6}($|\D)').hasMatch(email.trim());
     print('match :$match');
     print('type :$type');
-    if ( email.isEmpty) {
+    if (email.isEmpty) {
       return LocaleKeys.mandatoryTx.tr();
     }
 
@@ -61,6 +62,18 @@ class AppValidator {
         return LocaleKeys.invalidEmail.tr();
       }
       return null;
+    }
+
+    if (EmailValidator.validate(email.trim()) == false) {
+      return LocaleKeys.invalidEmail.tr();
+    }
+    return null;
+  }
+
+  //valid email=============================================================
+  static String? validatorEmail2(email) {
+    if (email.isEmpty) {
+      return LocaleKeys.mandatoryTx.tr();
     }
 
     if (EmailValidator.validate(email.trim()) == false) {
