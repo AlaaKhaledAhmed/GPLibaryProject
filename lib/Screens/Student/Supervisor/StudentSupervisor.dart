@@ -52,7 +52,6 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
     userCollection.get().then((value) {
       for (var element in value.docs) {
         setState(() {
-      
           supervisorsNames.add(element['name']);
         });
       }
@@ -187,8 +186,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 //show data from database========================================================================
   Widget body(snapshot, model) {
     return snapshot.data.docs.isNotEmpty
-        ?
-    Container(
+        ? Container(
             //height: AppWidget.getHeight(context) * 0.55,
             decoration:
                 AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
@@ -216,10 +214,21 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
 //dr name=================================================================
                           child: ListTile(
                             title: Padding(
-                              padding: EdgeInsets.only(top: 30.h),
-                              child: AppText(
-                                text: '${LocaleKeys.dr.tr()}: ${data['name']}',
-                                fontSize: AppSize.title2TextSize,
+                              padding: EdgeInsets.only(top: 20.h),
+                              child: Container(
+                                height: 35.h,
+                                decoration: AppWidget.decoration(
+                                  color: AppColor.cherryLightPink,
+                                ),
+                                child: Center(
+                                  child: AppText(
+                                    text:
+                                        '${LocaleKeys.dr.tr()}: ${data['name']}',
+                                    fontSize: AppSize.title2TextSize,
+                                    color: AppColor.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
 //description =====================================================================
