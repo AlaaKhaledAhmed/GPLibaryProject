@@ -58,7 +58,7 @@ class Login extends StatelessWidget {
                         child: AppText(
                           fontSize: AppSize.titleTextSize,
                           text: LocaleKeys.loginTx.tr(),
-                          color: AppColor.black,
+                          color: AppColor.white,
                           fontWeight: FontWeight.bold,
                         )),
 
