@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
@@ -15,8 +15,14 @@ import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../BackEnd/Provider/ChangConstModel.dart';
+import '../../../Widget/AppIcons.dart';
+import '../../../Widget/AppPopUpMen.dart';
+import '../../../Widget/AppSvg.dart';
+import 'package:provider/provider.dart';
 import '../MyProject/DawonlodeProject.dart';
 import 'CommentPage.dart';
+import 'SearchProject.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome();
@@ -28,12 +34,27 @@ class StudentHome extends StatefulWidget {
 class _StudentHomeState extends State<StudentHome> {
   String? userId;
   String? name;
+  String? studentData;
+  List projectNames = [];
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController projectNameController = TextEditingController();
+  GlobalKey<FormState> addKey = GlobalKey();
+  int? tab;
+
+  int iniFilter = 0;
   @override
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser?.uid;
     Future.delayed(Duration.zero, () async {
       await getName(userId);
+      AppConstants.projectCollection.get().then((value) {
+        for (var element in value.docs) {
+          setState(() {
+            projectNames.add(element['name']);
+          });
+        }
+      });
     });
   }
 
@@ -43,27 +64,75 @@ class _StudentHomeState extends State<StudentHome> {
       appBar: AppBarMain(
         title: LocaleKeys.home.tr(),
       ),
-      body: Column(
-        children: [
-          StreamBuilder(
-            stream: AppConstants.projectCollection
-                .where("status", isEqualTo: AppConstants.statusIsComplete)
-                .snapshots(),
-            builder: (context, AsyncSnapshot snapshat) {
-              if (snapshat.hasError) {
-                return Center(child: Text('${snapshat.error}'));
-              }
-              if (snapshat.hasData) {
-                return body(context, snapshat);
-              }
+      body: Consumer<ChangConstModel>(builder: (context, model, child) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 20.h,
+            ),
+//search and filter=====================================================
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10.w),
+              height: 60.h,
+              width: AppWidget.getWidth(context),
+              //color: Colors.green,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => showSearch(
+                        context: context,
+                        delegate: SearchProject(
+                            projectNamesList: projectNames,
+                            context: context,
+                            userId: userId!,
+                            local: context.locale)),
+                    child: Container(
+                      height: double.infinity,
+                      width: AppWidget.getWidth(context) * 0.75,
+                      decoration: AppWidget.decoration(),
+                      child: rowData(),
+                    ),
+                  ),
+                  showFilter(model)
+                ],
+              ),
+            ),
+            AppWidget.hSpace(10),
+//body==============================================================
 
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-          ),
-        ],
-      ),
+            StreamBuilder(
+              stream: iniFilter == 1
+                  ? AppConstants.projectCollection
+                      .where('major', isEqualTo: studentData)
+                      .where("status", isEqualTo: AppConstants.statusIsComplete)
+                      .snapshots()
+                  : iniFilter == 2
+                      ? AppConstants.projectCollection
+                          .where('searchInterest', isEqualTo: '$studentData')
+                          .where("status",
+                              isEqualTo: AppConstants.statusIsComplete)
+                          .snapshots()
+                      : AppConstants.projectCollection
+                          .where("status",
+                              isEqualTo: AppConstants.statusIsComplete)
+                          .snapshots(),
+              builder: (context, AsyncSnapshot snapshat) {
+                if (snapshat.hasError) {
+                  return Center(child: Text('${snapshat.error}'));
+                }
+                if (snapshat.hasData) {
+                  return body(context, snapshat);
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          ],
+        );
+      }),
     );
   }
 
@@ -81,8 +150,8 @@ class _StudentHomeState extends State<StudentHome> {
                   itemBuilder: (context, i) {
                     var data = snapshat.data.docs[i].data();
                     return Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.h),
-                      height: 250.h,
+                      margin: EdgeInsets.symmetric(vertical: 10.h),
+                      height: 270.h,
                       child: Card(
                           color: AppColor.white,
                           elevation: 5,
@@ -92,12 +161,22 @@ class _StudentHomeState extends State<StudentHome> {
                               children: [
                                 SizedBox(height: 20.h),
                                 Expanded(
+                                    child: Container(
+                                  decoration: AppWidget.decoration(
+                                    color: AppColor.cherryLightPink,
+                                  ),
+                                  width: double.infinity,
+                                  child: Center(
                                     child: AppText(
-                                  fontSize: AppSize.subTextSize,
-                                  text: LocaleKeys.projectName.tr() +
-                                      ": ${data['name']}",
-                                  color: AppColor.appBarColor,
+                                      fontSize: AppSize.subTextSize,
+                                      text: LocaleKeys.projectName.tr() +
+                                          ": ${data['name']}",
+                                      color: AppColor.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 )),
+                                SizedBox(height: 20.h),
                                 Expanded(
                                     child: AppText(
                                   fontSize: AppSize.subTextSize,
@@ -167,7 +246,7 @@ class _StudentHomeState extends State<StudentHome> {
                                               ));
                                         },
                                         icon: const Icon(
-                                            Icons.view_carousel_sharp)),
+                                            Icons.view_carousel_sharp,color:AppColor.cherryLightPink)),
 //dwonlode file---------------------------------------------------------------------------------
                                     IconButton(
                                         onPressed: () async {
@@ -273,6 +352,19 @@ class _StudentHomeState extends State<StudentHome> {
   //   );
   // }
 
+//search box===============================================================
+  Widget rowData() {
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.r),
+          child: Icon(AppIcons.search),
+        ),
+        AppText(text: LocaleKeys.search.tr(), fontSize: AppSize.subTextSize)
+      ],
+    );
+  }
+
 //get user name===============================================
   Future<void> getName(String? userId) async {
     FirebaseFirestore.instance
@@ -283,6 +375,101 @@ class _StudentHomeState extends State<StudentHome> {
       for (var element in value.docs) {
         name = element.data()['name'];
         setState(() {});
+      }
+    });
+  }
+
+  //get Status of student request=======================================================================
+  getStatus({required String stId, required String supId}) async {
+    // print('stId:$stId');
+    // print('supId:$supId');
+    late int st = 0;
+    await AppConstants.requestCollection
+        .where('studentUid', isEqualTo: stId)
+        .where('supervisorUid', isEqualTo: supId)
+        .get()
+        .then((getData) {
+      for (QueryDocumentSnapshot element in getData.docs) {
+        if (element.exists) {
+          st = element['status'];
+        }
+      }
+    });
+
+    return st;
+  }
+
+//Filter data=========================================================================
+  showFilter(model) => Container(
+        width: AppWidget.getWidth(context) * 0.14,
+        height: double.infinity,
+        decoration: AppWidget.decoration(radius: 10.r),
+        child: Center(
+          child: AppPopUpMen(
+            menuList: [
+              ///show all
+              PopupMenuItem(
+                onTap: () async {
+                  iniFilter = 0;
+                  model.refreshPage();
+                  print('iniFilter:$iniFilter');
+                },
+                child: AppText(
+                  text: LocaleKeys.all.tr(),
+                  fontSize: AppSize.subTextSize,
+                ),
+              ),
+
+              ///filter by major
+              PopupMenuItem(
+                onTap: () async {
+                  iniFilter = 1;
+                  await getStudentMajor(filterBy: AppConstants.filterByMajor);
+                  model.refreshPage();
+                  print('iniFilter:$iniFilter');
+                },
+                child: AppText(
+                  text: LocaleKeys.majorTx.tr(),
+                  fontSize: AppSize.subTextSize,
+                ),
+              ),
+
+              ///filter by search Interest
+              PopupMenuItem(
+                onTap: () async {
+                  iniFilter = 2;
+                  await getStudentMajor(filterBy: null);
+                  model.refreshPage();
+                  print('iniFilter:$iniFilter');
+                },
+                child: AppText(
+                  text: LocaleKeys.searchInterestTx.tr(),
+                  fontSize: AppSize.subTextSize,
+                ),
+              ),
+            ],
+            icon: SvgPicture.asset(
+              AppSvg.filterSvg,
+              height: 30,
+              width: 30,
+            ),
+          ),
+        ),
+      );
+//get Student major===================================================================================================
+  Future<void> getStudentMajor({required filterBy}) async {
+    var c = await AppConstants.userCollection
+        .where('userId', isEqualTo: userId!)
+        .get();
+    c.docs.forEach((element) {
+      if (element.exists) {
+        if (filterBy != null) {
+          studentData = element['major'];
+          print('studentMajor: $studentData');
+        } else {
+          studentData = element['searchInterest'];
+          print('studentSearchInterest: $studentData');
+        }
       }
     });
   }

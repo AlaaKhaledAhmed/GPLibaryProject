@@ -52,7 +52,7 @@ class _StudentSupervisorState extends State<StudentSupervisor> {
     userCollection.get().then((value) {
       for (var element in value.docs) {
         setState(() {
-          //يضيف الاسما
+      
           supervisorsNames.add(element['name']);
         });
       }
