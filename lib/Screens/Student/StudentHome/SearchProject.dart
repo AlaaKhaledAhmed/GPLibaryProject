@@ -18,22 +18,27 @@ import '../../../BackEnd/Database/DatabaseMethods.dart';
 import '../../../BackEnd/Provider/ChangConstModel.dart';
 import '../../../Widget/AppConstants.dart';
 import '../../../Widget/AppLoading.dart';
+import '../../../Widget/AppRoutes.dart';
 import '../../../Widget/AppTextFields.dart';
 import '../../../Widget/AppValidator.dart';
 import '../../../Widget/AppWidget.dart';
 import 'package:provider/provider.dart';
 
+import '../MyProject/DawonlodeProject.dart';
+import '../MyProject/ViewProject.dart';
+import 'CommentPage.dart';
 
-
-class SearchProject extends SearchDelegate{
- List<String> _oldFilters = [];
+class SearchProject extends SearchDelegate {
+  List<String> _oldFilters = [];
   final List<dynamic> projectNamesList;
   final BuildContext context;
   final Locale local;
   final String userId;
+  final String name;
   SearchProject(
       {required this.projectNamesList,
       required this.context,
+      required this.name,
       required this.userId,
       required this.local})
       : super(
@@ -77,8 +82,8 @@ class SearchProject extends SearchDelegate{
   Widget buildResults(BuildContext context) {
     saveToRecentSearchesSupervisor(query);
     return StreamBuilder(
-        stream: userCollection
-            .where("type", isEqualTo: AppConstants.supervisor)
+        stream: AppConstants.projectCollection
+            .where("status", isEqualTo: AppConstants.statusIsComplete)
             .where("name", isEqualTo: query)
             .snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -113,38 +118,15 @@ class SearchProject extends SearchDelegate{
       return nameLower.startsWith(queryLower);
     }).toList();
     return query.isEmpty && _oldFilters.isEmpty
-        ?  Center(
-          child: AppText(
+        ? Center(
+            child: AppText(
               text: LocaleKeys.history.tr(),
               fontSize: 15,
             ),
-        )
+          )
         : query.isEmpty && _oldFilters.isNotEmpty
             ? showHistory(context, _oldFilters)
             : getSuggestionList(listSearch);
-  }
-
-//save To Recent Searches Celebrity=====================================================================
-  saveToRecentSearchesSupervisor(String searchText) async {
-    if (searchText == null) return; //Should not be null
-    final pref = await SharedPreferences.getInstance();
-
-    //Use `Set` to avoid duplication of recentSearches
-    Set<String> allSearches =
-        pref.getStringList("recentSearches")?.toSet() ?? {};
-
-    //Place it at first in the set
-    allSearches = {searchText, ...allSearches};
-    pref.setStringList("recentSearches", allSearches.toList());
-  }
-
-//save To Recent Searches Celebrity=====================================================================
-  Future<List<String>> getRecentSearchesCelebrity() async {
-    final pref = await SharedPreferences.getInstance();
-    // var allSearches = pref.getString(key) ?? [];
-    final allSearches = pref.getStringList("recentSearches") ?? [];
-    print('allSearches= $allSearches');
-    return allSearches;
   }
 
 //build Suggestion=====================================================================
@@ -165,7 +147,7 @@ class SearchProject extends SearchDelegate{
                     showResults(context);
                   },
                   leading: SvgPicture.asset(
-                    AppSvg.supervisorColor,
+                    AppSvg.myProjectColor,
                     height: 25,
                     width: 25,
                   ),
@@ -279,6 +261,151 @@ class SearchProject extends SearchDelegate{
           );
   }
 
+//show data from database========================================================================
+  Widget body(snapshot) {
+    return snapshot.data.docs.isNotEmpty
+        ? Consumer<ChangConstModel>(builder: (context, model, child) {
+            return SizedBox(
+              width: double.infinity,
+              child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: ListView.builder(
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, i) {
+                  var data = snapshot.data.docs[i].data();
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 10.h),
+                    height: 270.h,
+                    child: Card(
+                        color: AppColor.white,
+                        elevation: 5,
+                        child: ListTile(
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20.h),
+                              Expanded(
+                                  child: Container(
+                                decoration: AppWidget.decoration(
+                                  color: AppColor.cherryLightPink,
+                                ),
+                                width: double.infinity,
+                                child: Center(
+                                  child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.projectName.tr() +
+                                        ": ${data['name']}",
+                                    color: AppColor.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )),
+                              SizedBox(height: 20.h),
+                              Expanded(
+                                  child: AppText(
+                                fontSize: AppSize.subTextSize,
+                                text: LocaleKeys.year.tr() +
+                                    ": ${data['year']}",
+                                color: AppColor.appBarColor,
+                              )),
+                              Expanded(
+                                  child: AppText(
+                                fontSize: AppSize.subTextSize,
+                                text:
+                                    '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                        AppWidget.getTranslateMajor(
+                                            data['major']),
+                                color: AppColor.appBarColor,
+                              )),
+                              Expanded(
+                                  child: AppText(
+                                fontSize: AppSize.subTextSize,
+                                text: LocaleKeys.searchInterestTx.tr() +
+                                    ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
+                                color: AppColor.appBarColor,
+                              )),
+                              Expanded(
+                                  child: AppText(
+                                fontSize: AppSize.subTextSize,
+                                text: LocaleKeys.mySuperVisor.tr() +
+                                    ": ${data['superName']}",
+                                color: AppColor.appBarColor,
+                              )),
+                              Expanded(
+                                  child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+//view comment---------------------------------------------------------------------------------
+
+                                  IconButton(
+                                      onPressed: () {
+                                        AppRoutes.pushTo(
+                                            context,
+                                            CommentPage(
+                                              name: name,
+                                              projectId: data['projectId'],
+                                              userId: userId,
+                                            ));
+                                      },
+                                      icon: const Icon(Icons.comment)),
+//view file---------------------------------------------------------------------------------
+                                  IconButton(
+                                      onPressed: () async {
+                                        AppLoading.show(
+                                            context, "", "lode");
+                                        final file =
+                                            await Database.lodeFirbase(
+                                                    data['fileName'])
+                                                .whenComplete(() {
+                                          Navigator.pop(context);
+                                        });
+                                        // ignore: unnecessary_null_comparison
+                                        if (file == null) return;
+                                        AppRoutes.pushTo(
+                                            context,
+                                            ViewPdf(
+                                              file: file,
+                                              fileName: data['fileName'],
+                                              link: data['link'],
+                                            ));
+                                      },
+                                      icon: const Icon(
+                                          Icons.view_carousel_sharp,
+                                          color: AppColor.cherryLightPink)),
+//dwonlode file---------------------------------------------------------------------------------
+                                  IconButton(
+                                      onPressed: () async {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              DownloadingDialog(
+                                            fileName: data['fileName'],
+                                            url: data['link'],
+                                          ),
+                                        );
+                                      },
+                                      icon: const Icon(Icons.download)),
+//-----------------------------------------------------------------------------------------------
+                                ],
+                              )),
+                              SizedBox(height: 20.h),
+                            ],
+                          ),
+                        )),
+                  );
+                }),
+              ),
+            );
+          })
+        : Center(
+            child: AppText(
+                text: LocaleKeys.noData.tr(),
+                fontSize: AppSize.subTextSize,
+                fontWeight: FontWeight.bold),
+          );
+  }
+
 //remove history-----------------------------------------------------------------
   void removeHistory() async {
     final prefs = await SharedPreferences.getInstance();
@@ -336,255 +463,26 @@ class SearchProject extends SearchDelegate{
     );
   }
 
-//show data from database========================================================================
-  Widget body(snapshot) {
-    return snapshot.data.docs.isNotEmpty
-        ? Consumer<ChangConstModel>(builder: (context, model, child) {
-            return
-              Container(
-                //height: AppWidget.getHeight(context) * 0.55,
-                  decoration:
-                  AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
-                  width: AppWidget.getWidth(context),
-                  child: Container(
-                    //height: AppWidget.getHeight(context) * 0.55,
-                    decoration:
-                    AppWidget.decoration(radius: 10.r, color: AppColor.noColor),
-                    width: AppWidget.getWidth(context),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.docs.length,
-                        itemBuilder: (context, i) {
-                          var data = snapshot.data.docs[i].data();
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5.h),
-                            child: SizedBox(
-                              height: tab == i ? 400.h : 200,
-                              width: AppWidget.getWidth(context),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  //set border radius more than 50% of height and width to make circle
-                                ),
-//dr name=================================================================
-                                child: ListTile(
-                                  title: Padding(
-                                    padding: EdgeInsets.only(top: 30.h),
-                                    child: AppText(
-                                      text: '${LocaleKeys.dr.tr()}: ${data['name']}',
-                                      fontSize: AppSize.title2TextSize,
-                                    ),
-                                  ),
-//description =====================================================================
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.only(top: 10.h),
-                                    child: Center(
-                                      child: Form(
-                                        key: tab == i ? addKey : null,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            AppText(
-                                              text:
-                                              '${LocaleKeys.searchInterestTx.tr()}: ' +
-                                                  AppWidget
-                                                      .getTranslateSearchInterest(
-                                                      data['searchInterest']),
-                                              fontSize: AppSize.subTextSize + 2,
-                                            ),
-                                            AppWidget.hSpace(8),
-                                            AppText(
-                                              text:
-                                              '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                                  AppWidget.getTranslateMajor(
-                                                      data['major']),
-                                              fontSize: AppSize.subTextSize + 2,
-                                            ),
-                                            AppWidget.hSpace(8),
-                                            AppText(
-                                              text: '${LocaleKeys.emailTx.tr()}: ' +
-                                                  data['email'],
-                                              fontSize: AppSize.subTextSize + 2,
-                                            ),
-                                            AppWidget.hSpace(20),
-                                            tab == i
-                                                ? AppTextFields(
-                                              controller: projectNameController,
-                                              labelText:
-                                              LocaleKeys.projectName.tr(),
-                                              validator: (v) =>
-                                                  AppValidator.validatorEmpty(
-                                                      v),
-                                              maxLines: 1,
-                                              minLines: 1,
-                                            )
-                                                : const SizedBox(),
-                                            tab == i
-                                                ? AppWidget.hSpace(8)
-                                                : const SizedBox(),
-                                            tab == i
-                                                ? AppTextFields(
-                                              controller: descriptionController,
-                                              labelText:
-                                              LocaleKeys.description.tr(),
-                                              validator: (v) =>
-                                                  AppValidator.validatorEmpty(
-                                                      v),
-                                              maxLines: 4,
-                                              minLines: 4,
-                                            )
-                                                : const SizedBox(),
+//save To Recent Searches Celebrity=====================================================================
+  saveToRecentSearchesSupervisor(String searchText) async {
+    if (searchText == null) return; //Should not be null
+    final pref = await SharedPreferences.getInstance();
 
-                                            // AppWidget.hSpace(7),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-//send icon==========================================================================
+    //Use `Set` to avoid duplication of recentSearches
+    Set<String> allSearches =
+        pref.getStringList("recentSearches")?.toSet() ?? {};
 
-                                  trailing: FittedBox(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 20.h),
-                                      child: Transform(
-                                        alignment: Alignment.center,
-                                        transform: Matrix4.rotationY(
-                                            context.locale.toString() == 'en'
-                                                ? 0
-                                                : math.pi),
-                                        child: FutureBuilder(
-                                            future: getStatus(
-                                                stId: userId, supId: data['userId']),
-                                            builder: (context, AsyncSnapshot sn) {
-                                              if (sn.hasError) {
-                                                return const Center(child: Text("!"));
-                                              }
-                                              if (sn.hasData) {
-                                                return SvgPicture.asset(
-                                                  sn.data ==
-                                                      AppConstants.statusIsWaiting
-                                                      ? AppSvg.waitSvg
-                                                      : sn.data ==
-                                                      AppConstants
-                                                          .statusIsRejection
-                                                      ? AppSvg.rejectFileSvg
-                                                      : sn.data ==
-                                                      AppConstants
-                                                          .statusIsAcceptation
-                                                      ? AppSvg.acceptFileSvg
-                                                      : AppSvg.sendSvg,
-                                                  height: 40.r,
-                                                  width: 40.r,
-                                                );
-                                              }
-
-                                              return const Center(
-                                                  child: CircularProgressIndicator(
-                                                    color: AppColor.appBarColor,
-                                                  ));
-                                            }),
-                                      ),
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    tab = i;
-                                    model.refreshPage();
-                                    if (addKey.currentState?.validate() == true) {
-                                      await getStatus(
-                                          stId: userId,
-                                          supId: data['userId']) ==
-                                          AppConstants.statusIsNotSendYet
-                                          ? AppLoading.show(
-                                        context,
-                                        LocaleKeys.sendRequest.tr(),
-                                        '${LocaleKeys.sendRequestTo.tr()} ' +
-                                            data['name'],
-                                        higth: 100.h,
-                                        showButtom: true,
-                                        noFunction: () {
-                                          Navigator.pop(context);
-                                          tab = null;
-                                          model.refreshPage();
-                                        },
-                                        yesFunction: () async => Database
-                                            .studentSupervisionRequests(
-                                            description:
-                                            descriptionController
-                                                .text,
-                                            projectName:
-                                            projectNameController
-                                                .text,
-                                            context: context,
-                                            studentUid: userId,
-                                            supervisorUid:
-                                            data['userId'],
-                                            supervisorName:
-                                            data['name'],
-                                            supervisorInterest:
-                                            data['searchInterest'],
-                                            studentName: await Database
-                                                .getDataViUserId(
-                                                currentUserUid:
-                                                userId))
-                                            .then((v) {
-                                          print('================$v');
-                                          if (v == 'done') {
-                                            tab = null;
-                                            model.refreshPage();
-                                            Navigator.pop(context);
-                                            AppLoading.show(
-                                                context,
-                                                LocaleKeys.mySuperVisor.tr(),
-                                                LocaleKeys.done.tr());
-                                          } else {
-                                            Navigator.pop(context);
-                                            AppLoading.show(
-                                                context,
-                                                LocaleKeys.mySuperVisor.tr(),
-                                                LocaleKeys.error.tr());
-                                          }
-                                        }),
-                                      )
-                                          : AppLoading.show(
-                                          context,
-                                          LocaleKeys.sendRequest.tr(),
-                                          LocaleKeys.canNotSend.tr());
-                                    }
-                                  },
-                                ),
-                              ),
-//==========================================================================
-                            ),
-                          );
-                        }),
-                  ));
-          })
-        : Center(
-            child: AppText(
-                text: LocaleKeys.noData.tr(),
-                fontSize: AppSize.subTextSize,
-                fontWeight: FontWeight.bold),
-          );
+    //Place it at first in the set
+    allSearches = {searchText, ...allSearches};
+    pref.setStringList("recentSearches", allSearches.toList());
   }
 
-//get Status of student request=======================================================================
-  getStatus({required String stId, required String supId}) async {
-    // print('stId:$stId');
-    // print('supId:$supId');
-    late int st = 0;
-    await AppConstants.requestCollection
-        .where('studentUid', isEqualTo: stId)
-        .where('supervisorUid', isEqualTo: supId)
-        .get()
-        .then((getData) {
-      for (QueryDocumentSnapshot element in getData.docs) {
-        if (element.exists) {
-          st = element['status'];
-        }
-      }
-    });
-
-    return st;
+//save To Recent Searches Celebrity=====================================================================
+  Future<List<String>> getRecentSearchesCelebrity() async {
+    final pref = await SharedPreferences.getInstance();
+    // var allSearches = pref.getString(key) ?? [];
+    final allSearches = pref.getStringList("recentSearches") ?? [];
+    print('allSearches= $allSearches');
+    return allSearches;
   }
 }

@@ -86,6 +86,7 @@ class _StudentHomeState extends State<StudentHome> {
                             projectNamesList: projectNames,
                             context: context,
                             userId: userId!,
+                            name:name!,
                             local: context.locale)),
                     child: Container(
                       height: double.infinity,

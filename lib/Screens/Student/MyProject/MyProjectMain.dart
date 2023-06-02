@@ -176,7 +176,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 20.h),
-                        height: 250.h,
+                        height: 270.h,
                         child: Card(
                             color: AppColor.white,
                             elevation: 5,
@@ -186,12 +186,22 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                                 children: [
                                   SizedBox(height: 20.h),
                                   Expanded(
+                                      child: Container(
+                                    decoration: AppWidget.decoration(
+                                      color: AppColor.cherryLightPink,
+                                    ),
+                                    width: double.infinity,
+                                    child: Center(
                                       child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.appBarColor,
+                                        fontSize: AppSize.subTextSize,
+                                        text: LocaleKeys.projectName.tr() +
+                                            ": ${data['name']}",
+                                        color: AppColor.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   )),
+                                  SizedBox(height: 20.h),
                                   Expanded(
                                       child: AppText(
                                     fontSize: AppSize.subTextSize,
@@ -275,7 +285,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 20.h),
-                        height: 250.h,
+                        height: 270.h,
                         child: Card(
                             color: AppColor.white,
                             elevation: 5,
@@ -285,12 +295,22 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                                 children: [
                                   SizedBox(height: 20.h),
                                   Expanded(
+                                      child: Container(
+                                    decoration: AppWidget.decoration(
+                                      color: AppColor.cherryLightPink,
+                                    ),
+                                    width: double.infinity,
+                                    child: Center(
                                       child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.appBarColor,
+                                        fontSize: AppSize.subTextSize,
+                                        text: LocaleKeys.projectName.tr() +
+                                            ": ${data['name']}",
+                                        color: AppColor.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   )),
+                                  SizedBox(height: 20.h),
                                   Expanded(
                                       child: AppText(
                                     fontSize: AppSize.subTextSize,
@@ -379,7 +399,7 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                             },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 20.h),
-                        height: 250.h,
+                        height: 270.h,
                         child: Card(
                             color: AppColor.white,
                             elevation: 5,
@@ -389,12 +409,22 @@ class _StudentProjectScreenState extends State<StudentProjectScreen> {
                                 children: [
                                   SizedBox(height: 20.h),
                                   Expanded(
+                                      child: Container(
+                                    decoration: AppWidget.decoration(
+                                      color: AppColor.cherryLightPink,
+                                    ),
+                                    width: double.infinity,
+                                    child: Center(
                                       child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.appBarColor,
+                                        fontSize: AppSize.subTextSize,
+                                        text: LocaleKeys.projectName.tr() +
+                                            ": ${data['name']}",
+                                        color: AppColor.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   )),
+                                  SizedBox(height: 20.h),
                                   Expanded(
                                       child: AppText(
                                     fontSize: AppSize.subTextSize,
