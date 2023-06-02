@@ -73,11 +73,6 @@ class SearchProject extends SearchDelegate {
         });
   }
 
-  var userCollection = FirebaseFirestore.instance.collection("users");
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController projectNameController = TextEditingController();
-  GlobalKey<FormState> addKey = GlobalKey();
-  int? tab;
   @override
   Widget buildResults(BuildContext context) {
     saveToRecentSearchesSupervisor(query);
@@ -180,85 +175,140 @@ class SearchProject extends SearchDelegate {
 
   //save To Recent Searches Celebrity=====================================================================
   Widget showHistory(context, List suggestions) {
-    // print('history suggestions $suggestions');
-    return suggestions.isEmpty && query == ''
-        ? const SizedBox()
-        : Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  
+    return Column(
+      children: [
+//history===============================================================
+        suggestions.isEmpty && query == ''
+            ? const SizedBox()
+            : SizedBox(
+              height: 163.h,
+                child: Column(
                   children: [
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          LocaleKeys.history.tr(),
-                          style: TextStyle(
-                            fontSize: AppSize.subTextSize,
-                            color: AppColor.black,
-                            fontFamily: local.toString() == 'en'
-                                ? GoogleFonts.quicksand().fontFamily
-                                : GoogleFonts.almarai().fontFamily,
-                          ),
-                        )),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            // removeHistory();
-                            query = '';
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 20.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                LocaleKeys.history.tr(),
+                                style: TextStyle(
+                                  fontSize: AppSize.subTextSize,
+                                  color: AppColor.black,
+                                  fontFamily: local.toString() == 'en'
+                                      ? GoogleFonts.quicksand().fontFamily
+                                      : GoogleFonts.almarai().fontFamily,
+                                ),
+                              )),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: GestureDetector(
+                                onTap: () {
+                                  // removeHistory();
+                                  query = '';
 
-                            removeHistory();
-                          },
-                          child: Text(
-                            LocaleKeys.delete.tr(),
-                            style: TextStyle(
-                              fontSize: AppSize.subTextSize,
-                              color: AppColor.grey600,
-                              fontFamily: local.toString() == 'en'
-                                  ? GoogleFonts.quicksand().fontFamily
-                                  : GoogleFonts.almarai().fontFamily,
-                            ),
-                          ),
-                        )),
+                                  removeHistory();
+                                },
+                                child: Text(
+                                  LocaleKeys.delete.tr(),
+                                  style: TextStyle(
+                                    fontSize: AppSize.subTextSize,
+                                    color: AppColor.grey600,
+                                    fontFamily: local.toString() == 'en'
+                                        ? GoogleFonts.quicksand().fontFamily
+                                        : GoogleFonts.almarai().fontFamily,
+                                  ),
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+//history===========================================================================
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: suggestions.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              minLeadingWidth: 5.w,
+                              onTap: () {
+                                query = suggestions[index];
+                                //pagIndex = suggestions[index].;
+                                showResults(context);
+                              },
+                              leading: const Icon(Icons.history),
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  AppText(
+                                    text: suggestions[index],
+                                    fontSize: AppSize.subTextSize,
+                                    fontFamily: local.toString() == 'en'
+                                        ? GoogleFonts.quicksand().fontFamily
+                                        : GoogleFonts.almarai().fontFamily,
+                                  ),
+                                  Icon(
+                                    Icons.north_west,
+                                    color: AppColor.grey600,
+                                    size: 22.sp,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    ),
+                   
                   ],
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: suggestions.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        minLeadingWidth: 5.w,
-                        onTap: () {
-                          query = suggestions[index];
-                          //pagIndex = suggestions[index].;
-                          showResults(context);
-                        },
-                        leading: const Icon(Icons.history),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            AppText(
-                              text: suggestions[index],
-                              fontSize: AppSize.subTextSize,
-                              fontFamily: local.toString() == 'en'
-                                  ? GoogleFonts.quicksand().fontFamily
-                                  : GoogleFonts.almarai().fontFamily,
-                            ),
-                            Icon(
-                              Icons.north_west,
-                              color: AppColor.grey600,
-                              size: 22.sp,
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
+//Simeler text===========================================================================
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h ),
+          child: Row(
+            children: [
+              Text(
+                LocaleKeys.similarProjects.tr(),
+                style: TextStyle(
+                    fontSize: AppSize.subTextSize,
+                    color: AppColor.black,
+                    fontFamily: local.toString() == 'en'
+                        ? GoogleFonts.quicksand().fontFamily
+                        : GoogleFonts.almarai().fontFamily,
+                    fontWeight: FontWeight.bold),
               ),
             ],
-          );
+          ),
+        ),
+//Simeler list===========================================================================
+
+        Expanded(
+          child: StreamBuilder(
+              stream: AppConstants.projectCollection
+                  .where("status", isEqualTo: AppConstants.statusIsComplete)
+                  .where("name", isEqualTo: suggestions[0])
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text("Error check internet!"));
+                }
+                if (snapshot.hasData) {
+                  return body(snapshot);
+                }
+                if (snapshot.hasData) {
+                  return body(snapshot);
+                }
+
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: AppColor.appBarColor,
+                ));
+              }),
+        ),
+      ],
+    );
   }
 
 //show data from database========================================================================
@@ -268,133 +318,133 @@ class SearchProject extends SearchDelegate {
             return SizedBox(
               width: double.infinity,
               child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: ListView.builder(
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, i) {
-                  var data = snapshot.data.docs[i].data();
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 10.h),
-                    height: 270.h,
-                    child: Card(
-                        color: AppColor.white,
-                        elevation: 5,
-                        child: ListTile(
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 20.h),
-                              Expanded(
-                                  child: Container(
-                                decoration: AppWidget.decoration(
-                                  color: AppColor.cherryLightPink,
-                                ),
-                                width: double.infinity,
-                                child: Center(
-                                  child: AppText(
-                                    fontSize: AppSize.subTextSize,
-                                    text: LocaleKeys.projectName.tr() +
-                                        ": ${data['name']}",
-                                    color: AppColor.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )),
-                              SizedBox(height: 20.h),
-                              Expanded(
-                                  child: AppText(
-                                fontSize: AppSize.subTextSize,
-                                text: LocaleKeys.year.tr() +
-                                    ": ${data['year']}",
-                                color: AppColor.appBarColor,
-                              )),
-                              Expanded(
-                                  child: AppText(
-                                fontSize: AppSize.subTextSize,
-                                text:
-                                    '${LocaleKeys.superVisorMajorTx.tr()}: ' +
-                                        AppWidget.getTranslateMajor(
-                                            data['major']),
-                                color: AppColor.appBarColor,
-                              )),
-                              Expanded(
-                                  child: AppText(
-                                fontSize: AppSize.subTextSize,
-                                text: LocaleKeys.searchInterestTx.tr() +
-                                    ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
-                                color: AppColor.appBarColor,
-                              )),
-                              Expanded(
-                                  child: AppText(
-                                fontSize: AppSize.subTextSize,
-                                text: LocaleKeys.mySuperVisor.tr() +
-                                    ": ${data['superName']}",
-                                color: AppColor.appBarColor,
-                              )),
-                              Expanded(
-                                  child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, i) {
+                      var data = snapshot.data.docs[i].data();
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 10.h),
+                        height: 270.h,
+                        child: Card(
+                            color: AppColor.white,
+                            elevation: 5,
+                            child: ListTile(
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  SizedBox(height: 20.h),
+                                  Expanded(
+                                      child: Container(
+                                    decoration: AppWidget.decoration(
+                                      color: AppColor.cherryLightPink,
+                                    ),
+                                    width: double.infinity,
+                                    child: Center(
+                                      child: AppText(
+                                        fontSize: AppSize.subTextSize,
+                                        text: LocaleKeys.projectName.tr() +
+                                            ": ${data['name']}",
+                                        color: AppColor.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )),
+                                  SizedBox(height: 20.h),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.year.tr() +
+                                        ": ${data['year']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text:
+                                        '${LocaleKeys.superVisorMajorTx.tr()}: ' +
+                                            AppWidget.getTranslateMajor(
+                                                data['major']),
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.searchInterestTx.tr() +
+                                        ": ${AppWidget.getTranslateSearchInterest(data['searchInterest'])}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: AppText(
+                                    fontSize: AppSize.subTextSize,
+                                    text: LocaleKeys.mySuperVisor.tr() +
+                                        ": ${data['superName']}",
+                                    color: AppColor.appBarColor,
+                                  )),
+                                  Expanded(
+                                      child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
 //view comment---------------------------------------------------------------------------------
 
-                                  IconButton(
-                                      onPressed: () {
-                                        AppRoutes.pushTo(
-                                            context,
-                                            CommentPage(
-                                              name: name,
-                                              projectId: data['projectId'],
-                                              userId: userId,
-                                            ));
-                                      },
-                                      icon: const Icon(Icons.comment)),
+                                      IconButton(
+                                          onPressed: () {
+                                            AppRoutes.pushTo(
+                                                context,
+                                                CommentPage(
+                                                  name: name,
+                                                  projectId: data['projectId'],
+                                                  userId: userId,
+                                                ));
+                                          },
+                                          icon: const Icon(Icons.comment)),
 //view file---------------------------------------------------------------------------------
-                                  IconButton(
-                                      onPressed: () async {
-                                        AppLoading.show(
-                                            context, "", "lode");
-                                        final file =
-                                            await Database.lodeFirbase(
-                                                    data['fileName'])
-                                                .whenComplete(() {
-                                          Navigator.pop(context);
-                                        });
-                                        // ignore: unnecessary_null_comparison
-                                        if (file == null) return;
-                                        AppRoutes.pushTo(
-                                            context,
-                                            ViewPdf(
-                                              file: file,
-                                              fileName: data['fileName'],
-                                              link: data['link'],
-                                            ));
-                                      },
-                                      icon: const Icon(
-                                          Icons.view_carousel_sharp,
-                                          color: AppColor.cherryLightPink)),
+                                      IconButton(
+                                          onPressed: () async {
+                                            AppLoading.show(
+                                                context, "", "lode");
+                                            final file =
+                                                await Database.lodeFirbase(
+                                                        data['fileName'])
+                                                    .whenComplete(() {
+                                              Navigator.pop(context);
+                                            });
+                                            // ignore: unnecessary_null_comparison
+                                            if (file == null) return;
+                                            AppRoutes.pushTo(
+                                                context,
+                                                ViewPdf(
+                                                  file: file,
+                                                  fileName: data['fileName'],
+                                                  link: data['link'],
+                                                ));
+                                          },
+                                          icon: const Icon(
+                                              Icons.view_carousel_sharp,
+                                              color: AppColor.cherryLightPink)),
 //dwonlode file---------------------------------------------------------------------------------
-                                  IconButton(
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              DownloadingDialog(
-                                            fileName: data['fileName'],
-                                            url: data['link'],
-                                          ),
-                                        );
-                                      },
-                                      icon: const Icon(Icons.download)),
+                                      IconButton(
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  DownloadingDialog(
+                                                fileName: data['fileName'],
+                                                url: data['link'],
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(Icons.download)),
 //-----------------------------------------------------------------------------------------------
+                                    ],
+                                  )),
+                                  SizedBox(height: 20.h),
                                 ],
-                              )),
-                              SizedBox(height: 20.h),
-                            ],
-                          ),
-                        )),
-                  );
-                }),
+                              ),
+                            )),
+                      );
+                    }),
               ),
             );
           })

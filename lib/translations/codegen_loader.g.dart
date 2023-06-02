@@ -102,7 +102,9 @@ class CodegenLoader extends AssetLoader{
   "studentFile": "ملفات الطالب",
   "comment": "التعليقات",
   "noSupervisor": "لم يقم اي مشرف بقبول مشروعك في الوقت الحالى",
-  "description": "وصف المشروع"
+  "description": "وصف المشروع",
+  "similarProjects": "مشاريع مشابهة",
+  "youMightLikeThis": "قد يعجبك هذا"
 };
 static const Map<String,dynamic> en = {
   "singUpStudentTx": "Student Sing Up",
@@ -191,7 +193,9 @@ static const Map<String,dynamic> en = {
   "studentFile": "Student files",
   "comment": "Comments",
   "noSupervisor": "No supervisor has accepted your project at this time",
-  "description": "Project description"
+  "description": "Project description",
+  "similarProjects": "Similar projects",
+  "youMightLikeThis": "You might like this"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

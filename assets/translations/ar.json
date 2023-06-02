@@ -92,6 +92,8 @@
   "studentFile": "ملفات الطالب",
   "comment": "التعليقات",
   "noSupervisor": "لم يقم اي مشرف بقبول مشروعك في الوقت الحالى",
-  "description": "وصف المشروع"
+  "description": "وصف المشروع",
+  "similarProjects":"مشاريع مشابهة",
+  "youMightLikeThis":"قد يعجبك هذا"
 
 }
