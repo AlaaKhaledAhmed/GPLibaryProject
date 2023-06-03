@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:library_project/Widget/AppColors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:library_project/Widget/AppSize.dart';
 import 'package:library_project/Widget/AppText.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,12 +29,14 @@ import 'CommentPage.dart';
 class SearchProject extends SearchDelegate {
   List<String> _oldFilters = [];
   final List<dynamic> projectNamesList;
+  final List<dynamic> projectSearchIntersetList;
   final BuildContext context;
   final Locale local;
   final String userId;
   final String name;
   SearchProject(
       {required this.projectNamesList,
+      required this.projectSearchIntersetList,
       required this.context,
       required this.name,
       required this.userId,
@@ -79,7 +79,7 @@ class SearchProject extends SearchDelegate {
     return StreamBuilder(
         stream: AppConstants.projectCollection
             .where("status", isEqualTo: AppConstants.statusIsComplete)
-            .where("name", isEqualTo: query)
+            .where("projectSearchInterset", isEqualTo: query)
             .snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
@@ -101,7 +101,7 @@ class SearchProject extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    getRecentSearchesCelebrity().then((value) {
+    getRecentSearches().then((value) {
       _oldFilters = value;
     });
 
@@ -112,6 +112,7 @@ class SearchProject extends SearchDelegate {
       // print('nameLower  ${nameLower}');
       return nameLower.startsWith(queryLower);
     }).toList();
+    
     return query.isEmpty && _oldFilters.isEmpty
         ? Center(
             child: AppText(
@@ -172,8 +173,6 @@ class SearchProject extends SearchDelegate {
       ],
     );
   }
-
-  //save To Recent Searches Celebrity=====================================================================
   Widget showHistory(context, List suggestions) {
     return Column(
       children: [
@@ -512,7 +511,7 @@ class SearchProject extends SearchDelegate {
     );
   }
 
-//save To Recent Searches Celebrity=====================================================================
+//save To Recent Searches =====================================================================
   saveToRecentSearchesSupervisor(String searchText) async {
     if (searchText == null) return; //Should not be null
     final pref = await SharedPreferences.getInstance();
@@ -526,8 +525,8 @@ class SearchProject extends SearchDelegate {
     pref.setStringList("recentSearches", allSearches.toList());
   }
 
-//save To Recent Searches Celebrity=====================================================================
-  Future<List<String>> getRecentSearchesCelebrity() async {
+//save To Recent Searches =====================================================================
+  Future<List<String>> getRecentSearches() async {
     final pref = await SharedPreferences.getInstance();
     // var allSearches = pref.getString(key) ?? [];
     final allSearches = pref.getStringList("recentSearches") ?? [];

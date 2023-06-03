@@ -36,6 +36,7 @@ class _StudentHomeState extends State<StudentHome> {
   String? name;
   String? studentData;
   List projectNames = [];
+   List projectSearchInterset = [];
   TextEditingController descriptionController = TextEditingController();
   TextEditingController projectNameController = TextEditingController();
   GlobalKey<FormState> addKey = GlobalKey();
@@ -48,10 +49,13 @@ class _StudentHomeState extends State<StudentHome> {
     userId = FirebaseAuth.instance.currentUser?.uid;
     Future.delayed(Duration.zero, () async {
       await getName(userId);
+      projectSearchInterset.clear();
+      projectNames.clear();
       AppConstants.projectCollection.get().then((value) {
         for (var element in value.docs) {
           setState(() {
             projectNames.add(element['name']);
+            projectSearchInterset.add(element['searchInterest']);
           });
         }
       });
@@ -83,6 +87,7 @@ class _StudentHomeState extends State<StudentHome> {
                     onTap: () => showSearch(
                         context: context,
                         delegate: SearchProject(
+                            projectSearchIntersetList: projectSearchInterset,
                             projectNamesList: projectNames,
                             context: context,
                             userId: userId!,

@@ -355,6 +355,7 @@ class Login extends StatelessWidget {
                                     context,
                                     LocaleKeys.send_link.tr(),
                                     LocaleKeys.cheakInbox.tr(),
+                                    higth: 120.h
                                   );
                                 } else if (v == 'user-not-found') {
                                   AppLoading.show(

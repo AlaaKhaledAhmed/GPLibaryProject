@@ -98,7 +98,7 @@ class SearchSupervisors extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    getRecentSearchesCelebrity().then((value) {
+    getRecentSearches().then((value) {
       _oldFilters = value;
     });
 
@@ -121,7 +121,7 @@ class SearchSupervisors extends SearchDelegate {
             : getSuggestionList(listSearch);
   }
 
-//save To Recent Searches Celebrity=====================================================================
+//save To Recent Searches =====================================================================
   saveToRecentSearchesSupervisor(String searchText) async {
     if (searchText == null) return; //Should not be null
     final pref = await SharedPreferences.getInstance();
@@ -135,8 +135,8 @@ class SearchSupervisors extends SearchDelegate {
     pref.setStringList("recentSearches", allSearches.toList());
   }
 
-//save To Recent Searches Celebrity=====================================================================
-  Future<List<String>> getRecentSearchesCelebrity() async {
+//save To Recent Searches =====================================================================
+  Future<List<String>> getRecentSearches() async {
     final pref = await SharedPreferences.getInstance();
     // var allSearches = pref.getString(key) ?? [];
     final allSearches = pref.getStringList("recentSearches") ?? [];
@@ -193,7 +193,7 @@ class SearchSupervisors extends SearchDelegate {
     );
   }
 
-  //save To Recent Searches Celebrity=====================================================================
+  //save To Recent Searches =====================================================================
   Widget showHistory(context, List suggestions) {
     // print('history suggestions $suggestions');
     return suggestions.isEmpty && query == ''
