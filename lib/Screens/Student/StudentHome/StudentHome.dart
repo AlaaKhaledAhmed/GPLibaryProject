@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:library_project/BackEnd/Database/DatabaseMethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:library_project/Screens/Student/MyProject/ViewProject.dart';
+import 'package:library_project/Screens/Student/StudentHome/model.dart';
 import 'package:library_project/Widget/AppColors.dart';
 import 'package:library_project/Widget/AppLoading.dart';
 import 'package:library_project/Widget/AppRoutes.dart';
@@ -35,28 +36,40 @@ class _StudentHomeState extends State<StudentHome> {
   String? userId;
   String? name;
   String? studentData;
-  List projectNames = [];
-   List projectSearchInterset = [];
+  // List projectNames = [];
+  // List projectSearchInterset = [];
+  List<Model> projectNames = [];
   TextEditingController descriptionController = TextEditingController();
   TextEditingController projectNameController = TextEditingController();
   GlobalKey<FormState> addKey = GlobalKey();
   int? tab;
 
   int iniFilter = 0;
+  Model? m;
   @override
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser?.uid;
     Future.delayed(Duration.zero, () async {
       await getName(userId);
-      projectSearchInterset.clear();
+      //projectSearchInterset.clear();
       projectNames.clear();
-      AppConstants.projectCollection.get().then((value) {
+      AppConstants.projectCollection
+          .where("status", isEqualTo: AppConstants.statusIsComplete)
+          .where("from", isEqualTo: AppConstants.typeIsStudent)
+          .get()
+          .then((value) {
+
         for (var element in value.docs) {
-          setState(() {
-            projectNames.add(element['name']);
-            projectSearchInterset.add(element['searchInterest']);
-          });
+          if(element.exists){
+            setState(() {
+              m = Model(
+                  name: element['name'],
+                  searchInterest: AppWidget.getTranslateSearchInterest(
+                      element['searchInterest']));
+              projectNames.add(m!);
+            });
+          }
         }
       });
     });
@@ -64,6 +77,7 @@ class _StudentHomeState extends State<StudentHome> {
 
   @override
   Widget build(BuildContext context) {
+    print('projectNames in build:${projectNames.length}');
     return Scaffold(
       appBar: AppBarMain(
         title: LocaleKeys.home.tr(),
@@ -87,11 +101,11 @@ class _StudentHomeState extends State<StudentHome> {
                     onTap: () => showSearch(
                         context: context,
                         delegate: SearchProject(
-                            projectSearchIntersetList: projectSearchInterset,
+                            //projectSearchIntersetList: projectSearchInterset,
                             projectNamesList: projectNames,
                             context: context,
                             userId: userId!,
-                            name:name!,
+                            name: name!,
                             local: context.locale)),
                     child: Container(
                       height: double.infinity,
@@ -252,7 +266,8 @@ class _StudentHomeState extends State<StudentHome> {
                                               ));
                                         },
                                         icon: const Icon(
-                                            Icons.view_carousel_sharp,color:AppColor.cherryLightPink)),
+                                            Icons.view_carousel_sharp,
+                                            color: AppColor.cherryLightPink)),
 //dwonlode file---------------------------------------------------------------------------------
                                     IconButton(
                                         onPressed: () async {

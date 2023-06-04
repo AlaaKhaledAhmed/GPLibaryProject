@@ -25,18 +25,20 @@ import 'package:provider/provider.dart';
 import '../MyProject/DawonlodeProject.dart';
 import '../MyProject/ViewProject.dart';
 import 'CommentPage.dart';
+import 'model.dart';
 
 class SearchProject extends SearchDelegate {
-  List<String> _oldFilters = [];
-  final List<dynamic> projectNamesList;
-  final List<dynamic> projectSearchIntersetList;
+  List<String> _oldFiltersProjectsName = [];
+  List<String> _oldFiltersSearchInterset = [];
+  final List<Model> projectNamesList;
+  //final List<dynamic> projectSearchIntersetList;
   final BuildContext context;
   final Locale local;
   final String userId;
   final String name;
   SearchProject(
       {required this.projectNamesList,
-      required this.projectSearchIntersetList,
+      //required this.projectSearchIntersetList,
       required this.context,
       required this.name,
       required this.userId,
@@ -75,11 +77,12 @@ class SearchProject extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    saveToRecentSearchesSupervisor(query);
+    saveProjectName(query);
+
     return StreamBuilder(
         stream: AppConstants.projectCollection
             .where("status", isEqualTo: AppConstants.statusIsComplete)
-            .where("projectSearchInterset", isEqualTo: query)
+            .where("name", isEqualTo: query)
             .snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
@@ -101,32 +104,34 @@ class SearchProject extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    getRecentSearches().then((value) {
-      _oldFilters = value;
+    getProjectName().then((value) {
+      _oldFiltersProjectsName = value;
+    });
+    getSearchInterest().then((value) {
+      _oldFiltersSearchInterset = value;
     });
 
-    List listSearch = projectNamesList.where((name) {
-      // print('name ${name}');
-      final nameLower = name.toLowerCase();
+    List<Model> listSearch = projectNamesList.where((name) {
+      final nameLower = name.name.toLowerCase();
       final queryLower = query.toLowerCase();
       // print('nameLower  ${nameLower}');
       return nameLower.startsWith(queryLower);
     }).toList();
-    
-    return query.isEmpty && _oldFilters.isEmpty
+
+    return query.isEmpty && _oldFiltersProjectsName.isEmpty
         ? Center(
             child: AppText(
               text: LocaleKeys.history.tr(),
               fontSize: 15,
             ),
           )
-        : query.isEmpty && _oldFilters.isNotEmpty
-            ? showHistory(context, _oldFilters)
+        : query.isEmpty && _oldFiltersProjectsName.isNotEmpty
+            ? showHistory(context, _oldFiltersProjectsName,_oldFiltersSearchInterset)
             : getSuggestionList(listSearch);
   }
 
 //build Suggestion=====================================================================
-  Widget getSuggestionList(List suggestions) {
+  Widget getSuggestionList(List<Model> suggestions) {
     return Column(
       children: [
         Expanded(
@@ -134,12 +139,13 @@ class SearchProject extends SearchDelegate {
               itemCount: suggestions.length,
               itemBuilder: (context, index) {
                 final suggestion = suggestions[index];
-                final queryText = suggestion.substring(0, query.length);
-                final remainingText = suggestion.substring(query.length);
+                final queryText = suggestion.name.substring(0, query.length);
+                final remainingText = suggestion.name.substring(query.length);
                 return ListTile(
                   minLeadingWidth: 5.w,
                   onTap: () {
-                    query = suggestion;
+                    query = suggestion.name;
+                    saveSearInterest(AppWidget.setEnTranslateSearchInterest(suggestions[index].searchInterest));
                     showResults(context);
                   },
                   leading: SvgPicture.asset(
@@ -167,17 +173,29 @@ class SearchProject extends SearchDelegate {
                       ),
                     ],
                   ),
+                  subtitle: Text(
+                    suggestions[index].searchInterest,
+                    style: TextStyle(
+                      fontSize: AppSize.subTextSize,
+                      color: AppColor.black,
+                      fontFamily: local.toString() == 'en'
+                          ? GoogleFonts.quicksand().fontFamily
+                          : GoogleFonts.almarai().fontFamily,
+                    ),
+                  ),
                 );
               }),
         ),
       ],
     );
   }
-  Widget showHistory(context, List suggestions) {
+
+//==========================================================================
+  Widget showHistory(context, List<String> projectName, List<String> projectSearchInterest) {
     return Column(
       children: [
 //history===============================================================
-        suggestions.isEmpty && query == ''
+        projectName.isEmpty && query == ''
             ? const SizedBox()
             : SizedBox(
                 height: 163.h,
@@ -205,9 +223,7 @@ class SearchProject extends SearchDelegate {
                               alignment: Alignment.topLeft,
                               child: GestureDetector(
                                 onTap: () {
-                                  // removeHistory();
                                   query = '';
-
                                   removeHistory();
                                 },
                                 child: Text(
@@ -227,13 +243,12 @@ class SearchProject extends SearchDelegate {
 //history===========================================================================
                     Expanded(
                       child: ListView.builder(
-                          itemCount: suggestions.length,
+                          itemCount: projectName.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                               minLeadingWidth: 5.w,
                               onTap: () {
-                                query = suggestions[index];
-                                //pagIndex = suggestions[index].;
+                                query = projectName[index];
                                 showResults(context);
                               },
                               leading: const Icon(Icons.history),
@@ -242,7 +257,7 @@ class SearchProject extends SearchDelegate {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   AppText(
-                                    text: suggestions[index],
+                                    text: projectName[index],
                                     fontSize: AppSize.subTextSize,
                                     fontFamily: local.toString() == 'en'
                                         ? GoogleFonts.quicksand().fontFamily
@@ -254,6 +269,13 @@ class SearchProject extends SearchDelegate {
                                     size: 22.sp,
                                   ),
                                 ],
+                              ),
+                              subtitle: AppText(
+                                text: AppWidget.getTranslateSearchInterest(projectSearchInterest[index]),
+                                fontSize: AppSize.subTextSize,
+                                fontFamily: local.toString() == 'en'
+                                    ? GoogleFonts.quicksand().fontFamily
+                                    : GoogleFonts.almarai().fontFamily,
                               ),
                             );
                           }),
@@ -285,13 +307,13 @@ class SearchProject extends SearchDelegate {
           child: StreamBuilder(
               stream: AppConstants.projectCollection
                   .where("status", isEqualTo: AppConstants.statusIsComplete)
-                  .where("name", isEqualTo: suggestions[0])
+                  .where("searchInterest", isEqualTo: projectSearchInterest[0])
                   .snapshots(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   return const Center(child: Text("Error check internet!"));
                 }
-            
+
                 if (snapshot.hasData) {
                   return body(snapshot);
                 }
@@ -511,8 +533,8 @@ class SearchProject extends SearchDelegate {
     );
   }
 
-//save To Recent Searches =====================================================================
-  saveToRecentSearchesSupervisor(String searchText) async {
+//save Project Name =====================================================================
+  saveProjectName(String searchText) async {
     if (searchText == null) return; //Should not be null
     final pref = await SharedPreferences.getInstance();
 
@@ -525,12 +547,34 @@ class SearchProject extends SearchDelegate {
     pref.setStringList("recentSearches", allSearches.toList());
   }
 
-//save To Recent Searches =====================================================================
-  Future<List<String>> getRecentSearches() async {
+//get Project Name =====================================================================
+  Future<List<String>> getProjectName() async {
     final pref = await SharedPreferences.getInstance();
     // var allSearches = pref.getString(key) ?? [];
     final allSearches = pref.getStringList("recentSearches") ?? [];
-    print('allSearches= $allSearches');
+    print('getProjectName= $allSearches');
+    return allSearches;
+  }
+
+//save Sear Interest =====================================================================
+  saveSearInterest(String searchText) async {
+    if (searchText == null) return; //Should not be null
+    final pref = await SharedPreferences.getInstance();
+
+    //Use `Set` to avoid duplication of recentSearches
+    Set<String> allSearches = pref.getStringList("recent")?.toSet() ?? {};
+
+    //Place it at first in the set
+    allSearches = {searchText, ...allSearches};
+    pref.setStringList("recent", allSearches.toList());
+  }
+
+//get Search Interest=====================================================================
+  Future<List<String>> getSearchInterest() async {
+    final pref = await SharedPreferences.getInstance();
+    // var allSearches = pref.getString(key) ?? [];
+    final allSearches = pref.getStringList("recent") ?? [];
+    print('getSearchInterest= $allSearches');
     return allSearches;
   }
 }
