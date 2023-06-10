@@ -178,8 +178,8 @@ class AppWidget {
   }
 
   //==========================================================
-  static String? getUid()  {
-    String? uid=FirebaseAuth.instance.currentUser?.uid;
-    return uid;
-  }
+  // static String? getUid()  {
+  //   String? uid=FirebaseAuth.instance.currentUser?.uid;
+  //   return uid;
+  // }
 }

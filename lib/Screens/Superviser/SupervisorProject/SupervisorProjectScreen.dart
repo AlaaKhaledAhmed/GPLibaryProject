@@ -10,7 +10,7 @@ import 'package:library_project/Widget/AppWidget.dart';
 import 'package:library_project/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 class SupervisorProjectScreen extends StatefulWidget {
   const SupervisorProjectScreen({Key? key}) : super(key: key);
 
@@ -25,7 +25,7 @@ class _SupervisorProjectScreenState extends State<SupervisorProjectScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    userId = AppWidget.getUid();
+    userId =  FirebaseAuth.instance.currentUser?.uid;
   }
 
   @override
