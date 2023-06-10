@@ -61,7 +61,12 @@ class _RequestMainState extends State<RequestMain> {
                             .where('supervisorUid', isEqualTo: userId)
                             .where('status',
                                 isEqualTo: AppConstants.statusIsWaiting)
-                            .snapshots(),
+                            .where('status', whereNotIn: [
+                          AppConstants.statusIsComplete,
+                          AppConstants.statusIsUnComplete,
+                          AppConstants.statusIsAcceptation,
+                          AppConstants.statusIsRejection
+                        ]).snapshots(),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.hasError) {
                             return const Center(
