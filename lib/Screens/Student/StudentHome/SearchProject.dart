@@ -126,7 +126,8 @@ class SearchProject extends SearchDelegate {
             ),
           )
         : query.isEmpty && _oldFiltersProjectsName.isNotEmpty
-            ? showHistory(context, _oldFiltersProjectsName,_oldFiltersSearchInterset)
+            ? showHistory(
+                context, _oldFiltersProjectsName, _oldFiltersSearchInterset)
             : getSuggestionList(listSearch);
   }
 
@@ -145,7 +146,8 @@ class SearchProject extends SearchDelegate {
                   minLeadingWidth: 5.w,
                   onTap: () {
                     query = suggestion.name;
-                    saveSearInterest(AppWidget.setEnTranslateSearchInterest(suggestions[index].searchInterest));
+                    saveSearInterest(AppWidget.setEnTranslateSearchInterest(
+                        suggestions[index].searchInterest));
                     showResults(context);
                   },
                   leading: SvgPicture.asset(
@@ -191,7 +193,8 @@ class SearchProject extends SearchDelegate {
   }
 
 //==========================================================================
-  Widget showHistory(context, List<String> projectName, List<String> projectSearchInterest) {
+  Widget showHistory(
+      context, List<String> projectName, List<String> projectSearchInterest) {
     return Column(
       children: [
 //history===============================================================
@@ -271,7 +274,8 @@ class SearchProject extends SearchDelegate {
                                 ],
                               ),
                               subtitle: AppText(
-                                text: AppWidget.getTranslateSearchInterest(projectSearchInterest[index]),
+                                text: AppWidget.getTranslateSearchInterest(
+                                    projectSearchInterest[index]),
                                 fontSize: AppSize.subTextSize,
                                 fontFamily: local.toString() == 'en'
                                     ? GoogleFonts.quicksand().fontFamily
@@ -307,7 +311,10 @@ class SearchProject extends SearchDelegate {
           child: StreamBuilder(
               stream: AppConstants.projectCollection
                   .where("status", isEqualTo: AppConstants.statusIsComplete)
-                  .where("searchInterest", isEqualTo: projectSearchInterest[0])
+                  .where("searchInterest",
+                      isEqualTo: projectSearchInterest.isEmpty
+                          ? ""
+                          : projectSearchInterest[0])
                   .snapshots(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
